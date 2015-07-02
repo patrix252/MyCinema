@@ -24,6 +24,7 @@ public class Util {
         public static final String COLUMN_TRAMA = "trama";
         public static final String COLUMN_URI_LOCANDINA = "uri_locandina";
         public static final String COLUMN_REGISTA = "regista";
+        //cazzopazzo
         //mazzo
         //lol
         //PUTTANA LA MADONNA SBOLDRA MALEDETTA
