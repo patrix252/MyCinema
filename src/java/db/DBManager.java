@@ -7,6 +7,7 @@ package db;
 
 import util.Util;
 import beans.Film;
+import beans.Genere;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -45,7 +46,7 @@ public class DBManager implements Serializable {
         List<Film> films = new ArrayList<Film>();
         
         //RICORDARSI IL ';' ALLA FINE DELLA QUERY
-        PreparedStatement stm = con.prepareStatement("SELECT * FROM Film;");
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Film INNER JOIN myCinema.Genere WHERE Film.id_genere=Genere.id_genere;");
         
         Logger.getLogger(DBManager.class.getName()).info("Query: " + stm.toString());
         
@@ -55,11 +56,14 @@ public class DBManager implements Serializable {
             try {
                 
                 while(rs.next()) {
+                    Genere g = new Genere();
+                    g.setId_genere(rs.getInt(Util.Genere.COLUMN_ID_GENERE));
+                    g.setDescrizione(rs.getString(Util.Genere.COLUMN_DESCRIZIONE));
                     Film f = new Film();
 //                     id_film, titolo, id_genere, url_trailer, durata, trama, uri_locandina, regista
                     f.setId_film(rs.getInt(Util.Film.COLUMN_ID_FILM));
                     f.setTitolo(rs.getString(Util.Film.COLUMN_TITOLO));
-                    f.setId_genere(rs.getInt(Util.Film.COLUMN_ID_FILM));
+                    f.setGenere(g);
                     f.setUrl_trailer(rs.getString(Util.Film.COLUMN_URL_TRAILER));
                     f.setDurata(rs.getInt(Util.Film.COLUMN_DURATA));
                     f.setTrama(rs.getString(Util.Film.COLUMN_TRAMA));
@@ -78,6 +82,11 @@ public class DBManager implements Serializable {
         return films;
     }
     
+    
+    
+    
+   
+    //solo per vedere come funziona il ? nelle query
     public List<Film> getFilms(String regista) throws SQLException {
         List<Film> films = new ArrayList<Film>();
         
@@ -86,7 +95,7 @@ public class DBManager implements Serializable {
         stm.setString(1, regista);
         
         Logger.getLogger(DBManager.class.getName()).info("Query: " + stm.toString());
-        
+                
         
         try {
             ResultSet rs = stm.executeQuery();
@@ -97,7 +106,7 @@ public class DBManager implements Serializable {
 //                     id_film, titolo, id_genere, url_trailer, durata, trama, uri_locandina, regista
                     f.setId_film(rs.getInt(Util.Film.COLUMN_ID_FILM));
                     f.setTitolo(rs.getString(Util.Film.COLUMN_TITOLO));
-                    f.setId_genere(rs.getInt(Util.Film.COLUMN_ID_FILM));
+                    //f.setGenere(rs.getInt(Util.Film.COLUMN_ID_FILM));
                     f.setUrl_trailer(rs.getString(Util.Film.COLUMN_URL_TRAILER));
                     f.setDurata(rs.getInt(Util.Film.COLUMN_DURATA));
                     f.setTrama(rs.getString(Util.Film.COLUMN_TRAMA));
