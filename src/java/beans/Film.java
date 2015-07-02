@@ -13,7 +13,7 @@ public class Film {
     
     private int id_film;
     private String titolo;
-    private int id_genere;
+    private Genere genere;
     private String url_trailer;
     private int durata;
     private String trama;
@@ -48,19 +48,7 @@ public class Film {
         this.titolo = titolo;
     }
 
-    /**
-     * @return the id_genere
-     */
-    public int getId_genere() {
-        return id_genere;
-    }
-
-    /**
-     * @param id_genere the id_genere to set
-     */
-    public void setId_genere(int id_genere) {
-        this.id_genere = id_genere;
-    }
+ 
 
     /**
      * @return the url_trailer
@@ -130,6 +118,20 @@ public class Film {
      */
     public void setRegista(String regista) {
         this.regista = regista;
+    }
+
+    /**
+     * @return the genere
+     */
+    public Genere getGenere() {
+        return genere;
+    }
+
+    /**
+     * @param genere the genere to set
+     */
+    public void setGenere(Genere genere) {
+        this.genere = genere;
     }
     
     

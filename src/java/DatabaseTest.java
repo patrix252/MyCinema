@@ -65,7 +65,7 @@ public class DatabaseTest extends HttpServlet {
             out.println("<tr>");
                 out.println("<th> id_film </th>");
                 out.println("<th> titolo </th>");
-                out.println("<th> id_genere </th>");
+                out.println("<th> descrizione </th>");
                 out.println("<th> url_trailer </th>");
                 out.println("<th> durata </th>");
                 out.println("<th> trama </th>");
@@ -77,7 +77,7 @@ public class DatabaseTest extends HttpServlet {
                 out.println("<tr>");
                 out.println("<td> " + f.getId_film() + "</td>");
                 out.println("<td> " + f.getTitolo() + "</td>");
-                out.println("<td> " + f.getId_genere() + "</td>");
+                out.println("<td> " + f.getGenere().getDescrizione() + "</td>");
                 out.println("<td> " + f.getUrl_trailer() + "</td>");
                 out.println("<td> " + f.getDurata() + "</td>");
                 out.println("<td> " + f.getTrama() + "</td>");
