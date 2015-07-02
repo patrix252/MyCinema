@@ -23,6 +23,8 @@ public class Util {
         public static final String COLUMN_TRAMA = "trama";
         public static final String COLUMN_URI_LOCANDINA = "uri_locandina";
         public static final String COLUMN_REGISTA = "regista";
+        //modifica del porco dio diocane lamadonna puttana stronza la baldracca troia del porco dio ladro 
+        //succhia cazzi in stazione del porc dio la madonna puttana sboldra
     }
     
     public static class Utente{
