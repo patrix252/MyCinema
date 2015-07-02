@@ -5,6 +5,7 @@
  */
 package db;
 
+import util.Util;
 import beans.Film;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -56,14 +57,14 @@ public class DBManager implements Serializable {
                 while(rs.next()) {
                     Film f = new Film();
 //                     id_film, titolo, id_genere, url_trailer, durata, trama, uri_locandina, regista
-                    f.setId_film(rs.getInt(Film.COLUMN_ID_FILM));
-                    f.setTitolo(rs.getString(Film.COLUMN_TITOLO));
-                    f.setId_genere(rs.getInt(Film.COLUMN_ID_FILM));
-                    f.setUrl_trailer(rs.getString(Film.COLUMN_URL_TRAILER));
-                    f.setDurata(rs.getInt(Film.COLUMN_DURATA));
-                    f.setTrama(rs.getString(Film.COLUMN_TRAMA));
-                    f.setUri_locandina(rs.getString(Film.COLUMN_URI_LOCANDINA));
-                    f.setRegista(rs.getString(Film.COLUMN_REGISTA));
+                    f.setId_film(rs.getInt(Util.Film.COLUMN_ID_FILM));
+                    f.setTitolo(rs.getString(Util.Film.COLUMN_TITOLO));
+                    f.setId_genere(rs.getInt(Util.Film.COLUMN_ID_FILM));
+                    f.setUrl_trailer(rs.getString(Util.Film.COLUMN_URL_TRAILER));
+                    f.setDurata(rs.getInt(Util.Film.COLUMN_DURATA));
+                    f.setTrama(rs.getString(Util.Film.COLUMN_TRAMA));
+                    f.setUri_locandina(rs.getString(Util.Film.COLUMN_URI_LOCANDINA));
+                    f.setRegista(rs.getString(Util.Film.COLUMN_REGISTA));
                     
                     films.add(f);
                 }
@@ -94,14 +95,14 @@ public class DBManager implements Serializable {
                 while(rs.next()) {
                     Film f = new Film();
 //                     id_film, titolo, id_genere, url_trailer, durata, trama, uri_locandina, regista
-                    f.setId_film(rs.getInt(Film.COLUMN_ID_FILM));
-                    f.setTitolo(rs.getString(Film.COLUMN_TITOLO));
-                    f.setId_genere(rs.getInt(Film.COLUMN_ID_FILM));
-                    f.setUrl_trailer(rs.getString(Film.COLUMN_URL_TRAILER));
-                    f.setDurata(rs.getInt(Film.COLUMN_DURATA));
-                    f.setTrama(rs.getString(Film.COLUMN_TRAMA));
-                    f.setUri_locandina(rs.getString(Film.COLUMN_URI_LOCANDINA));
-                    f.setRegista(rs.getString(Film.COLUMN_REGISTA));
+                    f.setId_film(rs.getInt(Util.Film.COLUMN_ID_FILM));
+                    f.setTitolo(rs.getString(Util.Film.COLUMN_TITOLO));
+                    f.setId_genere(rs.getInt(Util.Film.COLUMN_ID_FILM));
+                    f.setUrl_trailer(rs.getString(Util.Film.COLUMN_URL_TRAILER));
+                    f.setDurata(rs.getInt(Util.Film.COLUMN_DURATA));
+                    f.setTrama(rs.getString(Util.Film.COLUMN_TRAMA));
+                    f.setUri_locandina(rs.getString(Util.Film.COLUMN_URI_LOCANDINA));
+                    f.setRegista(rs.getString(Util.Film.COLUMN_REGISTA));
                     
                     films.add(f);
                 }
