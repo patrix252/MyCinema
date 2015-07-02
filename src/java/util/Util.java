@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -23,6 +24,7 @@ public class Util {
         public static final String COLUMN_TRAMA = "trama";
         public static final String COLUMN_URI_LOCANDINA = "uri_locandina";
         public static final String COLUMN_REGISTA = "regista";
+        //mazzo
         //Dio asinello bello col cappello a puntello
         //modifica del porco dio diocane lamadonna puttana stronza la baldracca troia del porco dio ladro 
         //succhia cazzi in stazione del porc dio la madonna puttana sboldra
