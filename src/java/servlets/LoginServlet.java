@@ -15,7 +15,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.security.*;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,7 +37,7 @@ public class LoginServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, NoSuchAlgorithmException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
         RequestDispatcher view = new RequestDispatcher() {
@@ -63,13 +62,9 @@ public class LoginServlet extends HttpServlet {
             String data = request.getParameter("Data");
             String mail = request.getParameter("Mail");
             String password = request.getParameter("Password");
+
             
-            
-            byte[] bytesOfMessage = password.getBytes("UTF-8");
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] thedigest = md.digest(bytesOfMessage);
-            
-            System.out.println(nome+cognome+data+mail+Arrays.toString(thedigest));
+            System.out.println(nome+cognome+data+mail+password);
             
             view = request.getRequestDispatcher("loggato.jsp");
             view.forward(request, response);
@@ -87,11 +82,8 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
             processRequest(request, response);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
     }
 
     /**
@@ -105,11 +97,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
             processRequest(request, response);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     /**
