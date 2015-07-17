@@ -58,7 +58,6 @@ public class LoginServlet extends HttpServlet {
             }
         };
         
-        //CREARE COOKIE CON QUELL'ID UTENTE E PASSARLO AL CLIENT
             String nome = request.getParameter("Nome");
             String cognome = request.getParameter("Cognome");
             //POSSIBILMENTE USARE IL TIPO DATE
@@ -76,6 +75,11 @@ public class LoginServlet extends HttpServlet {
             is = new ByteArrayInputStream(supporto.getBytes() );
             hashUtente = calcolaHash(is);
 
+            //SISTEMARE DATABASE CHE L'ID UTENTE è UN NUMERO E INVECE CI SERVE UNA STRINGA DI LUNGHEZZA
+            //SUPERIORE A 64 (MI SEMBRA SIA SEMPRE QUELLA LA LUNGHEZZA)
+            //DA FARE CON FRA
+            
+            //CREARE COOKIE CON QUELL'ID UTENTE E PASSARLO AL CLIENT
 
             
             view = request.getRequestDispatcher("loggato.jsp");
