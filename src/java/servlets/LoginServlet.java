@@ -7,6 +7,8 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -62,9 +64,18 @@ public class LoginServlet extends HttpServlet {
             String data = request.getParameter("Data");
             String mail = request.getParameter("Mail");
             String password = request.getParameter("Password");
+            MessageDigest md = null;
+            try {
+                md = MessageDigest.getInstance("SHA-256");
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            String text = "This is some text";
 
+            md.update(password.getBytes("UTF-8")); // Change this to "UTF-16" if needed
+            byte[] digest = md.digest();
             
-            System.out.println(nome+cognome+data+mail+password);
+            System.out.println(nome+cognome+data+mail+digest);
             
             view = request.getRequestDispatcher("loggato.jsp");
             view.forward(request, response);
