@@ -5,8 +5,11 @@
  */
 package servlets;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import javax.servlet.RequestDispatcher;
@@ -55,8 +58,6 @@ public class LoginServlet extends HttpServlet {
             }
         };
         
-        //HASHARE LA PASSWORD
-        //CREARE ID UTENTE UNIVOCO POSSIBILMENTE HASHATO
         //CREARE COOKIE CON QUELL'ID UTENTE E PASSARLO AL CLIENT
             String nome = request.getParameter("Nome");
             String cognome = request.getParameter("Cognome");
@@ -64,18 +65,18 @@ public class LoginServlet extends HttpServlet {
             String data = request.getParameter("Data");
             String mail = request.getParameter("Mail");
             String password = request.getParameter("Password");
-            MessageDigest md = null;
-            try {
-                md = MessageDigest.getInstance("SHA-256");
-            } catch (NoSuchAlgorithmException ex) {
-                Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            String text = "This is some text";
-
-            md.update(password.getBytes("UTF-8")); // Change this to "UTF-16" if needed
-            byte[] digest = md.digest();
             
-            System.out.println(nome+cognome+data+mail+digest);
+            //CREO L'HASH DELLA PASSWORD E L'HASH PER L'ID UTENTE
+            String hashPassword;
+            InputStream is = new ByteArrayInputStream( password.getBytes() );
+            hashPassword = calcolaHash(is);
+            
+            String hashUtente;
+            String supporto = nome+cognome+data+mail+password;
+            is = new ByteArrayInputStream(supporto.getBytes() );
+            hashUtente = calcolaHash(is);
+
+
             
             view = request.getRequestDispatcher("loggato.jsp");
             view.forward(request, response);
@@ -120,5 +121,30 @@ public class LoginServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+    public static String calcolaHash(InputStream is) {
+    String output;
+    int read;
+    byte[] buffer = new byte[8192];
+
+    try {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        while ((read = is.read(buffer)) > 0) {
+            digest.update(buffer, 0, read);
+        }
+        byte[] hash = digest.digest();
+        BigInteger bigInt = new BigInteger(1, hash);
+        output = bigInt.toString(16);
+        while ( output.length() < 32 ) {
+            output = "0"+output;
+        }
+    } 
+    catch (Exception e) {
+        e.printStackTrace(System.err);
+        return null;
+    }
+
+    return output;
+}
 
 }
