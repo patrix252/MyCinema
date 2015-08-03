@@ -56,10 +56,12 @@ public class LoginServlet extends HttpServlet {
             String idUtente = null;
             Cookie[] cookies = request.getCookies();
             Cookie cookie;
-            for (int i=0; i<cookies.length; i++){
-                cookie=cookies[i];
-                if(cookie.getName().equals("idUtente")){
-                    idUtente = cookie.getValue();
+            if(cookies!=null){
+                for (int i=0; i<cookies.length; i++){
+                    cookie=cookies[i];
+                    if(cookie.getName().equals("idUtente")){
+                        idUtente = cookie.getValue();
+                    }
                 }
             }
             if(idUtente==null){
