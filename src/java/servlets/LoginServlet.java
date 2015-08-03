@@ -64,11 +64,13 @@ public class LoginServlet extends HttpServlet {
                     }
                 }
             }
+            
             if(idUtente==null){
                 view = request.getRequestDispatcher("registrazione.html");
                 view.forward(request, response);
             }
             
+            //AGGIUNGERE UN CONTROLLO NEL DATABASE SE ESISTE QUELL'IDUTENTE
             view = request.getRequestDispatcher("loggato.jsp");
             view.forward(request, response);
     }
