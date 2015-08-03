@@ -9,29 +9,23 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.http.Cookie;
-
+import static servlets.RegisterServlet.calcolaHash;
 
 /**
  *
  * @author Paolo
  */
-@WebServlet(name = "RegisterServlet", urlPatterns = {"/RegisterServlet"})
-public class RegisterServlet extends HttpServlet {
+@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
+public class LoginServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -59,32 +53,19 @@ public class RegisterServlet extends HttpServlet {
             }
         };
         
-            String nome = request.getParameter("Nome");
-            String cognome = request.getParameter("Cognome");
-            //POSSIBILMENTE USARE IL TIPO DATE
-            String data = request.getParameter("Data");
-            String mail = request.getParameter("Mail");
-            String password = request.getParameter("Password");
-            
-            //CREO L'HASH DELLA PASSWORD E L'HASH PER L'ID UTENTE
-            String hashPassword;
-            InputStream is = new ByteArrayInputStream( password.getBytes() );
-            hashPassword = calcolaHash(is);
-            
-            String hashUtente;
-            String supporto = nome+cognome+data+mail+password;
-            is = new ByteArrayInputStream(supporto.getBytes() );
-            hashUtente = calcolaHash(is);
-
-            //SISTEMARE DATABASE CHE L'ID UTENTE è UN NUMERO E INVECE CI SERVE UNA STRINGA DI LUNGHEZZA
-            //SUPERIORE A 64 (MI SEMBRA SIA SEMPRE QUELLA LA LUNGHEZZA)
-            //DA FARE CON FRA
-            
-            //AGGIUNGERE CREDENZIALI AL DATABASE
-            
-            //CREARE COOKIE CON QUELL'ID UTENTE E PASSARLO AL CLIENT
-            Cookie cookie = new Cookie("idUtente" , hashUtente);
-            response.addCookie(cookie);
+            String idUtente = null;
+            Cookie[] cookies = request.getCookies();
+            Cookie cookie;
+            for (int i=0; i<cookies.length; i++){
+                cookie=cookies[i];
+                if(cookie.getName().equals("idUtente")){
+                    idUtente = cookie.getValue();
+                }
+            }
+            if(idUtente==null){
+                view = request.getRequestDispatcher("registrazione.html");
+                view.forward(request, response);
+            }
             
             view = request.getRequestDispatcher("loggato.jsp");
             view.forward(request, response);
@@ -102,8 +83,7 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            processRequest(request, response);
-
+        processRequest(request, response);
     }
 
     /**
@@ -117,7 +97,7 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            processRequest(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -129,30 +109,5 @@ public class RegisterServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
-    public static String calcolaHash(InputStream is) {
-    String output;
-    int read;
-    byte[] buffer = new byte[8192];
-
-    try {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        while ((read = is.read(buffer)) > 0) {
-            digest.update(buffer, 0, read);
-        }
-        byte[] hash = digest.digest();
-        BigInteger bigInt = new BigInteger(1, hash);
-        output = bigInt.toString(16);
-        while ( output.length() < 32 ) {
-            output = "0"+output;
-        }
-    } 
-    catch (Exception e) {
-        e.printStackTrace(System.err);
-        return null;
-    }
-
-    return output;
-}
 
 }
