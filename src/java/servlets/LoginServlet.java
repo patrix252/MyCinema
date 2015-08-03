@@ -52,10 +52,26 @@ public class LoginServlet extends HttpServlet {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         };
+            String mail = request.getParameter("Mail");
+            String password = request.getParameter("Password");
+            //CALCOLO HASH PASSWORD SE ARRIVO QUI DALLA FORM DEL LOGIN
+            if(password!=null && mail!=null){
+                InputStream is = new ByteArrayInputStream( password.getBytes() );
+                String hashPassword = calcolaHash(is);
+                //CERCARE NEL DATABASE L'UTENTE CON LA MAIL PARI A mail E CONTROLLARE SE LA PASSWORD CORRISPONDE ALL'HASH
+                //APPENA CREATO. IN CASO POSITIVO LOGGARLO ALTRIMENTI RIMANDARLO ALLA PAGINA DI LOGIN CON L'ERRORE ROSSO IN
+                //BASSO DI ERRORE NELL'IMMISSIONE DEL LOGIN E DELLA PASSWORD
+                
+                //CREARE NUOVO COOKIE CON L'ID UTENTE PRESO DAL DATABASE E PASSARLO AL CLIENT
+                view = request.getRequestDispatcher("loggato.jsp");
+                view.forward(request, response);
+            }
         
             String idUtente = null;
             Cookie[] cookies = request.getCookies();
             Cookie cookie;
+            
+            
             if(cookies!=null){
                 for (int i=0; i<cookies.length; i++){
                     cookie=cookies[i];
@@ -66,7 +82,7 @@ public class LoginServlet extends HttpServlet {
             }
             
             if(idUtente==null){
-                view = request.getRequestDispatcher("registrazione.html");
+                view = request.getRequestDispatcher("login.html");
                 view.forward(request, response);
             }
             
