@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.Cookie;
 
 
 /**
@@ -30,7 +31,7 @@ import java.util.logging.Logger;
  * @author Paolo
  */
 @WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
-public class LoginServlet extends HttpServlet {
+public class RegisterServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -79,8 +80,11 @@ public class LoginServlet extends HttpServlet {
             //SUPERIORE A 64 (MI SEMBRA SIA SEMPRE QUELLA LA LUNGHEZZA)
             //DA FARE CON FRA
             
+            //AGGIUNGERE CREDENZIALI AL DATABASE
+            
             //CREARE COOKIE CON QUELL'ID UTENTE E PASSARLO AL CLIENT
-
+            Cookie cookie = new Cookie("idUtente" , hashUtente);
+            response.addCookie(cookie);
             
             view = request.getRequestDispatcher("loggato.jsp");
             view.forward(request, response);
