@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.Cookie;
@@ -71,7 +72,10 @@ public class RegisterServlet extends HttpServlet {
             String nome = request.getParameter("Nome");
             String cognome = request.getParameter("Cognome");
             //POSSIBILMENTE USARE IL TIPO DATE
-            String data = request.getParameter("Data");
+            String giorno = request.getParameter("Giorno");
+            String mese = request.getParameter("Mese");
+            String anno = request.getParameter("Anno");
+            String data = anno+"/"+mese+"/"+giorno;
             String mail = request.getParameter("Mail");
             String password = request.getParameter("Password");
             
