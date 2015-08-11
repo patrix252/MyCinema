@@ -19,6 +19,7 @@ public class Film {
     private String trama;
     private String uri_locandina;
     private String regista;
+    private int is3D;
 
     /**
      * @return the id_film
@@ -132,6 +133,20 @@ public class Film {
      */
     public void setGenere(Genere genere) {
         this.genere = genere;
+    }
+
+    /**
+     * @return the is3D
+     */
+    public int getIs3D() {
+        return is3D;
+    }
+
+    /**
+     * @param is3D the is3D to set
+     */
+    public void setIs3D(int is3D) {
+        this.is3D = is3D;
     }
     
     

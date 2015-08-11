@@ -6,6 +6,7 @@
 package beans;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 
 /**
@@ -19,7 +20,8 @@ public class Prenotazione {
     private int id_prezzo;
     private int id_posto;
     //da verificare se è compatibile con il database forse quello stronzo di patrizio vuole modificarlo
-    private Date data_ora_operazione;
+    private Date data;
+    private Time ora;
 
     /**
      * @return the id_prenotazione
@@ -92,19 +94,34 @@ public class Prenotazione {
     }
 
     /**
-     * @return the data_ora_operazione
+     * @return the data
      */
-    public Date getData_ora_operazione() {
-        return data_ora_operazione;
+    public Date getData() {
+        return data;
     }
 
     /**
-     * @param data_ora_operazione the data_ora_operazione to set
+     * @param data the data to set
      */
-    public void setData_ora_operazione(Date data_ora_operazione) {
-        this.data_ora_operazione = data_ora_operazione;
+    public void setData(Date data) {
+        this.data = data;
     }
 
+    /**
+     * @return the ora
+     */
+    public Time getOra() {
+        return ora;
+    }
+
+    /**
+     * @param ora the ora to set
+     */
+    public void setOra(Time ora) {
+        this.ora = ora;
+    }
+
+  
     
     
     

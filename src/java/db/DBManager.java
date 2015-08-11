@@ -8,6 +8,7 @@ package db;
 import util.Util;
 import beans.Film;
 import beans.Genere;
+import beans.Utente;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -42,7 +43,7 @@ public class DBManager implements Serializable {
     }
     
     
-    public List<Film> getFilms() throws SQLException {
+    public List<Film> getFilmsAll() throws SQLException {
         List<Film> films = new ArrayList<Film>();
         
         //RICORDARSI IL ';' ALLA FINE DELLA QUERY
@@ -92,6 +93,7 @@ public class DBManager implements Serializable {
         
         //RICORDARSI IL ';' ALLA FINE DELLA QUERY
         PreparedStatement stm = con.prepareStatement("SELECT * FROM Film WHERE regista = ?;");
+        //primo punto di domanda uguale regista
         stm.setString(1, regista);
         
         Logger.getLogger(DBManager.class.getName()).info("Query: " + stm.toString());
@@ -123,6 +125,58 @@ public class DBManager implements Serializable {
         }
         
         return films;
+    }
+    
+    
+    //ritorna i num_recenti  fimls piu recenti
+    public List<Film> getFilmsCarosello(int num_recenti) throws SQLException{
+        List<Film> films = new ArrayList<Film>();
+        
+        //da controllare... necessario anche sapere da data odierna?? minkiaboh!
+        PreparedStatement stm = con.prepareStatement("SELECT  * FROM myCinema.Film INNER JOIN myCinema.Spettacolo INNER JOIN myCinema.Genere ORDER BY data ASC, ora ASC LIMIT  5 ;");
+        stm.setString(1,Integer.toString(num_recenti));
+        try {
+            ResultSet rs = stm.executeQuery();
+            try {
+                
+                while(rs.next()) {
+                    Genere g = new Genere();
+                    g.setId_genere(rs.getInt(Util.Genere.COLUMN_ID_GENERE));
+                    g.setDescrizione(rs.getString(Util.Genere.COLUMN_DESCRIZIONE));
+                    Film f = new Film();
+//                     id_film, titolo, id_genere, url_trailer, durata, trama, uri_locandina, regista
+                    f.setId_film(rs.getInt(Util.Film.COLUMN_ID_FILM));
+                    f.setTitolo(rs.getString(Util.Film.COLUMN_TITOLO));
+                    f.setGenere(g);
+                    f.setUrl_trailer(rs.getString(Util.Film.COLUMN_URL_TRAILER));
+                    f.setDurata(rs.getInt(Util.Film.COLUMN_DURATA));
+                    f.setTrama(rs.getString(Util.Film.COLUMN_TRAMA));
+                    f.setUri_locandina(rs.getString(Util.Film.COLUMN_URI_LOCANDINA));
+                    f.setRegista(rs.getString(Util.Film.COLUMN_REGISTA));
+                    
+                    films.add(f);
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+       
+        return films;
+         
+    }
+    
+    
+    
+    
+    
+    public List<Utente> getTopUser (int n) throws SQLException{
+       
+        
+        
+    
+    return null;
     }
     
     public void shutdown() {

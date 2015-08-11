@@ -24,6 +24,7 @@ public class Util {
         public static final String COLUMN_TRAMA = "trama";
         public static final String COLUMN_URI_LOCANDINA = "uri_locandina";
         public static final String COLUMN_REGISTA = "regista";
+        public static final String COLUMN_IS3D = "is3D";
         //cazzopazzo
         //mazzo
         //lol
@@ -58,7 +59,8 @@ public class Util {
         public static final String COLUMN_ID_SPETTACOLO = "id_spettacolo";
         public static final String COLUMN_ID_PREZZO = "id_prezzo";
         public static final String COLUMN_ID_POSTO = "id_posto";
-        public static final String COLUMN_DATA_ORA_PRENOTAZIONE ="data_ora_prenotazione";
+        public static final String COLUMN_DATA = "data";
+        public static final String COLUMN_ORA = "ora";
     }
     
     public static class Ruolo {
@@ -78,6 +80,22 @@ public class Util {
         public static final String COLUMN_PASSWORD = "password";
         public static final String COLUMN_CREDITO = "credito";
         public static final String COLUMN_ID_RUOLO = "ruolo";
+        public static final String COLUMN_NOME = "nome";
+        public static final String COLUMN_COGNOME = "cognome";
+        public static final String COLUMN_DATA_NASCITA = "dataNascita";
         
+        
+    }
+    
+    public static class Spettacolo {
+        public static final String COLUMN_ID_SPETTACOLO ="id_spettacolo";
+        public static final String COLUMN_ID_FILM ="id_film";
+        public static final String COLUMN_ID_SALA ="id_sala";
+        public static final String COLUMN_DATA ="data";
+        public static final String COLUMN_ORA ="ora";
+        
+    
+    
+    
     }
 }
