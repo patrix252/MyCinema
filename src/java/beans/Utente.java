@@ -12,7 +12,7 @@ import java.sql.Date;
  * @author Francesco
  */
 public class Utente {
-    private int id_utente;
+    private String id_utente;
     private String nome;
     private String cognome;
     private String email;
@@ -24,14 +24,14 @@ public class Utente {
     /**
      * @return the id_utente
      */
-    public int getId_utente() {
+    public String getId_utente() {
         return id_utente;
     }
 
     /**
      * @param id_utente the id_utente to set
      */
-    public void setId_utente(int id_utente) {
+    public void setId_utente(String id_utente) {
         this.id_utente = id_utente;
     }
 
