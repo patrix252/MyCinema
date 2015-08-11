@@ -21,8 +21,4 @@
         <param-name>password</param-name>
         <param-value>asdd</param-value>
     </context-param>
-        
-        
-
-    
 </web-app>
