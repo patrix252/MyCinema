@@ -27,6 +27,7 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -67,6 +68,8 @@ public class RegisterServlet extends HttpServlet {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         };
+        
+        HttpSession session = ((HttpServletRequest)request).getSession();
 
         String nome = request.getParameter("Nome");
         String cognome = request.getParameter("Cognome");
@@ -91,16 +94,13 @@ public class RegisterServlet extends HttpServlet {
         try {
             manager.inserisciUtente(hashUtente, password, nome, cognome, mail, data);
         } catch (SQLException ex) {
-            Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
+            session.setAttribute("EmailErrata", true);
+            view = request.getRequestDispatcher("registrazione.jsp");
+            view.forward(request, response);
         }
 
-            //SISTEMARE DATABASE CHE L'ID UTENTE è UN NUMERO E INVECE CI SERVE UNA STRINGA DI LUNGHEZZA
-        //SUPERIORE A 64 (MI SEMBRA SIA SEMPRE QUELLA LA LUNGHEZZA)
-        //DA FARE CON FRA
-            //AGGIUNGERE CREDENZIALI AL DATABASE CONTROLLANDO CHE NON CI SIANO GIà UTENTI CON QUELL'EMAIL
-        //IN CASO DI COLLISIONE AVVERTIRE L'UTENTE CHE L'EMAIL NON è VALIDA PERCHé C'è GIà UN UTENTE CON 
-        //QUELL'EMAIL E RIMANDARLO ALLA PAGINA DI REGISTRAZIONE (INSERIRE L'ERRORE A FONDO PAGINA IN ROSSO)
-        //CREARE COOKIE CON QUELL'ID UTENTE E PASSARLO AL CLIENT
+        session.setAttribute("utente", nome);
+        
         Cookie cookie = new Cookie("idUtente", hashUtente);
         response.addCookie(cookie);
 

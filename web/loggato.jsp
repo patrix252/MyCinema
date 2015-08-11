@@ -4,6 +4,7 @@
     Author     : Paolo
 --%>
 
+<%@taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,7 +13,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Benvenuto "coglione"!</h1>
+        <h1>Benvenuto <c:out value="${sessionScope.utente}"/>!</h1>
         <script>
             setTimeout(function(){ window.location.replace("index.html"); }, 1500);
         </script>

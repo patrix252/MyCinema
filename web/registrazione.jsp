@@ -4,6 +4,7 @@
     Author     : Paolo
 --%>
 
+<%@taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -22,16 +23,16 @@
                 var yearfield = document.getElementById(yearfield);
                 for (var i = 0; i < 31; i++)
                     dayfield.options[i] = new Option(i+1, i + 1);
-                dayfield.options[0] = new Option(1, 1, true, true); //select today's day
+                dayfield.options[0] = new Option(1, 1, true, true);
                 for (var m = 0; m < 12; m++)
                     monthfield.options[m] = new Option(monthtext[m], m+1);
-                monthfield.options[0] = new Option("Jan", 1, true, true); //select today's month
+                monthfield.options[0] = new Option("Jan", 1, true, true);
                 var thisyear = today.getFullYear();
                 for (var y = 0; y < 80; y++) {
                     yearfield.options[y] = new Option(thisyear-15, thisyear-15);
                     thisyear -= 1;
                 }
-                yearfield.options[0] = new Option(today.getFullYear()-15, today.getFullYear()-15, true, true); //select today's year
+                yearfield.options[0] = new Option(today.getFullYear()-15, today.getFullYear()-15, true, true);
             }
 
         </script>
@@ -55,5 +56,8 @@
                 populatedropdown("daydropdown", "monthdropdown", "yeardropdown");
             };
         </script>
+        <c:if test="${sessionScope.EmailErrata==true}">
+            <FONT COLOR="#FF0000">Email non valida, reinserisci i dati</FONT>
+        </c:if>
     </body>
 </html>
