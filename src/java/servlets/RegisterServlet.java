@@ -63,8 +63,10 @@ public class RegisterServlet extends HttpServlet {
             String nome = request.getParameter("Nome");
             String cognome = request.getParameter("Cognome");
             //POSSIBILMENTE USARE IL TIPO DATE
-            //String data = request.getParameter("Data");
-            String test = request.getParameter("Giorno");
+            String giorno = request.getParameter("Giorno");
+            String mese = request.getParameter("Mese");
+            String anno = request.getParameter("Anno");
+            String data = anno+"/"+mese+"/"+giorno;
             String mail = request.getParameter("Mail");
             String password = request.getParameter("Password");
             
@@ -74,13 +76,9 @@ public class RegisterServlet extends HttpServlet {
             hashPassword = calcolaHash(is);
             
             String hashUtente;
-            String supporto = nome+cognome+/*data+*/mail+password;
+            String supporto = nome+cognome+data+mail+password;
             is = new ByteArrayInputStream(supporto.getBytes() );
             hashUtente = calcolaHash(is);
-
-            //SISTEMARE DATABASE CHE L'ID UTENTE è UN NUMERO E INVECE CI SERVE UNA STRINGA DI LUNGHEZZA
-            //SUPERIORE A 64 (MI SEMBRA SIA SEMPRE QUELLA LA LUNGHEZZA)
-            //DA FARE CON FRA
             
             //AGGIUNGERE CREDENZIALI AL DATABASE CONTROLLANDO CHE NON CI SIANO GIà UTENTI CON QUELL'EMAIL
             //IN CASO DI COLLISIONE AVVERTIRE L'UTENTE CHE L'EMAIL NON è VALIDA PERCHé C'è GIà UN UTENTE CON 
