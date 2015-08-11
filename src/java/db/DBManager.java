@@ -15,6 +15,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -41,6 +42,32 @@ public class DBManager implements Serializable {
         }
         
     }
+    
+    //inserimento utente nell database
+    public void inserisciUtente (String id_utente, String password,String nome, String cognome, String email, String data) throws SQLException{
+   //PreparedStatement stm = con.prepareStatement("INSERT INTO myCinema.Utente (id_utente, email, password, nome, cognome, dataNascita) VALUES (?,?,?,?,?,?);");
+        
+    String test = "INSERT INTO myCinema.Utente (id_utente, email, password, nome, cognome, dataNascita) VALUES (\""+id_utente+"\", \""+email+"\",\" "+password+"\",\" "+nome+"\",\" "+cognome+"\",\" "+data+"\");";
+            Statement stm = con.createStatement();
+            
+            stm.executeUpdate(test);
+    
+    
+    
+            /*
+            stm.setString(1, "\""+id_utente+"\"");
+            stm.setString(2, "\""+email+"\"");
+            stm.setString(3, "\""+password+"\"");
+            stm.setString(4, "\""+nome+"\"");
+            stm.setString(5, "\""+cognome+"\"");
+            stm.setString(6, "\""+data+"\"");
+        */  
+    
+    
+    
+    }
+
+   
     
     
     public List<Film> getFilmsAll() throws SQLException {

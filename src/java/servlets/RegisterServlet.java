@@ -5,6 +5,7 @@
  */
 package servlets;
 
+import db.DBManager;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,6 +13,7 @@ import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -32,6 +34,13 @@ import javax.servlet.http.Cookie;
  */
 @WebServlet(name = "RegisterServlet", urlPatterns = {"/RegisterServlet"})
 public class RegisterServlet extends HttpServlet {
+    
+            private DBManager manager;
+    
+    @Override
+    public void init() throws ServletException {
+        this.manager = (DBManager) super.getServletContext().getAttribute("dbmanager");
+    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -76,6 +85,13 @@ public class RegisterServlet extends HttpServlet {
             is = new ByteArrayInputStream(supporto.getBytes() );
             hashUtente = calcolaHash(is);
 
+                try {
+                    manager.inserisciUtente(hashUtente,password, nome, cognome, mail, data);
+                } catch (SQLException ex) {
+                    Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            
             //SISTEMARE DATABASE CHE L'ID UTENTE è UN NUMERO E INVECE CI SERVE UNA STRINGA DI LUNGHEZZA
             //SUPERIORE A 64 (MI SEMBRA SIA SEMPRE QUELLA LA LUNGHEZZA)
             //DA FARE CON FRA

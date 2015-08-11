@@ -88,6 +88,7 @@ public class DatabaseTest extends HttpServlet {
             out.println("</table>");
             out.println("</body>");
             out.println("</html>");
+            
         }
     }
 
