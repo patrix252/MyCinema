@@ -58,6 +58,7 @@
         </script>
         <c:if test="${sessionScope.EmailErrata==true}">
             <FONT COLOR="#FF0000">Email non valida, reinserisci i dati</FONT>
+            <c:set var="EmailErrata" value="false" scope="session"/>
         </c:if>
     </body>
 </html>

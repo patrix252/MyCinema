@@ -18,6 +18,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import static servlets.RegisterServlet.calcolaHash;
 
 /**
@@ -39,7 +40,9 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
+        HttpSession session = ((HttpServletRequest) request).getSession();
+
         RequestDispatcher view = new RequestDispatcher() {
 
             @Override
@@ -52,43 +55,41 @@ public class LoginServlet extends HttpServlet {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         };
-            String mail = request.getParameter("Mail");
-            String password = request.getParameter("Password");
-            //CALCOLO HASH PASSWORD SE ARRIVO QUI DALLA FORM DEL LOGIN
-            if(password!=null && mail!=null){
-                InputStream is = new ByteArrayInputStream( password.getBytes() );
-                String hashPassword = calcolaHash(is);
-                //CERCARE NEL DATABASE L'UTENTE CON LA MAIL PARI A mail E CONTROLLARE SE LA PASSWORD CORRISPONDE ALL'HASH
-                //APPENA CREATO. IN CASO POSITIVO LOGGARLO ALTRIMENTI RIMANDARLO ALLA PAGINA DI LOGIN CON L'ERRORE ROSSO IN
-                //BASSO DI ERRORE NELL'IMMISSIONE DEL LOGIN E DELLA PASSWORD
-                
-                //CREARE NUOVO COOKIE CON L'ID UTENTE PRESO DAL DATABASE E PASSARLO AL CLIENT
+//SE C'è UN COOKIE CONTROLLO CHE L'IDUTENTE SIA GIUSTO E IN CASO POI FACCIO LOGGARE L'UTENTE
+        String idUtente = null;
+        Cookie[] cookies = ((HttpServletRequest) request).getCookies();
+        Cookie cookie;
+        if (cookies != null) {
+            for (int i = 0; i < cookies.length; i++) {
+                cookie = cookies[i];
+                if (cookie.getName().equals("idUtente")) {
+                    idUtente = cookie.getValue();
+                }
+            }
+            if (idUtente != null) {
+                //CONTROLLARE NEL DATABASE SE ESISTE QUELL' idUtente E IN CASO PRENDERE I VARI DATI
+                session.setAttribute("utente", idUtente);
                 view = request.getRequestDispatcher("loggato.jsp");
                 view.forward(request, response);
             }
-        
-            String idUtente = null;
-            Cookie[] cookies = request.getCookies();
-            Cookie cookie;
-            
-            
-            if(cookies!=null){
-                for (int i=0; i<cookies.length; i++){
-                    cookie=cookies[i];
-                    if(cookie.getName().equals("idUtente")){
-                        idUtente = cookie.getValue();
-                    }
-                }
-            }
-            
-            if(idUtente==null){
-                view = request.getRequestDispatcher("login.html");
-                view.forward(request, response);
-            }
-            
-            //AGGIUNGERE UN CONTROLLO NEL DATABASE SE ESISTE QUELL'IDUTENTE
+        }
+//SE NON CI SONO COOKIE ARRIVA QUI, E O ARRIVA DALLA FORM E I VALORI MAIL E PASSWORD NON SONO NULLI
+//ALTRIMENTI I VALORI CI SONO E LI CONTROLLO
+        String mail = request.getParameter("Mail");
+        String password = request.getParameter("Password");
+        if (mail != null && password != null) {
+            InputStream is = new ByteArrayInputStream(password.getBytes());
+            String hashPassword = calcolaHash(is);
+                //CERCARE NEL DATABASE L'UTENTE CON LA MAIL PARI A mail E CONTROLLARE SE LA PASSWORD CORRISPONDE ALL'HASH
+            //APPENA CREATO. IN CASO POSITIVO LOGGARLO ALTRIMENTI RIMANDARLO ALLA PAGINA DI LOGIN CON L'ERRORE ROSSO IN
+            //BASSO DI ERRORE NELL'IMMISSIONE DEL LOGIN E DELLA PASSWORD
+
+            //CREARE NUOVO COOKIE CON L'ID UTENTE PRESO DAL DATABASE E PASSARLO AL CLIENT
             view = request.getRequestDispatcher("loggato.jsp");
             view.forward(request, response);
+        }
+        view = request.getRequestDispatcher("login.html");
+        view.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
