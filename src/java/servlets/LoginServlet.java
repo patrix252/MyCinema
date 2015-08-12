@@ -9,6 +9,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.math.BigInteger;
+import java.security.MessageDigest;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -19,7 +21,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import static servlets.RegisterServlet.calcolaHash;
 
 /**
  *
@@ -130,5 +131,29 @@ public class LoginServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+        public static String calcolaHash(InputStream is) {
+        String output;
+        int read;
+        byte[] buffer = new byte[8192];
+
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            while ((read = is.read(buffer)) > 0) {
+                digest.update(buffer, 0, read);
+            }
+            byte[] hash = digest.digest();
+            BigInteger bigInt = new BigInteger(1, hash);
+            output = bigInt.toString(16);
+            while (output.length() < 32) {
+                output = "0" + output;
+            }
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
+            return null;
+        }
+
+        return output;
+    }
 
 }

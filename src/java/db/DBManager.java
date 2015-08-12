@@ -44,9 +44,9 @@ public class DBManager implements Serializable {
     }
     
     //inserimento utente nell database
-    public void inserisciUtente (String id_utente, String password,String nome, String cognome, String email, String data) throws SQLException{
+    public void inserisciUtente (Utente user) throws SQLException{
    //PreparedStatement stm = con.prepareStatement("INSERT INTO myCinema.Utente (id_utente, email, password, nome, cognome, dataNascita) VALUES (?,?,?,?,?,?);");
-        
+        String id_utente=null,  password=null, nome=null,  cognome=null,  email=null,  data=null;
     String test = "INSERT INTO myCinema.Utente (id_utente, email, password, nome, cognome, dataNascita) VALUES (\""+id_utente+"\",\""+email+"\",\""+password+"\",\""+nome+"\",\""+cognome+"\",\""+data+"\");";
             Statement stm = con.createStatement();
             

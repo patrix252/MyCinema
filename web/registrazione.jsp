@@ -22,17 +22,17 @@
                 var monthfield = document.getElementById(monthfield);
                 var yearfield = document.getElementById(yearfield);
                 for (var i = 0; i < 31; i++)
-                    dayfield.options[i] = new Option(i+1, i + 1);
+                    dayfield.options[i] = new Option(i + 1, i + 1);
                 dayfield.options[0] = new Option(1, 1, true, true);
                 for (var m = 0; m < 12; m++)
-                    monthfield.options[m] = new Option(monthtext[m], m+1);
+                    monthfield.options[m] = new Option(monthtext[m], m + 1);
                 monthfield.options[0] = new Option("Jan", 1, true, true);
                 var thisyear = today.getFullYear();
                 for (var y = 0; y < 80; y++) {
-                    yearfield.options[y] = new Option(thisyear-15, thisyear-15);
+                    yearfield.options[y] = new Option(thisyear - 15, thisyear - 15);
                     thisyear -= 1;
                 }
-                yearfield.options[0] = new Option(today.getFullYear()-15, today.getFullYear()-15, true, true);
+                yearfield.options[0] = new Option(today.getFullYear() - 15, today.getFullYear() - 15, true, true);
             }
 
         </script>
@@ -40,7 +40,7 @@
     </head>
     <body>
         <div>TODO write content</div>
-        <form action="RegisterServlet" method="POST">
+        <form action="registrazione.jsp" method="POST">
             <label style="display: block;">Nome:</label><input id="nome" name="Nome" size="10"/><br>
             <label style="display: block;">Cognome:</label><input id="cognome" name="Cognome" size="10"/><br>
             <label style="display: block;">Data di Nascita:</label>
@@ -48,7 +48,7 @@
             <select id="monthdropdown" name="Mese"></select> 
             <select id="yeardropdown" name="Anno"></select> 
             <label style="display: block;">Mail:</label><input id="mail" name="Mail" size="10"/><br>
-            <label style="display: block;">Password:</label><input type="text" id="password" name="Password" size="10"/><br>
+            <label style="display: block;">Password:</label><input type="password" id="password" name="Password" size="10"/><br>
             <input type="submit" value="Submit"/>
         </form>
         <script type="text/javascript">
