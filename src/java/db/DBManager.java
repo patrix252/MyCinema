@@ -66,10 +66,49 @@ public class DBManager implements Serializable {
     
     
     }
+    
+    
 
+//passato l'id utente restituire il bean corrispondente
+    public Utente trovanome(String id_utente) throws SQLException {
+
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Utente WHERE id_utente= ?;");
+        stm.setString(1, id_utente);
+        Logger.getLogger(DBManager.class.getName()).info("Query: " + stm.toString());
+         Utente user = new Utente();
+       
+
+        try {
+            ResultSet rs = stm.executeQuery();
+            try {
+
+                while (rs.next()) {
+                   
+                    user.setNome(rs.getString(Util.Utente.COLUMN_NOME));
+                    user.setCognome(rs.getString(Util.Utente.COLUMN_COGNOME));
+                    user.setEmail(rs.getString(Util.Utente.COLUMN_EMAIL));
+                    user.setPassword(rs.getString(Util.Utente.COLUMN_PASSWORD));
+                   // user.setDataNascita(rs.getDate(Util.Utente.COLUMN_DATA_NASCITA));
+                    user.setCredito(rs.getDouble(Util.Utente.COLUMN_CREDITO));
+                    user.setRuolo(rs.getInt(Util.Utente.COLUMN_ID_RUOLO));
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+
+        return user;
+    }
+    
+        
+  
    
+
     
     
+    //
     public List<Film> getFilmsAll() throws SQLException {
         List<Film> films = new ArrayList<Film>();
         

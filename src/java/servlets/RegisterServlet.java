@@ -5,6 +5,7 @@
  */
 package servlets;
 
+import beans.Utente;
 import db.DBManager;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -98,8 +99,8 @@ public class RegisterServlet extends HttpServlet {
             view = request.getRequestDispatcher("registrazione.jsp");
             view.forward(request, response);
         }
+      
 
-        session.setAttribute("utente", nome);
         
         Cookie cookie = new Cookie("idUtente", hashUtente);
         response.addCookie(cookie);
