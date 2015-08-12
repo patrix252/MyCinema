@@ -15,6 +15,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -145,10 +146,20 @@ public class RegisterFilter implements Filter {
             String giorno = request.getParameter("Giorno");
             String mese = request.getParameter("Mese");
             String anno = request.getParameter("Anno");
-            String data = anno + "/" + mese + "/" + giorno;
+            //String data = anno + "/" + mese + "/" + giorno;
             String mail = request.getParameter("Mail");
             String password = request.getParameter("Password");
-
+            
+            int anno1 = Integer.parseInt(anno)-1900;
+            int mese1 = Integer.parseInt(mese)-1;
+            int giorno1 = Integer.parseInt(giorno);
+            Date data = new Date(anno1, mese1, giorno1);
+            
+            
+          
+           
+            
+            
             //CREO L'HASH DELLA PASSWORD E L'HASH PER L'ID UTENTE
             String hashPassword;
             InputStream is = new ByteArrayInputStream(password.getBytes());
@@ -166,6 +177,8 @@ public class RegisterFilter implements Filter {
             user.setId_utente(hashUtente);
             user.setCredito(0);
             user.setRuolo(0);
+            user.setPassword(password);
+            user.setDataNascita(data);
             
             session.setAttribute("utente", user);
             

@@ -11,6 +11,7 @@ import beans.Genere;
 import beans.Utente;
 import java.io.Serializable;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -45,23 +46,19 @@ public class DBManager implements Serializable {
     
     //inserimento utente nell database
     public void inserisciUtente (Utente user) throws SQLException{
-   //PreparedStatement stm = con.prepareStatement("INSERT INTO myCinema.Utente (id_utente, email, password, nome, cognome, dataNascita) VALUES (?,?,?,?,?,?);");
-        String id_utente=null,  password=null, nome=null,  cognome=null,  email=null,  data=null;
+  
+        String id_utente=user.getId_utente();  
+        String password = user.getPassword();
+        String nome = user.getNome();
+        String cognome = user.getCognome();
+        String email = user.getEmail();
+        Date data = user.getDataNascita();
+       
     String test = "INSERT INTO myCinema.Utente (id_utente, email, password, nome, cognome, dataNascita) VALUES (\""+id_utente+"\",\""+email+"\",\""+password+"\",\""+nome+"\",\""+cognome+"\",\""+data+"\");";
             Statement stm = con.createStatement();
             
             stm.executeUpdate(test);
     
-    
-    
-            /*
-            stm.setString(1, "\""+id_utente+"\"");
-            stm.setString(2, "\""+email+"\"");
-            stm.setString(3, "\""+password+"\"");
-            stm.setString(4, "\""+nome+"\"");
-            stm.setString(5, "\""+cognome+"\"");
-            stm.setString(6, "\""+data+"\"");
-        */  
     
     
     
