@@ -105,9 +105,9 @@ public class DBManager implements Serializable {
     
     public Utente chekpassword (String email, String password) throws SQLException{
         
-        PreparedStatement stm = con.prepareStatement("SELECT FROM myCinema.Utente WHERE email=?;");
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Utente WHERE email=?;");
         stm.setString(1,email);
-        Utente user = new Utente();
+        Utente user = null;
         
         
        
@@ -117,7 +117,7 @@ public class DBManager implements Serializable {
             try {
 
                 while (rs.next()) {
-                   
+                    user = new Utente();
                     user.setNome(rs.getString(Util.Utente.COLUMN_NOME));
                     user.setCognome(rs.getString(Util.Utente.COLUMN_COGNOME));
                     user.setEmail(rs.getString(Util.Utente.COLUMN_EMAIL));
@@ -132,11 +132,11 @@ public class DBManager implements Serializable {
         } finally {
             stm.close();
         }
-
-       if (user.getPassword().equals(password)){
-           return user;
-       } else return null;
-       
+        if(user!=null){
+            if (user.getPassword().equals(password)){
+                return user;
+            } else return null;
+        } else return null;
         
         
         

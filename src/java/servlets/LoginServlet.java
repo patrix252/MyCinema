@@ -106,9 +106,16 @@ public class LoginServlet extends HttpServlet {
             //BASSO DI ERRORE NELL'IMMISSIONE DEL LOGIN E DELLA PASSWORD
 
             //CREARE NUOVO COOKIE CON L'ID UTENTE PRESO DAL DATABASE E PASSARLO AL CLIENT
-            
-            
-            
+            Utente USER= new Utente();
+            try {
+                USER=manager.chekpassword(mail,hashPassword);
+            } catch (SQLException ex) {
+                Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (USER==null){
+                String a = "a";
+                //Password o email errate
+            }
             view = request.getRequestDispatcher("loggato.jsp");
             view.forward(request, response);
         }
