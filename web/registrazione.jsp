@@ -48,7 +48,7 @@
             <select id="monthdropdown" name="Mese"></select> 
             <select id="yeardropdown" name="Anno"></select> 
             <label style="display: block;">Mail:</label><input id="mail" name="Mail" size="10"/><br>
-            <label style="display: block;">Password:</label><input type="text" id="password" name="Password" size="10"/><br>
+            <label style="display: block;">Password:</label><input type="password" id="password" name="Password" size="10"/><br>
             <input type="submit" value="Submit"/>
         </form>
         <script type="text/javascript">

@@ -5,6 +5,7 @@
  */
 package filters;
 
+import beans.Utente;
 import db.DBManager;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -158,8 +159,18 @@ public class RegisterFilter implements Filter {
             is = new ByteArrayInputStream(supporto.getBytes());
             hashUtente = calcolaHash(is);
 
+            Utente user = new Utente();
+            user.setNome(nome);
+            user.setCognome(cognome);
+            user.setEmail(mail);
+            user.setId_utente(hashUtente);
+            user.setCredito(0);
+            user.setRuolo(0);
+            
+            session.setAttribute("utente", user);
+            
             try {
-                manager.inserisciUtente(hashUtente, password, nome, cognome, mail, data);
+                manager.inserisciUtente(user);
             } catch (SQLException ex) {
                 session.setAttribute("EmailErrata", true);
                 controllore = true;
