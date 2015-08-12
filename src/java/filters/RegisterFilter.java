@@ -188,7 +188,7 @@ public class RegisterFilter implements Filter {
                 session.setAttribute("EmailErrata", true);
                 controllore = true;
             }
-
+        
             if (controllore == false) {
                 session.setAttribute("utente", nome);
 
