@@ -44,7 +44,7 @@ public class DBManager implements Serializable {
         
     }
     
-    //inserimento utente nell database
+    //inserimento utente nell database FINITA
     public void inserisciUtente (Utente user) throws SQLException{
   
         String id_utente=user.getId_utente();  
@@ -66,7 +66,7 @@ public class DBManager implements Serializable {
     
     
 
-//passato l'id utente restituire il bean corrispondente
+//passato l'id utente restituire il bean corrispondente FINITA
     public Utente trovanome(String id_utente) throws SQLException {
 
         PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Utente WHERE id_utente= ?;");
@@ -85,7 +85,7 @@ public class DBManager implements Serializable {
                     user.setCognome(rs.getString(Util.Utente.COLUMN_COGNOME));
                     user.setEmail(rs.getString(Util.Utente.COLUMN_EMAIL));
                     user.setPassword(rs.getString(Util.Utente.COLUMN_PASSWORD));
-                   // user.setDataNascita(rs.getDate(Util.Utente.COLUMN_DATA_NASCITA));
+                    user.setDataNascita(rs.getDate(Util.Utente.COLUMN_DATA_NASCITA));
                     user.setCredito(rs.getDouble(Util.Utente.COLUMN_CREDITO));
                     user.setRuolo(rs.getInt(Util.Utente.COLUMN_ID_RUOLO));
                 }
@@ -97,6 +97,53 @@ public class DBManager implements Serializable {
         }
 
         return user;
+    }
+   
+    
+    
+//chekpassword 
+    
+    public Utente chekpassword (String email, String password) throws SQLException{
+        
+        PreparedStatement stm = con.prepareStatement("SELECT FROM myCinema.Utente WHERE email=?;");
+        stm.setString(1,email);
+        Utente user = new Utente();
+        
+        
+       
+
+        try {
+            ResultSet rs = stm.executeQuery();
+            try {
+
+                while (rs.next()) {
+                   
+                    user.setNome(rs.getString(Util.Utente.COLUMN_NOME));
+                    user.setCognome(rs.getString(Util.Utente.COLUMN_COGNOME));
+                    user.setEmail(rs.getString(Util.Utente.COLUMN_EMAIL));
+                    user.setPassword(rs.getString(Util.Utente.COLUMN_PASSWORD));
+                    user.setDataNascita(rs.getDate(Util.Utente.COLUMN_DATA_NASCITA));
+                    user.setCredito(rs.getDouble(Util.Utente.COLUMN_CREDITO));
+                    user.setRuolo(rs.getInt(Util.Utente.COLUMN_ID_RUOLO));
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+
+       if (user.getPassword().equals(password)){
+           return user;
+       } else return null;
+       
+        
+        
+        
+        
+    
+    
+    
     }
     
         

@@ -177,7 +177,7 @@ public class RegisterFilter implements Filter {
             user.setId_utente(hashUtente);
             user.setCredito(0);
             user.setRuolo(0);
-            user.setPassword(password);
+            user.setPassword(hashPassword);
             user.setDataNascita(data);
             
             session.setAttribute("utente", user);
@@ -188,7 +188,7 @@ public class RegisterFilter implements Filter {
                 session.setAttribute("EmailErrata", true);
                 controllore = true;
             }
-
+        
             if (controllore == false) {
                 session.setAttribute("utente", nome);
 

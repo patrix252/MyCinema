@@ -86,6 +86,9 @@ public class LoginServlet extends HttpServlet {
             //BASSO DI ERRORE NELL'IMMISSIONE DEL LOGIN E DELLA PASSWORD
 
             //CREARE NUOVO COOKIE CON L'ID UTENTE PRESO DAL DATABASE E PASSARLO AL CLIENT
+            
+            
+            
             view = request.getRequestDispatcher("loggato.jsp");
             view.forward(request, response);
         }
