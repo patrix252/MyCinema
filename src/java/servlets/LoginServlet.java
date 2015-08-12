@@ -5,12 +5,17 @@
  */
 package servlets;
 
+import beans.Utente;
+import db.DBManager;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -29,6 +34,13 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
 public class LoginServlet extends HttpServlet {
 
+            private DBManager manager;
+    
+    @Override
+    public void init() throws ServletException {
+        this.manager = (DBManager) super.getServletContext().getAttribute("dbmanager");
+    }
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -68,10 +80,18 @@ public class LoginServlet extends HttpServlet {
                 }
             }
             if (idUtente != null) {
-                //CONTROLLARE NEL DATABASE SE ESISTE QUELL' idUtente E IN CASO PRENDERE I VARI DATI
-                session.setAttribute("utente", idUtente);
-                view = request.getRequestDispatcher("loggato.jsp");
-                view.forward(request, response);
+                boolean controllo = false;
+                Utente user = null;
+                try {
+                    user = manager.trovanome(idUtente);
+                } catch (SQLException ex) {
+                    controllo=true;
+                }
+                if(controllo==false){
+                    session.setAttribute("utente", idUtente);
+                    view = request.getRequestDispatcher("loggato.jsp");
+                    view.forward(request, response);
+                }
             }
         }
 //SE NON CI SONO COOKIE ARRIVA QUI, E O ARRIVA DALLA FORM E I VALORI MAIL E PASSWORD NON SONO NULLI
