@@ -13,9 +13,9 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Benvenuto <c:out value="${sessionScope.utente}"/>!</h1>
+        <h1>Benvenuto <c:out value="${sessionScope.utente.getNome()}"/>!</h1>
         <script>
-            setTimeout(function(){ window.location.replace("index.html"); }, 1500);
+            setTimeout(function(){ window.location.replace("index.jsp"); }, 1500);
         </script>
     </body>
 </html>
