@@ -40,7 +40,7 @@
     </head>
     <body>
         <div>TODO write content</div>
-        <form action="registrazione.jsp" method="POST">
+        <form name="modulo" id="modulo" onSubmit="return controllo();" action="registrazione.jsp" method="POST">
             <label style="display: block;">Nome:</label><input id="nome" name="Nome" size="10"/><br>
             <label style="display: block;">Cognome:</label><input id="cognome" name="Cognome" size="10"/><br>
             <label style="display: block;">Data di Nascita:</label>
@@ -55,6 +55,32 @@
             window.onload = function () {
                 populatedropdown("daydropdown", "monthdropdown", "yeardropdown");
             };
+            
+            function controllo() {
+                with (document.modulo) {
+                    if (nome.value == "") {
+                        alert("Errore: compilare il campo NOME");
+                        nome.focus();
+                        return false;
+                    }
+                    if (cognome.value == "") {
+                        alert("Errore: compilare il campo COGNOME");
+                        cognome.focus();
+                        return false;
+                    }
+                    if (mail.value == "") {
+                        alert("Errore: compilare il campo MAIL");
+                        cognome.focus();
+                        return false;
+                    }
+                    if (password.value == "") {
+                        alert("Errore: compilare il campo PASSWORD");
+                        cognome.focus();
+                        return false;
+                    }
+                }
+                return true;
+            }
         </script>
         <c:if test="${sessionScope.EmailErrata==true}">
             <FONT COLOR="#FF0000">Email non valida, reinserisci i dati</FONT>

@@ -79,7 +79,7 @@ public class Util {
         public static final String COLUMN_EMAIL = "email";
         public static final String COLUMN_PASSWORD = "password";
         public static final String COLUMN_CREDITO = "credito";
-        public static final String COLUMN_ID_RUOLO = "ruolo";
+        public static final String COLUMN_ID_RUOLO = "id_ruolo";
         public static final String COLUMN_NOME = "nome";
         public static final String COLUMN_COGNOME = "cognome";
         public static final String COLUMN_DATA_NASCITA = "dataNascita";
