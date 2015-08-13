@@ -20,6 +20,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import util.Classi;
 
 public class DBManager implements Serializable {
     
@@ -160,17 +161,50 @@ public class DBManager implements Serializable {
    
     //film di oggi con anche le informazioni dello spettacolo
     
-    public List<List<Film>> getFilmstoday() {
-       
-       
-        
-        
-        
-        
-        
-        
-        
-        return null;
+    public List<Classi.FilmSpettacolo> getFilmstoday() throws SQLException {
+        //query che riporta tutti i dati 
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Spettacolo, myCinema.Film, myCinema.Genere WHERE data = CURDATE() AND Film.id_film = Spettacolo.id_film AND Film.id_genere = Genere.id_genere;");
+
+        List<Classi.FilmSpettacolo> films = new ArrayList<>();
+
+        try {
+            ResultSet rs = stm.executeQuery();
+            try {
+
+                while (rs.next()) {
+                    Classi.FilmSpettacolo h = new Classi.FilmSpettacolo();
+                    Genere g = new Genere();
+                    g.setId_genere(rs.getInt(Util.Genere.COLUMN_ID_GENERE));
+                    g.setDescrizione(rs.getString(Util.Genere.COLUMN_DESCRIZIONE));
+
+                    h.f.setId_film(rs.getInt(Util.Film.COLUMN_ID_FILM));
+                    h.f.setDurata(rs.getInt(Util.Film.COLUMN_DURATA));
+                    h.f.setGenere(g);
+                    h.f.setIs3D(rs.getInt(Util.Film.COLUMN_IS3D));
+                    h.f.setRegista(rs.getString(Util.Film.COLUMN_REGISTA));
+                    h.f.setTitolo(rs.getString(Util.Film.COLUMN_TITOLO));
+                    h.f.setTrama(rs.getString(Util.Film.COLUMN_TRAMA));
+                    h.f.setUri_locandina(rs.getString(Util.Film.COLUMN_URI_LOCANDINA));
+                    h.f.setUrl_trailer(rs.getString(Util.Film.COLUMN_URL_TRAILER));
+
+                    h.s.setId_film(rs.getInt(Util.Spettacolo.COLUMN_ID_FILM));
+                    h.s.setId_sala(rs.getInt(Util.Spettacolo.COLUMN_ID_SALA));
+                    h.s.setId_spettacolo(rs.getInt(Util.Spettacolo.COLUMN_ID_SPETTACOLO));
+                    //data
+                    h.s.setData(rs.getDate(Util.Spettacolo.COLUMN_DATA));
+                    h.s.setOra(rs.getTime(Util.Spettacolo.COLUMN_ORA));
+
+                    films.add(h);
+
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+
+        return films;
     }
     
     
@@ -193,7 +227,7 @@ public class DBManager implements Serializable {
                     g.setId_genere(rs.getInt(Util.Genere.COLUMN_ID_GENERE));
                     g.setDescrizione(rs.getString(Util.Genere.COLUMN_DESCRIZIONE));
                     Film f = new Film();
-//                     id_film, titolo, id_genere, url_trailer, durata, trama, uri_locandina, regista
+//                    id_film, titolo, id_genere, url_trailer, durata, trama, uri_locandina, regista
                     f.setId_film(rs.getInt(Util.Film.COLUMN_ID_FILM));
                     f.setTitolo(rs.getString(Util.Film.COLUMN_TITOLO));
                     f.setGenere(g);

@@ -14,6 +14,7 @@
     </head>
     <body>
         <h1>Hello World!</h1>
+        
         <table id="table" class="table table-hover table-mc-light-blue">
             <tr>
                 <td><h4>Titolo</h4></td>

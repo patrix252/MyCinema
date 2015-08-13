@@ -118,7 +118,7 @@ public class RequestQueryFilter implements Filter {
             test.f.setTrama("Na manega de froci!");
             test.f.setUri_locandina("http://vignette4.wikia.nocookie.net/nonciclopedia/images/1/1b/Harry_Potter_femminile_e_seducente.jpg/revision/latest?cb=20111006172227");
             test.f.setUrl_trailer("https://www.youtube.com/watch?v=Eg-0FdrOK-w");
-            test.g.setDescrizione("porno");
+            
             test.s.setId_sala(2);
             test.s.setOra(new Time(21, 30, 00));
             

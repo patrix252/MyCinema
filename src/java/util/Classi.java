@@ -15,8 +15,8 @@ import beans.Spettacolo;
  */
 public class Classi {
     public static class FilmSpettacolo {
-        public Film f;
-        public Spettacolo s;
-        public Genere g;
+        public Film f = new Film() ;
+        public Spettacolo s = new Spettacolo();
+        
     }
 }
