@@ -118,6 +118,7 @@ public class DBManager implements Serializable {
 
                 while (rs.next()) {
                     user = new Utente();
+                    user.setId_utente(rs.getString(Util.Utente.COLUMN_ID_UTENTE));
                     user.setNome(rs.getString(Util.Utente.COLUMN_NOME));
                     user.setCognome(rs.getString(Util.Utente.COLUMN_COGNOME));
                     user.setEmail(rs.getString(Util.Utente.COLUMN_EMAIL));

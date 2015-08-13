@@ -192,6 +192,7 @@ public class RegisterFilter implements Filter {
             if (controllore == false) {
                 session.setAttribute("utente", nome);
 
+                //AGGIUNGERE IL TEMPO DI VITA DEL COOKIE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 Cookie cookie = new Cookie("idUtente", hashUtente);
                 ((HttpServletResponse) response).addCookie(cookie);
 

@@ -88,7 +88,7 @@ public class LoginServlet extends HttpServlet {
                     controllo=true;
                 }
                 if(controllo==false){
-                    session.setAttribute("utente", idUtente);
+                    session.setAttribute("utente", user);
                     view = request.getRequestDispatcher("loggato.jsp");
                     view.forward(request, response);
                 }
@@ -101,25 +101,24 @@ public class LoginServlet extends HttpServlet {
         if (mail != null && password != null) {
             InputStream is = new ByteArrayInputStream(password.getBytes());
             String hashPassword = calcolaHash(is);
-                //CERCARE NEL DATABASE L'UTENTE CON LA MAIL PARI A mail E CONTROLLARE SE LA PASSWORD CORRISPONDE ALL'HASH
-            //APPENA CREATO. IN CASO POSITIVO LOGGARLO ALTRIMENTI RIMANDARLO ALLA PAGINA DI LOGIN CON L'ERRORE ROSSO IN
-            //BASSO DI ERRORE NELL'IMMISSIONE DEL LOGIN E DELLA PASSWORD
-
-            //CREARE NUOVO COOKIE CON L'ID UTENTE PRESO DAL DATABASE E PASSARLO AL CLIENT
-            Utente USER= new Utente();
+            Utente user= new Utente();
             try {
-                USER=manager.chekpassword(mail,hashPassword);
+                user=manager.chekpassword(mail,hashPassword);
             } catch (SQLException ex) {
                 Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            if (USER==null){
-                String a = "a";
-                //Password o email errate
+            if (user==null){
+                session.setAttribute("loginError", true);
+            } else {
+                session.setAttribute("utente", user);
+                //AGGIUNGERE IL TEMPO DI VITA DEL COOKIE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                Cookie biscotto = new Cookie("idUtente", user.getId_utente());
+                ((HttpServletResponse) response).addCookie(biscotto);
+                view = request.getRequestDispatcher("loggato.jsp");
+                view.forward(request, response);
             }
-            view = request.getRequestDispatcher("loggato.jsp");
-            view.forward(request, response);
         }
-        view = request.getRequestDispatcher("login.html");
+        view = request.getRequestDispatcher("login.jsp");
         view.forward(request, response);
     }
 
