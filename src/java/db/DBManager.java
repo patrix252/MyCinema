@@ -80,7 +80,6 @@ public class DBManager implements Serializable {
             try {
 
                 while (rs.next()) {
-                   
                     user.setId_utente(rs.getString(Util.Utente.COLUMN_ID_UTENTE));
                     user.setNome(rs.getString(Util.Utente.COLUMN_NOME));
                     user.setCognome(rs.getString(Util.Utente.COLUMN_COGNOME));
@@ -102,7 +101,7 @@ public class DBManager implements Serializable {
    
     
     
-//chekpassword 
+//chekpassword ritorna null se mail errata o password errata FINITA
     
     public Utente chekpassword (String email, String password) throws SQLException{
         
@@ -148,6 +147,14 @@ public class DBManager implements Serializable {
     
     }
     
+    
+    
+    public void eliminautente (Utente user) throws SQLException{
+        String id = user.getId_utente();
+        PreparedStatement stm = con.prepareStatement("DELETE  FROM myCinema.Utente WHERE id_utente=?;");
+        stm.setString(1, id);
+        stm.executeUpdate();
+    }
         
   
    
