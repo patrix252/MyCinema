@@ -148,7 +148,7 @@ public class DBManager implements Serializable {
     }
     
     
-    
+    //da testare
     public void eliminautente (Utente user) throws SQLException{
         String id = user.getId_utente();
         PreparedStatement stm = con.prepareStatement("DELETE  FROM myCinema.Utente WHERE id_utente=?;");
@@ -158,10 +158,23 @@ public class DBManager implements Serializable {
         
   
    
-
+    //film di oggi con anche le informazioni dello spettacolo
+    
+    public List<List<Film>> getFilmstoday() {
+       
+       
+        
+        
+        
+        
+        
+        
+        
+        return null;
+    }
     
     
-    //
+    
     public List<Film> getFilmsAll() throws SQLException {
         List<Film> films = new ArrayList<Film>();
         
