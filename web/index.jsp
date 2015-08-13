@@ -17,7 +17,7 @@
         <c:if test="${sessionScope.utente.getId_utente()!=null}">
             Benvenuto <c:out value="${sessionScope.utente.getNome()}"/><br>
         </c:if>
-        <a href="DatabaseTest"> - Database Test</a><br>
+        <a href="oggialcinema.jsp"> - Oggi al cinema</a><br>
         <c:if test="${sessionScope.utente.getId_utente()==null}">
             <a href="registrazione.jsp"> - Registrazione Test</a><br>
             <a href="LoginServlet"> - Login Test</a>
