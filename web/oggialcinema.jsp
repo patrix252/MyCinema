@@ -23,14 +23,14 @@
                 <td><h4>Regista</h4></td>
                 <td><h4>Trama</h4></td>
             </tr>
-            <c:forEach items="${sessionScope.todos}" var="mona">
+            <c:forEach items="${sessionScope.filmsOggi}" var="films">
                 <tr>
-                    <td><c:out value="${mona.todoid}"/></td>
-                    <td><c:out value="${mona.tododate}"/></td>
-                    <td><c:out value="${mona.todotime}"/></td>
-                    <td><c:out value="${mona.description}"/></td>
-                    <td><c:out value="${mona.location}"/></td>
-                    <td><a href="todolist.jsp">Go to To Do List!</a></td>
+                    <td><c:out value="${films.f.getTitolo()}"/></td>
+                    <td><c:out value="${films.f.getGenere().getDescrizione()}"/></td>
+                    <td><c:out value="${films.s.getOra()}"/></td>
+                    <td><c:out value="${films.s.getId_sala()}"/></td>
+                    <td><c:out value="${films.f.getRegista()}"/></td>
+                    <td><c:out value="${films.f.getTrama()}"/></td>
                 </tr>
             </c:forEach>
         </table>
