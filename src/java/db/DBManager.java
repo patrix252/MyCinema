@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import util.Classi;
+import util.Classi.FilmSpettacolo;
 
 public class DBManager implements Serializable {
     
@@ -161,11 +162,12 @@ public class DBManager implements Serializable {
    
     //film di oggi con anche le informazioni dello spettacolo
     
-    public List<Classi.FilmSpettacolo> getFilmstoday() throws SQLException {
+    public List<FilmSpettacolo> getFilmstoday() throws SQLException {
         //query che riporta tutti i dati 
+        List<FilmSpettacolo> films = new ArrayList<>();
         PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Spettacolo, myCinema.Film, myCinema.Genere WHERE data = CURDATE() AND Film.id_film = Spettacolo.id_film AND Film.id_genere = Genere.id_genere;");
 
-        List<Classi.FilmSpettacolo> films = new ArrayList<>();
+        
 
         try {
             ResultSet rs = stm.executeQuery();

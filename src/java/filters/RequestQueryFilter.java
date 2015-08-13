@@ -8,12 +8,17 @@ package filters;
 import beans.Film;
 import beans.Genere;
 import beans.Spettacolo;
+import db.DBManager;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.sql.SQLException;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -21,6 +26,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import util.Classi.*;
 
 /**
@@ -28,7 +34,7 @@ import util.Classi.*;
  * @author Paolo
  */
 public class RequestQueryFilter implements Filter {
-    
+    private DBManager manager;
     private static final boolean debug = true;
 
     // The filter configuration object we are associated with.  If
@@ -104,23 +110,30 @@ public class RequestQueryFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
+          try {
+                manager = new DBManager("jdbc:mysql://46.101.19.71/myCinema", "user", "asdd");
+            } catch (SQLException ex) {
+                Logger.getLogger(RegisterFilter.class.getName()).log(Level.SEVERE, null, ex);
+            }
+          
+        HttpSession session = ((HttpServletRequest) request).getSession();
         
         String url = ((HttpServletRequest)request).getRequestURI();
         if("/MyCinema/oggialcinema.jsp".equals(url)){
             //CHIAMARE QUERY PER PRENDERE FILM DI OGGI
-            List<FilmSpettacolo> films;
-
-            FilmSpettacolo test = new FilmSpettacolo();
-            test.f.setTitolo("Harry Fotter e i froci di Arcazban");
-            test.f.setDurata(87);
-            test.f.setIs3D(0);
-            test.f.setRegista("Paolo Brosio");
-            test.f.setTrama("Na manega de froci!");
-            test.f.setUri_locandina("http://vignette4.wikia.nocookie.net/nonciclopedia/images/1/1b/Harry_Potter_femminile_e_seducente.jpg/revision/latest?cb=20111006172227");
-            test.f.setUrl_trailer("https://www.youtube.com/watch?v=Eg-0FdrOK-w");
+            List<FilmSpettacolo> films=null;
+            try {
+                films=manager.getFilmstoday();
+            } catch (SQLException ex) {
+                Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
-            test.s.setId_sala(2);
-            test.s.setOra(new Time(21, 30, 00));
+            
+            
+
+           
+            
+            session.setAttribute("filmsOggi", films);
             
         }
         
