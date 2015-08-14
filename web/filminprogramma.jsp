@@ -30,7 +30,7 @@
             </tr>
             <c:forEach items="${sessionScope.filmInProgramma}" var="film">
                 <tr> 
-                    <td><c:out value="${film.f.titolo}"/></td>
+                    <td><a href="descrizionefilm.jsp?titolo=${film.f.titolo}"><c:out value="${film.f.titolo}"/></a></td>
                     <td><c:out value="${film.f.genere.descrizione}"/></td>
                     <td><c:out value="${film.s.ora}"/></td>
                     <td><c:out value="${film.s.id_sala}"/></td>
