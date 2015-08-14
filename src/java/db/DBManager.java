@@ -300,7 +300,7 @@ public class DBManager implements Serializable {
             stm.close();
         }
 
-        return null;
+        return list;
     }
 
     

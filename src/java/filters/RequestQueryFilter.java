@@ -141,7 +141,7 @@ public class RequestQueryFilter implements Filter {
             }
 
             session.setAttribute("filmInProgramma", films);
-        } else if ("MyCinema/prenotazione.jsp".equals(url)){
+        } else if ("/MyCinema/prenotazione.jsp".equals(url)){
             List <Spettacolo> spett = null;
             int i =Integer.parseInt (request.getParameter("id"));
             try {

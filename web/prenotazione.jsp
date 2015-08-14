@@ -22,6 +22,22 @@
                 <td><h4>Ora</h4></td>
                 
             </tr>
+            
+            <c:forEach items="${sessionScope.orariPrenotazione}" var="orari">
+                
+            <tr>
+               <td> <c:out value="${orari.data}"/> </td>
+               <td> <c:out value="${orari.ora}"/> </td>
+               
+               
+               <td></td>
+                
+                
+                
+            </tr>
+                
+            </c:forEach>    
+               
         
         
     </body>
