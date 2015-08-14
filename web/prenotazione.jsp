@@ -4,6 +4,12 @@
     Author     : Francesco
 --%>
 
+<%@page import="java.sql.Date"%>
+<%@page import="java.util.Set"%>
+<%@page import="java.util.HashSet"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page import="beans.Spettacolo"%>
 <%@taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -23,25 +29,56 @@
             </tr>
         </table>
         <form id="prenota" name="prenota">
+            <%
+                //Questo passaggio serve per eliminare le date duplicate, tanto per la medesima data vengono
+                //prese tutte le ore nella funzione in javascript
+                List<Spettacolo> temp = (ArrayList<Spettacolo>)(session.getAttribute("orariPrenotazione"));
+                Set<Date> insieme = new HashSet<>();
+
+                for (int i = 0; i < (int) ((ArrayList) (session.getAttribute("orariPrenotazione"))).size(); i++) {
+                    insieme.add(temp.get(i).getData());
+                }
+                session.setAttribute("orari", insieme);
+            %>
             <select name="data" id="data" onchange="cambia(this)">
                 <c:set var="dataScelta" value="null"/>
-                <c:forEach items="${sessionScope.orariPrenotazione}" var="orari">
-                    <option value="${orari.data}"><c:out value="${orari.data}"/></option>
-                </c:forEach> 
+                <c:forEach items="${sessionScope.orari}" var="orari">
+                    <option value="${orari}"><c:out value="${orari}"/></option>
+                </c:forEach>
             </select>
             <select name="ora" id="ora">
             </select>
         </form>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>        
+        <%
+            StringBuffer values = new StringBuffer();
+            for (int i = 0; i < (int) ((ArrayList) (session.getAttribute("orariPrenotazione"))).size(); ++i) {
+                if (values.length() > 0) {
+                    values.append(',');
+                }
+                values.append('"').append(((Spettacolo) ((ArrayList) (session.getAttribute("orariPrenotazione"))).get(i)).getData()).append('"');
+            }
+            StringBuffer values1 = new StringBuffer();
+            for (int i = 0; i < (int) ((ArrayList) (session.getAttribute("orariPrenotazione"))).size(); ++i) {
+                if (values1.length() > 0) {
+                    values1.append(',');
+                }
+                values1.append('"').append(((Spettacolo) ((ArrayList) (session.getAttribute("orariPrenotazione"))).get(i)).getOra()).append('"');
+            }
+        %> 
         <script>
-            var orari = '<%= session.getAttribute("orariPrenotazione") %>';
-            function cambia(sel){
-                var value = sel.value;
-                for(i=0; i<orari.length(); i++){
-                    if(orari[i].getData()==value){
-                        $("#ora").append("<option>Mona!<option>");
-                    } 
-                } 
-            }   
+                var date = [<%= values.toString()%>];
+                var orari = [<%= values1.toString()%>];
+                var i = 0;
+                function cambia(sel) {
+                    var value = sel.value;
+                    $("#ora").empty();
+                    for (i = 0; i < date.length; i++) {
+                        if (date[i] == value) {
+                            $("#ora").append("<option>" + orari[i] + "<option>");
+                        }
+                    }
+                }
         </script>
     </body>
 </html>
