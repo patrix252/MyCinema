@@ -23,6 +23,7 @@
                 <td><h4>Sala</h4></td>
                 <td><h4>Regista</h4></td>
                 <td><h4>Durata</h4></td>
+                <td><h4>Data</h4></td>
                 <td><h4>Trama</h4></td>
                 <td><h4>3D</h4></td>
                 <td><h4>Trailer</h4></td>
@@ -30,12 +31,13 @@
             </tr>
             <c:forEach items="${sessionScope.filmInProgramma}" var="film">
                 <tr> 
-                    <td><a href="descrizionefilm.jsp?titolo=${film.f.titolo}"><c:out value="${film.f.titolo}"/></a></td>
+                    <td><a href="descrizionefilm.jsp?id=${film.f.id_film}&provenienza=filmInProgramma"><c:out value="${film.f.titolo}"/></a></td>
                     <td><c:out value="${film.f.genere.descrizione}"/></td>
                     <td><c:out value="${film.s.ora}"/></td>
                     <td><c:out value="${film.s.id_sala}"/></td>
                     <td><c:out value="${film.f.regista}"/></td>
-                    <td><c:out value="${film.f.durata}"/></td>  
+                    <td><c:out value="${film.f.durata}"/></td>
+                    <td><c:out value="${film.s.data}"/></td>  
                     <td><c:out value="${film.f.trama}"/></td>  
                     <td><c:choose><c:when test="${film.f.is3D==0}">No</c:when><c:otherwise>Sì</c:otherwise></c:choose></td>
                     <td><a href="${film.f.url_trailer}">Trailer</a></td>
