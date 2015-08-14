@@ -9,6 +9,7 @@ import beans.Film;
 import beans.Genere;
 import beans.Spettacolo;
 import db.DBManager;
+import java.lang.Object;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
