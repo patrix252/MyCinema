@@ -160,6 +160,62 @@ public class DBManager implements Serializable {
     }
         
   
+    
+    //prende tutti i film con info dello spettacolo
+    
+    public List<FilmSpettacolo> getFilmsAll() throws SQLException {
+        //query che riporta tutti i dati 
+        List<FilmSpettacolo> films = new ArrayList<>();
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Spettacolo, myCinema.Film, myCinema.Genere WHERE Film.id_film = Spettacolo.id_film AND Film.id_genere = Genere.id_genere;");
+
+        
+
+        try {
+            ResultSet rs = stm.executeQuery();
+            try {
+
+                while (rs.next()) {
+                    Classi.FilmSpettacolo h = new Classi.FilmSpettacolo();
+                    Film f = new Film();
+                    Spettacolo s = new Spettacolo();
+                    Genere g = new Genere();
+                    g.setId_genere(rs.getInt(Util.Genere.COLUMN_ID_GENERE));
+                    g.setDescrizione(rs.getString(Util.Genere.COLUMN_DESCRIZIONE));
+
+                    f.setId_film(rs.getInt(Util.Film.COLUMN_ID_FILM));
+                    f.setDurata(rs.getInt(Util.Film.COLUMN_DURATA));
+                    f.setGenere(g);
+                    f.setIs3D(rs.getInt(Util.Film.COLUMN_IS3D));
+                    f.setRegista(rs.getString(Util.Film.COLUMN_REGISTA));
+                    f.setTitolo(rs.getString(Util.Film.COLUMN_TITOLO));
+                    f.setTrama(rs.getString(Util.Film.COLUMN_TRAMA));
+                    f.setUri_locandina(rs.getString(Util.Film.COLUMN_URI_LOCANDINA));
+                    f.setUrl_trailer(rs.getString(Util.Film.COLUMN_URL_TRAILER));
+
+                    s.setId_film(rs.getInt(Util.Spettacolo.COLUMN_ID_FILM));
+                    s.setId_sala(rs.getInt(Util.Spettacolo.COLUMN_ID_SALA));
+                    s.setId_spettacolo(rs.getInt(Util.Spettacolo.COLUMN_ID_SPETTACOLO));
+                    //data
+                    s.setData(rs.getDate(Util.Spettacolo.COLUMN_DATA));
+                    s.setOra(rs.getTime(Util.Spettacolo.COLUMN_ORA));
+                    h.setF(f);
+                    h.setS(s);
+                    films.add(h);
+
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+
+        return films;
+    }
+    
+    
+    
+    
    
     //film di oggi con anche le informazioni dello spettacolo
     
@@ -215,45 +271,7 @@ public class DBManager implements Serializable {
     
     
     
-    public List<FilmSpettacolo> getFilmsAll() throws SQLException {
-        List<FilmSpettacolo> films = new ArrayList<>();
-        
-        //RICORDARSI IL ';' ALLA FINE DELLA QUERY
-        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Film INNER JOIN myCinema.Genere WHERE Film.id_genere=Genere.id_genere;");
-        
-        Logger.getLogger(DBManager.class.getName()).info("Query: " + stm.toString());
-        
-        
-        try {
-            ResultSet rs = stm.executeQuery();
-            try {
-                
-                while(rs.next()) {
-                    Genere g = new Genere();
-                    g.setId_genere(rs.getInt(Util.Genere.COLUMN_ID_GENERE));
-                    g.setDescrizione(rs.getString(Util.Genere.COLUMN_DESCRIZIONE));
-                    Film f = new Film();
-//                    id_film, titolo, id_genere, url_trailer, durata, trama, uri_locandina, regista
-                    f.setId_film(rs.getInt(Util.Film.COLUMN_ID_FILM));
-                    f.setTitolo(rs.getString(Util.Film.COLUMN_TITOLO));
-                    f.setGenere(g);
-                    f.setUrl_trailer(rs.getString(Util.Film.COLUMN_URL_TRAILER));
-                    f.setDurata(rs.getInt(Util.Film.COLUMN_DURATA));
-                    f.setTrama(rs.getString(Util.Film.COLUMN_TRAMA));
-                    f.setUri_locandina(rs.getString(Util.Film.COLUMN_URI_LOCANDINA));
-                    f.setRegista(rs.getString(Util.Film.COLUMN_REGISTA));
-                //Fra devi modificarlo l'ho fatto solo per farlo andare  
-                //    films.add(f);
-                }
-            } finally {
-                rs.close();
-            }
-        } finally {
-            stm.close();
-        }
-        
-        return films;
-    }
+   
     
     
     

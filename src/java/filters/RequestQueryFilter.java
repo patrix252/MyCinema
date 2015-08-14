@@ -27,7 +27,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import util.Classi.*;
+import util.Classi.FilmSpettacolo;
 
 /**
  *
@@ -129,6 +129,7 @@ public class RequestQueryFilter implements Filter {
                 Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
             }
 
+
             session.setAttribute("filmsOggi", films);
 
         } else if("/MyCinema/filminprogramma.jsp".equals(url)){
@@ -139,7 +140,7 @@ public class RequestQueryFilter implements Filter {
                 Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            session.setAttribute("filmsOggi", films);
+            session.setAttribute("filmInProgramma", films);
         }
 
         if (debug) {
