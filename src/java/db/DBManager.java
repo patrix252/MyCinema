@@ -8,6 +8,7 @@ package db;
 import util.Util;
 import beans.Film;
 import beans.Genere;
+import beans.Spettacolo;
 import beans.Utente;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -175,27 +176,30 @@ public class DBManager implements Serializable {
 
                 while (rs.next()) {
                     Classi.FilmSpettacolo h = new Classi.FilmSpettacolo();
+                    Film f = new Film();
+                    Spettacolo s = new Spettacolo();
                     Genere g = new Genere();
                     g.setId_genere(rs.getInt(Util.Genere.COLUMN_ID_GENERE));
                     g.setDescrizione(rs.getString(Util.Genere.COLUMN_DESCRIZIONE));
 
-                    h.f.setId_film(rs.getInt(Util.Film.COLUMN_ID_FILM));
-                    h.f.setDurata(rs.getInt(Util.Film.COLUMN_DURATA));
-                    h.f.setGenere(g);
-                    h.f.setIs3D(rs.getInt(Util.Film.COLUMN_IS3D));
-                    h.f.setRegista(rs.getString(Util.Film.COLUMN_REGISTA));
-                    h.f.setTitolo(rs.getString(Util.Film.COLUMN_TITOLO));
-                    h.f.setTrama(rs.getString(Util.Film.COLUMN_TRAMA));
-                    h.f.setUri_locandina(rs.getString(Util.Film.COLUMN_URI_LOCANDINA));
-                    h.f.setUrl_trailer(rs.getString(Util.Film.COLUMN_URL_TRAILER));
+                    f.setId_film(rs.getInt(Util.Film.COLUMN_ID_FILM));
+                    f.setDurata(rs.getInt(Util.Film.COLUMN_DURATA));
+                    f.setGenere(g);
+                    f.setIs3D(rs.getInt(Util.Film.COLUMN_IS3D));
+                    f.setRegista(rs.getString(Util.Film.COLUMN_REGISTA));
+                    f.setTitolo(rs.getString(Util.Film.COLUMN_TITOLO));
+                    f.setTrama(rs.getString(Util.Film.COLUMN_TRAMA));
+                    f.setUri_locandina(rs.getString(Util.Film.COLUMN_URI_LOCANDINA));
+                    f.setUrl_trailer(rs.getString(Util.Film.COLUMN_URL_TRAILER));
 
-                    h.s.setId_film(rs.getInt(Util.Spettacolo.COLUMN_ID_FILM));
-                    h.s.setId_sala(rs.getInt(Util.Spettacolo.COLUMN_ID_SALA));
-                    h.s.setId_spettacolo(rs.getInt(Util.Spettacolo.COLUMN_ID_SPETTACOLO));
+                    s.setId_film(rs.getInt(Util.Spettacolo.COLUMN_ID_FILM));
+                    s.setId_sala(rs.getInt(Util.Spettacolo.COLUMN_ID_SALA));
+                    s.setId_spettacolo(rs.getInt(Util.Spettacolo.COLUMN_ID_SPETTACOLO));
                     //data
-                    h.s.setData(rs.getDate(Util.Spettacolo.COLUMN_DATA));
-                    h.s.setOra(rs.getTime(Util.Spettacolo.COLUMN_ORA));
-
+                    s.setData(rs.getDate(Util.Spettacolo.COLUMN_DATA));
+                    s.setOra(rs.getTime(Util.Spettacolo.COLUMN_ORA));
+                    h.setF(f);
+                    h.setS(s);
                     films.add(h);
 
                 }

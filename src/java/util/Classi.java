@@ -6,17 +6,33 @@
 package util;
 
 import beans.Film;
-import beans.Genere;
 import beans.Spettacolo;
+import java.io.Serializable;
 
 /**
  *
  * @author Paolo
  */
 public class Classi {
-    public static class FilmSpettacolo {
-        public Film f = new Film() ;
-        public Spettacolo s = new Spettacolo();
+    public static class FilmSpettacolo{
+        private Film f;
+        private Spettacolo s;
+
+        public Film getF() {
+            return f;
+        }
+
+        public void setF(Film f) {
+            this.f = f;
+        }
+
+        public Spettacolo getS() {
+            return s;
+        }
+
+        public void setS(Spettacolo s) {
+            this.s = s;
+        }
         
     }
 }

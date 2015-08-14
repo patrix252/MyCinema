@@ -13,25 +13,33 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Oggi al cinema!</h1>
         
-        <table id="table" class="table table-hover table-mc-light-blue">
+        <table  style="width:100%">
             <tr>
                 <td><h4>Titolo</h4></td>
                 <td><h4>Genere</h4></td>
                 <td><h4>Ora</h4></td>
                 <td><h4>Sala</h4></td>
                 <td><h4>Regista</h4></td>
+                <td><h4>Durata</h4></td>
                 <td><h4>Trama</h4></td>
+                <td><h4>3D</h4></td>
+                <td><h4>Trailer</h4></td>
+                <td><h4>Locandina</h4></td>
             </tr>
-            <c:forEach items="${sessionScope.filmsOggi}" var="films">
-                <tr>
-                    <td><c:out value="${films.f.getTitolo()}"/></td>
-                    <td><c:out value="${films.f.getGenere().getDescrizione()}"/></td>
-                    <td><c:out value="${films.s.getOra()}"/></td>
-                    <td><c:out value="${films.s.getId_sala()}"/></td>
-                    <td><c:out value="${films.f.getRegista()}"/></td>
-                    <td><c:out value="${films.f.getTrama()}"/></td>
+            <c:forEach items="${sessionScope.filmsOggi}" var="film">
+                <tr> 
+                    <td><c:out value="${film.f.titolo}"/></td>
+                    <td><c:out value="${film.f.genere.descrizione}"/></td>
+                    <td><c:out value="${film.s.ora}"/></td>
+                    <td><c:out value="${film.s.id_sala}"/></td>
+                    <td><c:out value="${film.f.regista}"/></td>
+                    <td><c:out value="${film.f.durata}"/></td>  
+                    <td><c:out value="${film.f.trama}"/></td>  
+                    <td><c:choose><c:when test="${film.f.is3D==0}">No</c:when><c:otherwise>Sì</c:otherwise></c:choose></td>
+                    <td><a href="${film.f.url_trailer}">Trailer</a></td>
+                    <td><img src="${film.f.uri_locandina}" style="width:200px;height:280px;"/></td>
                 </tr>
             </c:forEach>
         </table>
