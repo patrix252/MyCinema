@@ -16,29 +16,32 @@
     </head>
     <body>
         <h1>Titolo film : <c:out value="${param.titolo}" /></h1>
-          <table  style="width:100%">
+        <table  style="width:100%">
             <tr>
                 <td><h4>Data</h4></td>
                 <td><h4>Ora</h4></td>
-                
             </tr>
-            
-            <c:forEach items="${sessionScope.orariPrenotazione}" var="orari">
-                
-            <tr>
-               <td> <c:out value="${orari.data}"/> </td>
-               <td> <c:out value="${orari.ora}"/> </td>
-               
-               
-               <td></td>
-                
-                
-                
-            </tr>
-                
-            </c:forEach>    
-               
-        
-        
+        </table>
+        <form id="prenota" name="prenota">
+            <select name="data" id="data" onchange="cambia(this)">
+                <c:set var="dataScelta" value="null"/>
+                <c:forEach items="${sessionScope.orariPrenotazione}" var="orari">
+                    <option value="${orari.data}"><c:out value="${orari.data}"/></option>
+                </c:forEach> 
+            </select>
+            <select name="ora" id="ora">
+            </select>
+        </form>
+        <script>
+            var orari = '<%= session.getAttribute("orariPrenotazione") %>';
+            function cambia(sel){
+                var value = sel.value;
+                for(i=0; i<orari.length(); i++){
+                    if(orari[i].getData()==value){
+                        $("#ora").append("<option>Mona!<option>");
+                    } 
+                } 
+            }   
+        </script>
     </body>
 </html>
