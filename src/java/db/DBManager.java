@@ -161,7 +161,7 @@ public class DBManager implements Serializable {
         
   
     
-    //prende tutti i film con info dello spettacolo
+    //prende tutti i film con info dello spettacolo FINITA
     
     public List<FilmSpettacolo> getFilmsAll() throws SQLException {
         //query che riporta tutti i dati 
@@ -217,7 +217,7 @@ public class DBManager implements Serializable {
     
     
    
-    //film di oggi con anche le informazioni dello spettacolo
+    //film di oggi con anche le informazioni dello spettacolo FINITA
     
     public List<FilmSpettacolo> getFilmstoday() throws SQLException {
         //query che riporta tutti i dati 
@@ -272,7 +272,37 @@ public class DBManager implements Serializable {
     
     
    
+  //dato l'id del film ritorna tutti gli orari (spettacoli) da testare 
     
+    public List<Spettacolo> getSpettacoli (int id_film) throws SQLException{
+        List <Spettacolo> list = new ArrayList<>();
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Spettacolo WHERE id_film=?;");
+        stm.setInt(1, id_film);
+
+        try {
+            ResultSet rs = stm.executeQuery();
+            try {
+
+                while (rs.next()) {
+                    Spettacolo s = new Spettacolo();
+                    s.setId_film(id_film);
+                    s.setId_sala(rs.getInt(Util.Spettacolo.COLUMN_ID_SALA));
+                    s.setId_spettacolo(rs.getInt(Util.Spettacolo.COLUMN_ID_SPETTACOLO));
+                    s.setData(rs.getDate(Util.Spettacolo.COLUMN_DATA));
+                    s.setOra(rs.getTime(Util.Spettacolo.COLUMN_ORA));
+                    list.add(s);
+                }
+            } finally {
+                rs.close();
+            }
+
+        } finally {
+            stm.close();
+        }
+
+        return null;
+    }
+
     
     
     
@@ -319,12 +349,12 @@ public class DBManager implements Serializable {
     
     
     //ritorna i num_recenti  fimls piu recenti
-    public List<Film> getFilmsCarosello(int num_recenti) throws SQLException{
+    public List<Film> getFilmsCarosello() throws SQLException{
         List<Film> films = new ArrayList<Film>();
         
-        //da controllare... necessario anche sapere da data odierna?? minkiaboh!
-        PreparedStatement stm = con.prepareStatement("SELECT  * FROM myCinema.Film INNER JOIN myCinema.Spettacolo INNER JOIN myCinema.Genere ORDER BY data ASC, ora ASC LIMIT  5 ;");
-        stm.setString(1,Integer.toString(num_recenti));
+        //INSERITI FILM CON DATA MAGGIORE DI OGGI AL MASSIMO 5 
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Film, myCinema.Genere, myCinema.Spettacolo WHERE Film.id_genere = Genere.id_genere AND Film.id_film = Spettacolo.id_film AND data > CURDATE() LIMIT 5;");
+        
         try {
             ResultSet rs = stm.executeQuery();
             try {

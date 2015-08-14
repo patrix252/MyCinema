@@ -48,7 +48,7 @@ public class DatabaseTest extends HttpServlet {
         List<Film> films;
         
         try {
-            films = manager.getFilmsCarosello(1);
+            films = manager.getFilmsCarosello();
         } catch (SQLException ex) {
             throw new ServletException(ex);
         }
