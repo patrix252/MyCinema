@@ -215,8 +215,8 @@ public class DBManager implements Serializable {
     
     
     
-    public List<Film> getFilmsAll() throws SQLException {
-        List<Film> films = new ArrayList<Film>();
+    public List<FilmSpettacolo> getFilmsAll() throws SQLException {
+        List<FilmSpettacolo> films = new ArrayList<>();
         
         //RICORDARSI IL ';' ALLA FINE DELLA QUERY
         PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Film INNER JOIN myCinema.Genere WHERE Film.id_genere=Genere.id_genere;");
@@ -242,8 +242,8 @@ public class DBManager implements Serializable {
                     f.setTrama(rs.getString(Util.Film.COLUMN_TRAMA));
                     f.setUri_locandina(rs.getString(Util.Film.COLUMN_URI_LOCANDINA));
                     f.setRegista(rs.getString(Util.Film.COLUMN_REGISTA));
-                    
-                    films.add(f);
+                //Fra devi modificarlo l'ho fatto solo per farlo andare  
+                //    films.add(f);
                 }
             } finally {
                 rs.close();

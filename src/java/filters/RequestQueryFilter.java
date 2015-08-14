@@ -131,6 +131,15 @@ public class RequestQueryFilter implements Filter {
 
             session.setAttribute("filmsOggi", films);
 
+        } else if("/MyCinema/filminprogramma.jsp".equals(url)){
+            List<FilmSpettacolo> films = null;
+            try {
+                films = manager.getFilmsAll();
+            } catch (SQLException ex) {
+                Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            session.setAttribute("filmsOggi", films);
         }
 
         if (debug) {
