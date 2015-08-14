@@ -1,6 +1,6 @@
 <%-- 
-    Document   : oggialcinema
-    Created on : 13-ago-2015, 15.11.19
+    Document   : filminprogramma
+    Created on : 14-ago-2015, 10.14.10
     Author     : Paolo
 --%>
 
@@ -28,7 +28,7 @@
                 <td><h4>Trailer</h4></td>
                 <td><h4>Locandina</h4></td>
             </tr>
-            <c:forEach items="${sessionScope.filmsOggi}" var="film">
+            <c:forEach items="${sessionScope.filmInProgramma}" var="film">
                 <tr> 
                     <td><c:out value="${film.f.titolo}"/></td>
                     <td><c:out value="${film.f.genere.descrizione}"/></td>
