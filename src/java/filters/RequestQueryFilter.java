@@ -9,6 +9,7 @@ import beans.Film;
 import beans.Genere;
 import beans.Spettacolo;
 import db.DBManager;
+import java.lang.Object;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -141,7 +142,7 @@ public class RequestQueryFilter implements Filter {
             }
 
             session.setAttribute("filmInProgramma", films);
-        } else if ("MyCinema/prenotazione.jsp".equals(url)){
+        } else if ("/MyCinema/prenotazione.jsp".equals(url)){
             List <Spettacolo> spett = null;
             int i =Integer.parseInt (request.getParameter("id"));
             try {
