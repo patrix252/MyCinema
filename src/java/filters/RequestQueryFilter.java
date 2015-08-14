@@ -27,7 +27,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import util.Classi.*;
+import util.Classi.FilmSpettacolo;
 
 /**
  *
@@ -122,12 +122,14 @@ public class RequestQueryFilter implements Filter {
         if("/MyCinema/oggialcinema.jsp".equals(url)){
             //CHIAMARE QUERY PER PRENDERE FILM DI OGGI
             List<FilmSpettacolo> films=null;
+            
+           
             try {
                 films=manager.getFilmstoday();
             } catch (SQLException ex) {
                 Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+           
             
             
 

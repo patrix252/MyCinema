@@ -174,7 +174,7 @@ public class DBManager implements Serializable {
             try {
 
                 while (rs.next()) {
-                    Classi.FilmSpettacolo h = new Classi.FilmSpettacolo();
+                    FilmSpettacolo h = new FilmSpettacolo();
                     Genere g = new Genere();
                     g.setId_genere(rs.getInt(Util.Genere.COLUMN_ID_GENERE));
                     g.setDescrizione(rs.getString(Util.Genere.COLUMN_DESCRIZIONE));

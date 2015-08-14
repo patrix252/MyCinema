@@ -24,16 +24,19 @@
                 <td><h4>Regista</h4></td>
                 <td><h4>Trama</h4></td>
             </tr>
-            <c:forEach items="${sessionScope.filmsOggi}" var="films">
+             <c:forEach items="${sessionScope.filmsOggi}" var="films"> 
                 <tr>
-                    <td><c:out value="${films.f.getTitolo()}"/></td>
-                    <td><c:out value="${films.f.getGenere().getDescrizione()}"/></td>
-                    <td><c:out value="${films.s.getOra()}"/></td>
-                    <td><c:out value="${films.s.getId_sala()}"/></td>
-                    <td><c:out value="${films.f.getRegista()}"/></td>
-                    <td><c:out value="${films.f.getTrama()}"/></td>
-                </tr>
-            </c:forEach>
+                    <td><c:out value="${util.Classi.films.f.getTitolo()}"/></td>
+                    <td><c:out value="${util.Classi.films.f.getGenere().getDescrizione()}"/></td>
+                    <td><c:out value="${util.Classi.films.s.getOra()}"/></td>
+                    <td><c:out value="${util.Classi.films.s.getId_sala()}"/></td>
+                    <td><c:out value="${util.Classi.films.f.getRegista()}"/></td>
+                    <td><c:out value="${util.Classi.films.f.getTrama()}"/></td>
+                    
+                  
+                   
+                </tr> 
+                  </c:forEach> 
         </table>
     </body>
 </html>

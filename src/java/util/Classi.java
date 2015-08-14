@@ -13,10 +13,11 @@ import beans.Spettacolo;
  *
  * @author Paolo
  */
-public class Classi {
+public class Classi{
     public static class FilmSpettacolo {
         public Film f = new Film() ;
         public Spettacolo s = new Spettacolo();
         
     }
 }
+
