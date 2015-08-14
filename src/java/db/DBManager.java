@@ -272,11 +272,11 @@ public class DBManager implements Serializable {
     
     
    
-  //dato l'id del film ritorna tutti gli orari (spettacoli) da testare 
+  //dato l'id del film ritorna tutti gli orari (spettacoli) ordinati per data e ora
     
     public List<Spettacolo> getSpettacoli (int id_film) throws SQLException{
         List <Spettacolo> list = new ArrayList<>();
-        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Spettacolo WHERE id_film=?;");
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Spettacolo WHERE id_film=? ORDER BY data,ora ;");
         stm.setInt(1, id_film);
 
         try {

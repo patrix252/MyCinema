@@ -16,29 +16,36 @@
     </head>
     <body>
         <h1>Titolo film : <c:out value="${param.titolo}" /></h1>
-          <table  style="width:100%">
+        <table  style="width:100%">
             <tr>
                 <td><h4>Data</h4></td>
                 <td><h4>Ora</h4></td>
-                
+
             </tr>
-            
+
             <c:forEach items="${sessionScope.orariPrenotazione}" var="orari">
-                
-            <tr>
-               <td> <c:out value="${orari.data}"/> </td>
-               <td> <c:out value="${orari.ora}"/> </td>
-               
-               
-               <td></td>
-                
-                
-                
-            </tr>
-                
-            </c:forEach>    
-               
-        
-        
+                <tr>
+                    <td><c:out value="${orari.data}"/> </td>  
+                    <td><c:out value="${orari.ora}"/> </td>      
+
+
+
+                </tr>    
+            </c:forEach>       
+
+
+
+
+        </table>    
+
+
+
+
+
+
+
+
+
+
     </body>
 </html>
