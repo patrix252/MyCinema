@@ -4,9 +4,9 @@
     Author     : Francesco
 --%>
 
+<%@page import="java.util.LinkedHashSet"%>
 <%@page import="java.sql.Date"%>
 <%@page import="java.util.Set"%>
-<%@page import="java.util.HashSet"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="beans.Spettacolo"%>
@@ -33,9 +33,14 @@
                 //Questo passaggio serve per eliminare le date duplicate, tanto per la medesima data vengono
                 //prese tutte le ore nella funzione in javascript
                 List<Spettacolo> temp = (ArrayList<Spettacolo>)(session.getAttribute("orariPrenotazione"));
-                Set<Date> insieme = new HashSet<>();
-
+                
+                //Uso un LinkedHashSet per non avere date ripetute ma per mantenere l'ordine di inserimento
+                //Visto che nella mia ArrayList le ho già ordinate
+                Set<Date> insieme = new LinkedHashSet<>();
                 for (int i = 0; i < (int) ((ArrayList) (session.getAttribute("orariPrenotazione"))).size(); i++) {
+                    if (i==0){
+                        session.setAttribute("primaData", temp.get(i).getData());
+                    }
                     insieme.add(temp.get(i).getData());
                 }
                 session.setAttribute("orari", insieme);
@@ -75,7 +80,7 @@
                     $("#ora").empty();
                     for (i = 0; i < date.length; i++) {
                         if (date[i] == value) {
-                            $("#ora").append("<option>" + orari[i] + "<option>");
+                            $("#ora").append("<option>" + orari[i] + "</option>");
                         }
                     }
                 }
