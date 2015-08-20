@@ -17,6 +17,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" type="text/css" href="mystyle.css">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Prenotazione</title>
         <%
@@ -57,27 +58,29 @@
             var orari = [<%= values1.toString()%>];
             var i = 0;
             function cambia(sel) {
-                document.getElementById("ora").removeAttribute("hidden"); 
+                document.getElementById("ora").removeAttribute("hidden");
                 var value = sel.value;
                 $("#ora").empty();
+                $("#ora").append("<option disabled selected> -- Seleziona un'ora -- </option>");
                 for (i = 0; i < date.length; i++) {
                     if (date[i] == value) {
                         $("#ora").append("<option>" + orari[i] + "</option>");
                     }
                 }
             }
-        </script> 
+
+        </script>
+        
     </head>
     <body>
         <h1>Titolo film : <c:out value="${param.titolo}" /></h1>
-        <table  style="width:100%">
+        <table style="width:26%">
             <tr>
                 <td><h4>Data</h4></td>
                 <td><h4>Ora</h4></td>
             </tr>
         </table>
         <form id="prenota" name="prenota">
-
             <select name="data" id="data" onchange="cambia(this)">
                 <option disabled selected> -- Seleziona una data -- </option>
                 <c:set var="dataScelta" value="null"/>
@@ -86,7 +89,17 @@
                 </c:forEach>
             </select>
             <select name="ora" id="ora" hidden>
-            </select>
-        </form>       
+            </select>   
+         </form>
+                
+                
+                
+        <%--         
+            Per fare la mappa dei posti studiarsi il codice di sti 2 siti qua
+            https://github.com/mateuszmarkowski/jQuery-Seat-Charts
+            http://www.goocode.net/js/73-jquery-election-seat-reservations-online-theater-piece.html
+        --%>
+        
+        
     </body>
 </html>
