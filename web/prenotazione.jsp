@@ -19,41 +19,22 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Prenotazione</title>
-    </head>
-    <body>
-        <h1>Titolo film : <c:out value="${param.titolo}" /></h1>
-        <table  style="width:100%">
-            <tr>
-                <td><h4>Data</h4></td>
-                <td><h4>Ora</h4></td>
-            </tr>
-        </table>
-        <form id="prenota" name="prenota">
-            <%
-                //Questo passaggio serve per eliminare le date duplicate, tanto per la medesima data vengono
-                //prese tutte le ore nella funzione in javascript
-                List<Spettacolo> temp = (ArrayList<Spettacolo>)(session.getAttribute("orariPrenotazione"));
-                
-                //Uso un LinkedHashSet per non avere date ripetute ma per mantenere l'ordine di inserimento
-                //Visto che nella mia ArrayList le ho già ordinate
-                Set<Date> insieme = new LinkedHashSet<>();
-                for (int i = 0; i < (int) ((ArrayList) (session.getAttribute("orariPrenotazione"))).size(); i++) {
-                    if (i==0){
-                        session.setAttribute("primaData", temp.get(i).getData());
-                    }
-                    insieme.add(temp.get(i).getData());
+        <%
+            //Questo passaggio serve per eliminare le date duplicate, tanto per la medesima data vengono
+            //prese tutte le ore nella funzione in javascript
+            List<Spettacolo> temp = (ArrayList<Spettacolo>) (session.getAttribute("orariPrenotazione"));
+
+            //Uso un LinkedHashSet per non avere date ripetute ma per mantenere l'ordine di inserimento
+            //Visto che nella mia ArrayList le ho già ordinate
+            Set<Date> insieme = new LinkedHashSet<>();
+            for (int i = 0; i < (int) ((ArrayList) (session.getAttribute("orariPrenotazione"))).size(); i++) {
+                if (i == 0) {
+                    session.setAttribute("primaData", temp.get(i).getData());
                 }
-                session.setAttribute("orari", insieme);
-            %>
-            <select name="data" id="data" onchange="cambia(this)">
-                <c:set var="dataScelta" value="null"/>
-                <c:forEach items="${sessionScope.orari}" var="orari">
-                    <option value="${orari}"><c:out value="${orari}"/></option>
-                </c:forEach>
-            </select>
-            <select name="ora" id="ora">
-            </select>
-        </form>
+                insieme.add(temp.get(i).getData());
+            }
+            session.setAttribute("orari", insieme);
+        %>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>        
         <%
             StringBuffer values = new StringBuffer();
@@ -70,20 +51,42 @@
                 }
                 values1.append('"').append(((Spettacolo) ((ArrayList) (session.getAttribute("orariPrenotazione"))).get(i)).getOra()).append('"');
             }
-        %> 
+        %>
         <script>
-                var date = [<%= values.toString()%>];
-                var orari = [<%= values1.toString()%>];
-                var i = 0;
-                function cambia(sel) {
-                    var value = sel.value;
-                    $("#ora").empty();
-                    for (i = 0; i < date.length; i++) {
-                        if (date[i] == value) {
-                            $("#ora").append("<option>" + orari[i] + "</option>");
-                        }
+            var date = [<%= values.toString()%>];
+            var orari = [<%= values1.toString()%>];
+            var i = 0;
+            function cambia(sel) {
+                document.getElementById("ora").removeAttribute("hidden"); 
+                var value = sel.value;
+                $("#ora").empty();
+                for (i = 0; i < date.length; i++) {
+                    if (date[i] == value) {
+                        $("#ora").append("<option>" + orari[i] + "</option>");
                     }
                 }
-        </script>
+            }
+        </script> 
+    </head>
+    <body>
+        <h1>Titolo film : <c:out value="${param.titolo}" /></h1>
+        <table  style="width:100%">
+            <tr>
+                <td><h4>Data</h4></td>
+                <td><h4>Ora</h4></td>
+            </tr>
+        </table>
+        <form id="prenota" name="prenota">
+
+            <select name="data" id="data" onchange="cambia(this)">
+                <option disabled selected> -- Seleziona una data -- </option>
+                <c:set var="dataScelta" value="null"/>
+                <c:forEach items="${sessionScope.orari}" var="orari">
+                    <option value="${orari}"><c:out value="${orari}"/></option>
+                </c:forEach>
+            </select>
+            <select name="ora" id="ora" hidden>
+            </select>
+        </form>       
     </body>
 </html>
