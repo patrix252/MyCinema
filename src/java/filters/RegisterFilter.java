@@ -142,11 +142,9 @@ public class RegisterFilter implements Filter {
 
             String nome = request.getParameter("Nome");
             String cognome = request.getParameter("Cognome");
-            //POSSIBILMENTE USARE IL TIPO DATE
             String giorno = request.getParameter("Giorno");
             String mese = request.getParameter("Mese");
             String anno = request.getParameter("Anno");
-            //String data = anno + "/" + mese + "/" + giorno;
             String mail = request.getParameter("Mail");
             String password = request.getParameter("Password");
             
@@ -190,7 +188,6 @@ public class RegisterFilter implements Filter {
             }
         
             if (controllore == false) {
-                session.setAttribute("utente", nome);
 
                 //AGGIUNGERE IL TEMPO DI VITA DEL COOKIE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 Cookie cookie = new Cookie("idUtente", hashUtente);
