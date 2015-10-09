@@ -19,6 +19,9 @@
         </c:if>
         <a href="oggialcinema.jsp"> - Oggi al cinema</a><br>
         <a href="filminprogramma.jsp"> - Tutti i film in programma</a><br>
+        <c:if test="${sessionScope.utente.getId_utente()!=null}">
+            <a href="logout.jsp"> - Log Out</a><br>
+        </c:if>
         <c:if test="${sessionScope.utente.getId_utente()==null}">
             <a href="registrazione.jsp"> - Registrazione Test</a><br>
             <a href="LoginServlet"> - Login Test</a>
