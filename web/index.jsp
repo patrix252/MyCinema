@@ -14,15 +14,15 @@
     </head>
     <body>
         <h1>Index Page</h1><br>
-        <c:if test="${sessionScope.utente.getId_utente()!=null}">
+        <c:if test="${sessionScope.utente.getEmail()!=null}">
             Benvenuto <c:out value="${sessionScope.utente.getNome()}"/><br>
         </c:if>
         <a href="oggialcinema.jsp"> - Oggi al cinema</a><br>
         <a href="filminprogramma.jsp"> - Tutti i film in programma</a><br>
-        <c:if test="${sessionScope.utente.getId_utente()!=null}">
+        <c:if test="${sessionScope.utente.getEmail()!=null}">
             <a href="logout.jsp"> - Log Out</a><br>
         </c:if>
-        <c:if test="${sessionScope.utente.getId_utente()==null}">
+        <c:if test="${sessionScope.utente.getEmail()==null}">
             <a href="registrazione.jsp"> - Registrazione Test</a><br>
             <a href="LoginServlet"> - Login Test</a>
         </c:if>

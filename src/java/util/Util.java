@@ -55,11 +55,12 @@ public class Util {
     
     public static class Prenotazione {
         public static final String COLUMN_ID_PRENOTAZIONE = "id_prenotazione";
-        public static final String COLUMN_ID_UTENTE = "id_utente";
+        public static final String COLUMN_EMAIL = "email";
         public static final String COLUMN_ID_SPETTACOLO = "id_spettacolo";
         public static final String COLUMN_ID_PREZZO = "id_prezzo";
         public static final String COLUMN_ID_POSTO = "id_posto";
-        
+        public static final String COLUMN_DATA = "data";
+        public static final String COLUMN_ORA = "ora";
     }
     
     public static class Ruolo {
@@ -74,7 +75,6 @@ public class Util {
     }
     
     public static class Utente {
-        public static final String COLUMN_ID_UTENTE = "id_utente";
         public static final String COLUMN_EMAIL = "email";
         public static final String COLUMN_PASSWORD = "password";
         public static final String COLUMN_CREDITO = "credito";
