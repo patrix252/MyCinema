@@ -59,8 +59,7 @@ public class Util {
         public static final String COLUMN_ID_SPETTACOLO = "id_spettacolo";
         public static final String COLUMN_ID_PREZZO = "id_prezzo";
         public static final String COLUMN_ID_POSTO = "id_posto";
-        public static final String COLUMN_DATA = "data";
-        public static final String COLUMN_ORA = "ora";
+        
     }
     
     public static class Ruolo {

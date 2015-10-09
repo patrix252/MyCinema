@@ -19,9 +19,7 @@ public class Prenotazione {
     private int id_spettacolo;
     private int id_prezzo;
     private int id_posto;
-    
-    private Date data;
-    private Time ora;
+
 
     /**
      * @return the id_prenotazione
@@ -93,36 +91,7 @@ public class Prenotazione {
         this.id_posto = id_posto;
     }
 
-    /**
-     * @return the data
-     */
-    public Date getData() {
-        return data;
-    }
-
-    /**
-     * @param data the data to set
-     */
-    public void setData(Date data) {
-        this.data = data;
-    }
-
-    /**
-     * @return the ora
-     */
-    public Time getOra() {
-        return ora;
-    }
-
-    /**
-     * @param ora the ora to set
-     */
-    public void setOra(Time ora) {
-        this.ora = ora;
-    }
-
-  
-    
+     
     
     
 }
