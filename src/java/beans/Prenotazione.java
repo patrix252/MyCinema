@@ -15,7 +15,7 @@ import java.sql.Timestamp;
  */
 public class Prenotazione {
     private int id_prenotazione;
-    private String id_utente;
+    private String email;
     private int id_spettacolo;
     private int id_prezzo;
     private int id_posto;
@@ -40,15 +40,15 @@ public class Prenotazione {
     /**
      * @return the id_utente
      */
-    public String getId_utente() {
-        return id_utente;
+    public String getEmail() {
+        return email;
     }
 
     /**
      * @param id_utente the id_utente to set
      */
-    public void setId_utente(String id_utente) {
-        this.id_utente = id_utente;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     /**

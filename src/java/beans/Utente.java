@@ -12,7 +12,6 @@ import java.sql.Date;
  * @author Francesco
  */
 public class Utente {
-    private String id_utente;
     private String nome;
     private String cognome;
     private String email;
@@ -21,19 +20,6 @@ public class Utente {
     private Date dataNascita;
     private int ruolo;
 
-    /**
-     * @return the id_utente
-     */
-    public String getId_utente() {
-        return id_utente;
-    }
-
-    /**
-     * @param id_utente the id_utente to set
-     */
-    public void setId_utente(String id_utente) {
-        this.id_utente = id_utente;
-    }
 
     /**
      * @return the nome
