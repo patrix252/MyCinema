@@ -51,13 +51,14 @@ public class DBManager implements Serializable {
     //inserimento utente nell database FINITA
     public void inserisciUtente (Utente user) throws SQLException{
   
+        String id_utente=user.getId_utente();  
         String password = user.getPassword();
         String nome = user.getNome();
         String cognome = user.getCognome();
         String email = user.getEmail();
         Date data = user.getDataNascita();
        
-    String test = "INSERT INTO myCinema.Utente (email, password, nome, cognome, dataNascita) VALUES (\""+email+"\",\""+password+"\",\""+nome+"\",\""+cognome+"\",\""+data+"\");";
+    String test = "INSERT INTO myCinema.Utente (id_utente, email, password, nome, cognome, dataNascita) VALUES (\""+id_utente+"\",\""+email+"\",\""+password+"\",\""+nome+"\",\""+cognome+"\",\""+data+"\");";
             Statement stm = con.createStatement();
             
             stm.executeUpdate(test);
@@ -70,10 +71,10 @@ public class DBManager implements Serializable {
     
 
 //passato l'id utente restituire il bean corrispondente FINITA
-    public Utente trovanome(String email) throws SQLException {
+    public Utente trovanome(String id_utente) throws SQLException {
 
-        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Utente WHERE email= ?;");
-        stm.setString(1, email);
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Utente WHERE id_utente= ?;");
+        stm.setString(1, id_utente);
         Logger.getLogger(DBManager.class.getName()).info("Query: " + stm.toString());
          Utente user = new Utente();
        
@@ -83,6 +84,7 @@ public class DBManager implements Serializable {
             try {
 
                 while (rs.next()) {
+                    user.setId_utente(rs.getString(Util.Utente.COLUMN_ID_UTENTE));
                     user.setNome(rs.getString(Util.Utente.COLUMN_NOME));
                     user.setCognome(rs.getString(Util.Utente.COLUMN_COGNOME));
                     user.setEmail(rs.getString(Util.Utente.COLUMN_EMAIL));
@@ -120,6 +122,7 @@ public class DBManager implements Serializable {
 
                 while (rs.next()) {
                     user = new Utente();
+                    user.setId_utente(rs.getString(Util.Utente.COLUMN_ID_UTENTE));
                     user.setNome(rs.getString(Util.Utente.COLUMN_NOME));
                     user.setCognome(rs.getString(Util.Utente.COLUMN_COGNOME));
                     user.setEmail(rs.getString(Util.Utente.COLUMN_EMAIL));
@@ -151,8 +154,8 @@ public class DBManager implements Serializable {
     
     //da testare
     public void eliminautente (Utente user) throws SQLException{
-        String id = user.getEmail();
-        PreparedStatement stm = con.prepareStatement("DELETE  FROM myCinema.Utente WHERE email=?;");
+        String id = user.getId_utente();
+        PreparedStatement stm = con.prepareStatement("DELETE  FROM myCinema.Utente WHERE id_utente=?;");
         stm.setString(1, id);
         stm.executeUpdate();
     }

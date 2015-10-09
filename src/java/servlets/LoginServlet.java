@@ -112,7 +112,7 @@ public class LoginServlet extends HttpServlet {
             } else {
                 session.setAttribute("utente", user);
                 //AGGIUNGERE IL TEMPO DI VITA DEL COOKIE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                Cookie biscotto = new Cookie("idUtente", user.getEmail());
+                Cookie biscotto = new Cookie("idUtente", user.getId_utente());
                 ((HttpServletResponse) response).addCookie(biscotto);
                 view = request.getRequestDispatcher("loggato.jsp");
                 view.forward(request, response);

@@ -164,10 +164,16 @@ public class RegisterFilter implements Filter {
             InputStream is = new ByteArrayInputStream(password.getBytes());
             hashPassword = calcolaHash(is);
 
+            String hashUtente;
+            String supporto = nome + cognome + data + mail + password;
+            is = new ByteArrayInputStream(supporto.getBytes());
+            hashUtente = calcolaHash(is);
+
             Utente user = new Utente();
             user.setNome(nome);
             user.setCognome(cognome);
             user.setEmail(mail);
+            user.setId_utente(hashUtente);
             user.setCredito(0);
             user.setRuolo(0);
             user.setPassword(hashPassword);
@@ -185,7 +191,7 @@ public class RegisterFilter implements Filter {
             if (controllore == false) {
 
                 //AGGIUNGERE IL TEMPO DI VITA DEL COOKIE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                Cookie cookie = new Cookie("idUtente", mail);
+                Cookie cookie = new Cookie("idUtente", hashUtente);
                 ((HttpServletResponse) response).addCookie(cookie);
 
                 view = request.getRequestDispatcher("loggato.jsp");
