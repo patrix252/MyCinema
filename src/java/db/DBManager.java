@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.logging.Logger;
 import util.Classi;
 import util.Classi.FilmSpettacolo;
+import util.Util.Posto;
 
 public class DBManager implements Serializable {
     
@@ -383,7 +384,27 @@ public class DBManager implements Serializable {
         return films;
          
     }
+    /*
+    Prendi da prenotazioni tutti gli id posti dato l'id spettacolo 
+    */
+   
+    public List<Posto> getPostiOccupati (Spettacolo s) throws SQLException{
+        List<Posto> posti = new ArrayList<Posto>();
+        PreparedStatement stm = con.prepareStatement("");
+        
+        
+        
+        return null;
+        
     
+    }
+    
+    
+    
+        
+                
+        
+      
     
     
     
