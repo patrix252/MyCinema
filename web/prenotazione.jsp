@@ -73,7 +73,7 @@
                     <option value="${orari}"><c:out value="${orari}"/></option>
                 </c:forEach>
             </select>
-            <select name="ora" id="ora" hidden>
+                <select name="ora" id="ora" onchange="mappa()" hidden>
             </select>   
          </form>
                 
@@ -98,7 +98,7 @@
             
 			var firstSeatLabel = 1;
 		
-			$(document).ready(function() {
+			function mappa() {
 				var $cart = $('#selected-seats'),
 					$counter = $('#counter'),
 					$total = $('#total'),
@@ -188,7 +188,7 @@
 				//let's pretend some seats have already been booked
 				sc.get(['1_2', '4_1', '7_1', '7_2']).status('unavailable');
 		
-		});
+		}
 
 		function recalculateTotal(sc) {
 			var total = 0;
