@@ -5,9 +5,12 @@
  */
 
 import beans.Film;
+import beans.Posto;
+import beans.Spettacolo;
 import db.DBManager;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.rmi.ServerException;
 import java.sql.SQLException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -53,6 +56,19 @@ public class DatabaseTest extends HttpServlet {
             throw new ServletException(ex);
         }
         
+        
+        
+        List<Posto> posti;
+        Spettacolo s= new Spettacolo();
+        s.setId_spettacolo(2);
+        try {
+            posti = manager.getPostiOccupati(s);
+        } catch (SQLException ex){
+            throw new ServletException(ex);
+        }
+        
+        
+        
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             out.println("<!DOCTYPE html>");
@@ -86,10 +102,35 @@ public class DatabaseTest extends HttpServlet {
                 out.println("</tr>");
             }
             out.println("</table>");
+            
+            
+            out.println("<table>");
+            out.println("<tr>");
+            out.println("<th> Idposto </th>");
+            out.println("<th> Idsala </th>");
+            out.println("<th> Esiste </th>");
+            out.println("<th> Riga </th>");
+            out.println("<th> Colonna </th>");
+            for (Posto p:posti){
+                out.println("<tr>");
+                out.println("<td> " + p.getId_posto()+ "</td>");
+                out.println("<td> " + p.getId_sala() + "</td>");
+                out.println("<td> " + p.getEsiste() + "</td>");
+                out.println("<td> " + p.getRiga() + "</td>");
+                out.println("<td> " + p.getColonna()+ "</td>");
+               
+                out.println("</tr>");
+                }
+            out.println("</table>");
+            
             out.println("</body>");
             out.println("</html>");
             
+            
+            
+            
         }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
