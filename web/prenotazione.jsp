@@ -73,7 +73,7 @@
                     <option value="${orari}"><c:out value="${orari}"/></option>
                 </c:forEach>
             </select>
-            <select name="ora" id="ora" hidden>
+                <select name="ora" id="ora" onchange="mappa()" hidden>
             </select>   
          </form>
                 
@@ -84,21 +84,22 @@
             https://github.com/mateuszmarkowski/jQuery-Seat-Charts
             http://www.goocode.net/js/73-jquery-election-seat-reservations-online-theater-piece.html
         --%>
-        
+        <br>
         <div id="seat-map" class="seatCharts-container">
             
         </div>
         
         <div class="booking-details"></div>
         
-        
+        <h1>AGGIUNGERE TOTALE E LISTA POSTI PRENOTATI!!</h1><br>
+        <a href="pagamento.jsp"><button title="Pagah!">Pagah!</button></a>
         
         <script>
             
             
 			var firstSeatLabel = 1;
 		
-			$(document).ready(function() {
+			function mappa() {
 				var $cart = $('#selected-seats'),
 					$counter = $('#counter'),
 					$total = $('#total'),
@@ -108,7 +109,7 @@
 						'ff_ff',
 						'ee_ee',
 						'ee_ee',
-						'ee___',
+						'_____',
 						'ee_ee',
 						'ee_ee',
 						'ee_ee',
@@ -186,9 +187,12 @@
 				});
 
 				//let's pretend some seats have already been booked
+                                
+                                //DA SOSTITUIRE CON QUERY AL DB PER VEDERE QUALI POSTI SONO PRENOTATI!!!!!!!!!
+                                
 				sc.get(['1_2', '4_1', '7_1', '7_2']).status('unavailable');
 		
-		});
+		}
 
 		function recalculateTotal(sc) {
 			var total = 0;
