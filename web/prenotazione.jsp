@@ -58,7 +58,8 @@
         
     </head>
     <body>
-        <h1>Titolo film : <c:out value="${param.titolo}" /></h1>
+        <c:set var="film" value="${param.titolo}"/>
+        <h1>Titolo film : <c:out value="${film}" /></h1>
         <table style="width:26%">
             <tr>
                 <td><h4>Data</h4></td>
@@ -207,6 +208,10 @@
 		
 		
             /***********************************/
+            $("#ora").click(function(){
+                var ora = this.val();
+                var data = $("#data").val();
+            });
             
             var date = [<%= values.toString()%>];
             var orari = [<%= values1.toString()%>];
