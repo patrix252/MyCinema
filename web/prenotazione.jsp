@@ -53,9 +53,111 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Prenotazione</title>
         <link rel="stylesheet" type="text/css" href="./lib/seat-charts.css">
+        <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> 
         <script src="./lib/seat-charts.min.js"></script> 
-        
+        <style>
+            body {
+	font-family: 'Lato', sans-serif;
+}
+a {
+	color: #b71a4c;
+}
+.front-indicator {
+	width: 145px;
+	margin: 5px 32px 15px 32px;
+	background-color: #f6f6f6;	
+	color: #adadad;
+	text-align: center;
+	padding: 3px;
+	border-radius: 5px;
+}
+.wrapper {
+	width: 100%;
+	text-align: center;
+}
+.container {
+	margin: 0 auto;
+	width: 500px;
+	text-align: left;
+}
+.booking-details {
+	float: left;
+	text-align: left;
+	margin-left: 35px;
+	font-size: 12px;
+	position: relative;
+	height: 401px;
+}
+.booking-details h2 {
+	margin: 25px 0 20px 0;
+	font-size: 17px;
+}
+.booking-details h3 {
+	margin: 5px 5px 0 0;
+	font-size: 14px;
+}
+div.seatCharts-cell {
+	color: #182C4E;
+	height: 25px;
+	width: 25px;
+	line-height: 25px;
+	
+}
+div.seatCharts-seat {
+	color: #FFFFFF;
+	cursor: pointer;	
+}
+div.seatCharts-row {
+	height: 35px;
+}
+div.seatCharts-seat.available {
+	background-color: #B9DEA0;
+
+}
+div.seatCharts-seat.available.first-class {
+/* 	background: url(vip.png); */
+	background-color: #3a78c3;
+}
+div.seatCharts-seat.focused {
+	background-color: #76B474;
+}
+div.seatCharts-seat.selected {
+	background-color: #E6CAC4;
+}
+div.seatCharts-seat.unavailable {
+	background-color: #472B34;
+}
+div.seatCharts-container {
+	border-right: 1px dotted #adadad;
+	width: 200px;
+	padding: 20px;
+	float: left;
+}
+div.seatCharts-legend {
+	padding-left: 0px;
+	position: absolute;
+	bottom: 16px;
+}
+ul.seatCharts-legendList {
+	padding-left: 0px;
+}
+span.seatCharts-legendDescription {
+	margin-left: 5px;
+	line-height: 30px;
+}
+.checkout-button {
+	display: block;
+	margin: 10px 0;
+	font-size: 14px;
+}
+#selected-seats {
+	max-height: 90px;
+	overflow-y: scroll;
+	overflow-x: none;
+	width: 170px;
+}
+        </style>
     </head>
     <body>
         <c:set var="film" value="${param.titolo}"/>
@@ -86,11 +188,27 @@
             http://www.goocode.net/js/73-jquery-election-seat-reservations-online-theater-piece.html
         --%>
         <br>
-        <div id="seat-map" class="seatCharts-container">
-            
+        <div class="wrapper">
+			<div class="container">
+				<div id="seat-map">
+					<div class="front-indicator">Front</div>
+					
+				</div>
+				<div class="booking-details">
+					<h2>Booking Details</h2>
+					
+					<h3> Selected Seats (<span id="counter">0</span>):</h3>
+					<ul id="selected-seats"></ul>
+					
+					Total: <b>$<span id="total">0</span></b>
+					
+					<button class="checkout-button">Checkout &raquo;</button>
+					
+					<div id="legend"></div>
+				</div>
+			</div>
         </div>
-        
-        <div class="booking-details"></div>
+
         
         <h1>AGGIUNGERE TOTALE E LISTA POSTI PRENOTATI!!</h1><br>
         <a href="pagamento.jsp"><button title="Pagah!">Pagah!</button></a>
