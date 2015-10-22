@@ -10,6 +10,7 @@ import beans.Film;
 import beans.Genere;
 import beans.Spettacolo;
 import beans.Utente;
+import beans.Posto;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.Date;
@@ -23,7 +24,6 @@ import java.util.List;
 import java.util.logging.Logger;
 import util.Classi;
 import util.Classi.FilmSpettacolo;
-import util.Util.Posto;
 
 public class DBManager implements Serializable {
     
@@ -385,17 +385,38 @@ public class DBManager implements Serializable {
          
     }
     /*
-    Prendi da prenotazioni tutti gli id posti dato l'id spettacolo 
+    Ritorna tutti i posti occupati passato come input uno spettacolo 
+    DATESTARE non funziona esiste
     */
    
     public List<Posto> getPostiOccupati (Spettacolo s) throws SQLException{
         List<Posto> posti = new ArrayList<Posto>();
-        PreparedStatement stm = con.prepareStatement("");
+        PreparedStatement stm = con.prepareStatement("SELECT Posto.id_posto, id_sala, riga, colonna FROM myCinema.Posto INNER JOIN myCinema.Prenotazione WHERE Posto.id_posto=Prenotazione.id_posto AND Prenotazione.id_spettacolo=?;");
         
+        stm.setInt(1,s.getId_spettacolo());
         
-        
-        return null;
-        
+        try {
+            ResultSet rs = stm.executeQuery();
+            try {
+                while (rs.next()) {
+                    Posto p = new Posto();
+                    p.setId_posto(rs.getInt(Util.Posto.COLUMN_ID_POSTO));
+                    p.setId_sala(rs.getInt(Util.Posto.COLUMN_ID_SALA));
+                    p.setEsiste(rs.getInt(Util.Posto.COLUMN_ESISTE));
+                    p.setRiga(rs.getInt(Util.Posto.COLUMN_RIGA));
+                    p.setColonna(rs.getInt(Util.Posto.COLUMN_COLONNA));
+                    posti.add(p);
+                }
+            } finally {
+                rs.close();
+            }
+
+        } finally {
+            stm.close();
+        }
+
+       return posti;
+    
     
     }
     
