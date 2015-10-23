@@ -17,7 +17,7 @@
     //Questo passaggio serve per eliminare le date duplicate, tanto per la medesima data vengono
     //prese tutte le ore nella funzione in javascript
     List<Spettacolo> temp = (ArrayList<Spettacolo>) (session.getAttribute("orariPrenotazione"));
-
+   
     //Uso un LinkedHashSet per non avere date ripetute ma per mantenere l'ordine di inserimento
     //Visto che nella mia ArrayList le ho già ordinate
     Set<Date> insieme = new LinkedHashSet<>();
@@ -60,7 +60,7 @@
         
         <link rel="stylesheet" type="text/css" href="./lib/seat-charts.css">
         <link rel="stylesheet" type="text/css" href="./lib/seat-charts2.css">
-        <link rel="stylesheet" href="css/my.css" type="./lib/mycss.css">
+        <link rel="stylesheet" type="css/my.css" href="./lib/mycss.css">
         <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> 
         <script src="./lib/seat-charts.min.js"></script> 
@@ -114,7 +114,7 @@
                     <p><b>n° posti interi: </b><span id="counter_intero">0</span></p>
                     <p><b>n° posti ridotti: </b><span id="counter_ridotto">0</span></p>
                     <p><b>Prezzo totale: </b>€ <span id="total">0</span></p>
-                    <button type="submit"  class="btn center-block btn-success">Acquista!</button>
+                    <a href="pagamento.jsp" id="link"><button class="btn center-block btn-success">Acquista!</button></a>
                     
                     
                     
@@ -144,11 +144,6 @@
                 </div>
             </div>
                         
-
-            <div class="row">
-                <h1>AGGIUNGERE TOTALE E LISTA POSTI PRENOTATI!!</h1><br>
-                <a href="pagamento.jsp"><button title="Pagah!">Pagah!</button></a>
-            </div>
         </div>
             
         <!-- footer -->    
@@ -279,11 +274,10 @@
                 return total;
             }
 		
-		
+            var numeroSpettacolo;
             /***********************************/
             $("#ora").click(function(){
-                var ora = this.val();
-                var data = $("#data").val();
+                $("#link").attr("href", "pagamento.jsp?ns="+$("#ora").val());
             });
             
             var date = [<%= values.toString()%>];
@@ -295,8 +289,8 @@
                 $("#ora").empty();
                 $("#ora").append("<option disabled selected> -- Seleziona un'ora -- </option>");
                 for (i = 0; i < date.length; i++) {
-                    if (date[i] == value) {
-                        $("#ora").append("<option>" + orari[i] + "</option>");
+                    if (date[i] === value) {
+                        $("#ora").append("<option value=\""+i+"\">" + orari[i] + "</option>");
                     }
                 }
             }
