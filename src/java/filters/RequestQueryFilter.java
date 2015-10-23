@@ -151,7 +151,14 @@ public class RequestQueryFilter implements Filter {
                 Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
             }
             session.setAttribute("orariPrenotazione", spett);
+            
+            //PROBABILMENTE QUI LA QUERY CHE PER TUTTI GLI SPETTACOLI CHE COINVOLGONO IL FILM IN QUESTIONE RITORNARE 
+            //UNA LISTA DI LISTE DI POSTI
         
+        } else if ("/MyCinema/pagamento.jsp".equals(url)){
+            int i = Integer.parseInt(request.getParameter("ns"));
+            Spettacolo spett = ((List<Spettacolo>)session.getAttribute("orariPrenotazione")).get(i);
+            //QUERY AL DATABASE CON SPETTACOLO spett E LISTA DI POSTI PRENOTATI DALL'UTENTE IDENTIFICATO DALLA SUA MAIL
         }
 
         if (debug) {

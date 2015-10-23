@@ -17,7 +17,7 @@
     //Questo passaggio serve per eliminare le date duplicate, tanto per la medesima data vengono
     //prese tutte le ore nella funzione in javascript
     List<Spettacolo> temp = (ArrayList<Spettacolo>) (session.getAttribute("orariPrenotazione"));
-
+   
     //Uso un LinkedHashSet per non avere date ripetute ma per mantenere l'ordine di inserimento
     //Visto che nella mia ArrayList le ho già ordinate
     Set<Date> insieme = new LinkedHashSet<>();
@@ -211,7 +211,7 @@ span.seatCharts-legendDescription {
 
         
         <h1>AGGIUNGERE TOTALE E LISTA POSTI PRENOTATI!!</h1><br>
-        <a href="pagamento.jsp"><button title="Pagah!">Pagah!</button></a>
+        <a href="pagamento.jsp" id="link"><button title="Pagah!">Pagah!</button></a>
         
         <script>
             
@@ -324,11 +324,10 @@ span.seatCharts-legendDescription {
 			return total;
 		}
 		
-		
+            var numeroSpettacolo;
             /***********************************/
             $("#ora").click(function(){
-                var ora = this.val();
-                var data = $("#data").val();
+                $("#link").attr("href", "pagamento.jsp?ns="+$("#ora").val());
             });
             
             var date = [<%= values.toString()%>];
@@ -340,8 +339,8 @@ span.seatCharts-legendDescription {
                 $("#ora").empty();
                 $("#ora").append("<option disabled selected> -- Seleziona un'ora -- </option>");
                 for (i = 0; i < date.length; i++) {
-                    if (date[i] == value) {
-                        $("#ora").append("<option>" + orari[i] + "</option>");
+                    if (date[i] === value) {
+                        $("#ora").append("<option value=\""+i+"\">" + orari[i] + "</option>");
                     }
                 }
             }
