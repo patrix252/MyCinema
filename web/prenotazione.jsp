@@ -60,7 +60,7 @@
         
         <link rel="stylesheet" type="text/css" href="./lib/seat-charts.css">
         <link rel="stylesheet" type="text/css" href="./lib/seat-charts2.css">
-        <link rel="stylesheet" href="css/my.css" type="./lib/mycss.css">
+        <link rel="stylesheet" type="css/my.css" href="./lib/mycss.css">
         <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> 
         <script src="./lib/seat-charts.min.js"></script> 
