@@ -102,7 +102,7 @@
             
             <div class="row" style="padding-top: 5%;">
                 <div class="col-sm-6 col-lg-6 col-md-6">
-                    <div id="seat-map">
+                    <div id="seat-map" class="noselect">
                         <div class="front-indicator">Front</div>
                     </div>
                     
@@ -150,7 +150,8 @@
             
             
         <script>
-            
+            var price_normale = 10;
+            var price_ridotto = 5;
             var firstSeatLabel = 1;
 		
             function mappa() {
@@ -215,7 +216,7 @@
 
      *             */
                                     $counter_intero.text(sc.find('selected').length+1);
-                                    $total.text(recalculateTotal(sc)+this.data().price);
+                                    $total.text(recalculateTotal(sc)+price_normale);
 
                                     return 'selected';
                             } else if (this.status() == 'selected') {
@@ -223,8 +224,8 @@
                                     $counter_intero.text(sc.find('selected').length-1);
                                     $counter_ridotto.text(sc.find('selected_ridotto').length+1);
                                     //and total
-                                    $total.text(recalculateTotal(sc)-this.data().price);
-                                    $total.text(recalculateTotal(sc)+this.data().price);
+                                    $total.text(recalculateTotal(sc)-price_normale);
+                                    $total.text(recalculateTotal(sc)+price_ridotto);
 
 
                                     //seat has been vacated
@@ -233,7 +234,7 @@
                                     //update the counter
                                     $counter_ridotto.text(sc.find('selected_ridotto').length-1);
                                     //and total
-                                    $total.text(recalculateTotal(sc)-this.data().price);
+                                    $total.text(recalculateTotal(sc)-price_ridotto);
 
                                     //seat has been vacated
                                     return 'available';
@@ -265,10 +266,10 @@
 
                 //basically find every selected seat and sum its price
                 sc.find('selected').each(function () {
-                    total += this.data().price;
+                    total += price_normale;
                 });
                 sc.find('selected_ridotto').each(function () {
-                    total += this.data().price;
+                    total += price_ridotto;
                 });
 
                 return total;
