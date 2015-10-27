@@ -26,7 +26,9 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import util.Classi.FilmSpettacolo;
 
@@ -155,6 +157,12 @@ public class RequestQueryFilter implements Filter {
             //PROBABILMENTE QUI LA QUERY CHE PER TUTTI GLI SPETTACOLI CHE COINVOLGONO IL FILM IN QUESTIONE RITORNARE 
             //UNA LISTA DI LISTE DI POSTI
         
+        } else if ("/MyCinema/logout.jsp".equals(url)){
+            Cookie[] cookies = ((HttpServletRequest) request).getCookies();
+            for (Cookie cookie : cookies) {
+                cookie.setMaxAge(0);
+                ((HttpServletResponse) response).addCookie(cookie);
+            }
         } else if ("/MyCinema/pagamento.jsp".equals(url)){
             int i = Integer.parseInt(request.getParameter("ns"));
             Spettacolo spett = ((List<Spettacolo>)session.getAttribute("orariPrenotazione")).get(i);
