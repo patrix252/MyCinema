@@ -98,7 +98,8 @@ public class LoginServlet extends HttpServlet {
 //ALTRIMENTI I VALORI CI SONO E LI CONTROLLO
         String mail = request.getParameter("Mail");
         String password = request.getParameter("Password");
-        if (mail != null && password != null) {
+        String metodo = request.getMethod();
+        if ("POST".equals(metodo)) {
             InputStream is = new ByteArrayInputStream(password.getBytes());
             String hashPassword = calcolaHash(is);
             Utente user= new Utente();
@@ -109,6 +110,8 @@ public class LoginServlet extends HttpServlet {
             }
             if (user==null){
                 session.setAttribute("loginError", true);
+                view = request.getRequestDispatcher("login.jsp");
+                view.forward(request, response);
             } else {
                 session.setAttribute("utente", user);
                 //AGGIUNGERE IL TEMPO DI VITA DEL COOKIE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
