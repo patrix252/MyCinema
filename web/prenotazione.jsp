@@ -64,7 +64,7 @@
         <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> 
         <script src="./lib/seat-charts.min.js"></script> 
-        
+        <script src="js/prenotazione.js"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         
@@ -100,7 +100,7 @@
             </div>
                         
             
-            <div class="row" style="padding-top: 5%;">
+            <div class="row" style="padding-top: 5%;" id="acquista">
                 <div class="col-sm-6 col-lg-6 col-md-6">
                     <div id="seat-map" class="noselect">
                         <div class="front-indicator">Front</div>
@@ -114,169 +114,14 @@
                     <p><b>n° posti interi: </b><span id="counter_intero">0</span></p>
                     <p><b>n° posti ridotti: </b><span id="counter_ridotto">0</span></p>
                     <p><b>Prezzo totale: </b>€ <span id="total">0</span></p>
-                    <a href="pagamento.jsp" id="link"><button class="btn center-block btn-success">Acquista!</button></a>
-                    
-                    
-                    
+                    <a href="pagamento.jsp" id="link"><button class="btn center-block btn-success">Acquista!</button></a>        
                 </div>
-                
-                <div class="col-sm-3 col-lg-3 col-md-3" style="padding-top: 10%;">
-
-                    <p><b>Credito disponibile:</b> 0</p>
-                 
-                    <p>Ricarica di:</p>
-                        <div class="col-xs-4">
-                        </div>
-                        <div class="form-group col-xs-4" style="padding: 0;">
-                            <select class="form-control" id="InputType">
-                            <option>€ 5,00</option>
-                            <option>€ 10,00</option>
-                            <option>€ 20,00</option>
-                            <option>€ 50,00</option>
-                            </select>
-                        </div>
-                        <div class="col-xs-4">
-                        </div>    
-                    <div class="col-xs-12">
-                        <button type="submit"  class="btn center-block btn-danger">Ricarica!</button>
-                    </div>
-
-                </div>
-            </div>
-                        
-        </div>
-            
-        <!-- footer -->    
-            
-            
+                <br>
+            </div>                   
+        </div>           
+        <!-- footer -->           
         <script>
-            var price_normale = 10;
-            var price_ridotto = 5;
-            var firstSeatLabel = 1;
-		
-            function mappa() {
-                    var $cart = $('#selected-seats'),
-                    $counter_intero = $('#counter_intero'),
-                    $counter_ridotto = $('#counter_ridotto'),
-                    $total = $('#total'),
-                    sc = $('#seat-map').seatCharts({
-                        map: [
-                                'ffffffffff',
-                                'ffffffffff',
-                                'ffffffffff',
-                                'ffeffffeff',
-                                '__________',
-                                'ffffffffff',
-                                'ffffffffff',
-                                'ffffffffff',
-                                'ffffffffff',
-                        ],
-                        seats: {
-                            f: {
-                                    price   : 100,
-                                    classes : 'first-class', //your custom CSS class
-                                    category: 'First Class'
-                            },
-                            e: {
-                                    price   : 40,
-                                    classes : 'first-class economy-class', //your custom CSS class
-                                    category: 'Economy Class'
-                            }					
 
-                        },
-                        naming : {
-                            top : false,
-                            getLabel : function (character, row, column) {
-                                    return firstSeatLabel++;
-                            },
-                        },
-                        legend : {
-                            node : $('#legend'),
-                            items : [
-                                        [ 'f', 'available',   'First Class' ],
-                                        [ 'e', 'available',   'Economy Class'],
-                                        [ 'f', 'unavailable', 'Already Booked']
-                            ]					
-                        },
-                        click: function () {
-                            if (this.status() == 'available') {
-                                    
-                                
-                                    //let's create a new <li> which we'll add to the cart items
-                                    $('<li>'+this.data().category+' Seat # '+this.settings.label+': <b>$'+this.data().price+'</b> <a href="#" class="cancel-cart-item">[cancel]</a></li>')
-                                            .attr('id', 'cart-item-'+this.settings.id)
-                                            .data('seatId', this.settings.id)
-                                            .appendTo($cart);
-
-                                    /*
-                                     * Lets update the counter and total
-                                     *
-                                     * .find function will not find the current seat, because it will change its stauts only after return
-                                     * 'selected'. This is why we have to add 1 to the length and the current seat price to the total.
-
-     *             */
-                                    $counter_intero.text(sc.find('selected').length+1);
-                                    $total.text(recalculateTotal(sc)+price_normale);
-
-                                    return 'selected';
-                            } else if (this.status() == 'selected') {
-                                    //update the counter
-                                    $counter_intero.text(sc.find('selected').length-1);
-                                    $counter_ridotto.text(sc.find('selected_ridotto').length+1);
-                                    //and total
-                                    $total.text(recalculateTotal(sc)-price_normale);
-                                    $total.text(recalculateTotal(sc)+price_ridotto);
-
-
-                                    //seat has been vacated
-                                    return 'selected_ridotto';
-                            } else if (this.status() == 'selected_ridotto') {
-                                    //update the counter
-                                    $counter_ridotto.text(sc.find('selected_ridotto').length-1);
-                                    //and total
-                                    $total.text(recalculateTotal(sc)-price_ridotto);
-
-                                    //seat has been vacated
-                                    return 'available';
-                            } else if (this.status() == 'unavailable') {
-                                    //seat has been already booked
-                                    return 'unavailable';
-                            } else {
-                                    return this.style();
-                            }
-                        }
-                    });
-
-                    //this will handle "[cancel]" link clicks
-                    $('#selected-seats').on('click', '.cancel-cart-item', function () {
-                            //let's just trigger Click event on the appropriate seat, so we don't have to repeat the logic here
-                            sc.get($(this).parents('li:first').data('seatId')).click();
-                    });
-
-                    //let's pretend some seats have already been booked
-
-                    //DA SOSTITUIRE CON QUERY AL DB PER VEDERE QUALI POSTI SONO PRENOTATI!!!!!!!!!
-
-                    sc.get(['1_2', '4_1', '7_1', '7_2']).status('unavailable');
-
-            }
-
-            function recalculateTotal(sc) {
-                var total = 0;
-
-                //basically find every selected seat and sum its price
-                sc.find('selected').each(function () {
-                    total += price_normale;
-                });
-                sc.find('selected_ridotto').each(function () {
-                    total += price_ridotto;
-                });
-
-                return total;
-            }
-		
-            var numeroSpettacolo;
-            /***********************************/
             $("#ora").click(function(){
                 $("#link").attr("href", "pagamento.jsp?ns="+$("#ora").val());
             });
@@ -294,8 +139,7 @@
                         $("#ora").append("<option value=\""+i+"\">" + orari[i] + "</option>");
                     }
                 }
-            }
-        </script>
-        
+            }            
+        </script>      
     </body>
 </html>
