@@ -109,7 +109,7 @@
                     <div id="legend"></div>
                 </div>
 
-                <div class="col-sm-3 col-lg-3 col-md-3">    
+                <div class="col-sm-3 col-lg-3 col-md-3" style="padding-top: 10%;">    
                     <p><b>Riepilogo:</b></p>
                     <p><b>n° posti interi: </b><span id="counter_intero">0</span></p>
                     <p><b>n° posti ridotti: </b><span id="counter_ridotto">0</span></p>
@@ -119,8 +119,8 @@
                     
                     
                 </div>
-                <br>
-                <div class="col-sm-3 col-lg-3 col-md-3">
+                
+                <div class="col-sm-3 col-lg-3 col-md-3" style="padding-top: 10%;">
 
                     <p><b>Credito disponibile:</b> 0</p>
                  
