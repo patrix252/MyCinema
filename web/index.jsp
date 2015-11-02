@@ -48,14 +48,13 @@
             <div id="myCarousel" class="carousel slide" data-ride="carousel">
                 <!-- Indicators -->
                 <ol class="carousel-indicators">
-                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                    <c:forEach var="i" begin="1" end="${sessionScope.filmInProgrammaLength}">
-                        <li data-target="#myCarousel" data-slide-to="${i}"></li>
+                    <c:forEach var="i" begin="0" end="${sessionScope.filmInProgrammaLength-1}" varStatus = "status">
+                    <li data-target="#myCarousel" data-slide-to="${i}" class="${status.first ? 'active' : ''}"></li>
                     </c:forEach>
                 </ol>
                 <div class="carousel-inner" role="listbox">        
                     <c:forEach items="${sessionScope.filmInProgramma}" var="film" varStatus = "status">
-                    <div class="item ${status.first ? '' : 'active'}">
+                    <div class="item ${status.first ? 'active' : ''}">
                         <img class="second-slide" src="${film.f.uri_locandina}" alt="${film.f.titolo}">
                         <div class="container">
                             <div class="carousel-caption">
@@ -90,6 +89,10 @@
                 <a href="registrazione.jsp"> - Registrazione Test</a><br>
                 <a href="LoginServlet"> - Login Test</a>
             </c:if>
+                
+             
+            <jsp:include page="footer.jsp" />
+            
         </div>
     </body>
 </html>
