@@ -113,14 +113,14 @@
             
             <div class="row" style="padding-top: 5%;" id="acquista">
                 <div class="col-sm-6 col-lg-6 col-md-6">
-                    <div id="seat-map">
+                    <div id="seat-map" class="noselect">
                         <div class="front-indicator">Front</div>
                     </div>
                     
                     <div id="legend"></div>
                 </div>
 
-                <div class="col-sm-3 col-lg-3 col-md-3">    
+                <div class="col-sm-3 col-lg-3 col-md-3" style="padding-top: 10%;">    
                     <p><b>Riepilogo:</b></p>
                     <p><b>n° posti interi: </b><span id="counter_intero">0</span></p>
                     <p><b>n° posti ridotti: </b><span id="counter_ridotto">0</span></p>

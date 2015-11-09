@@ -125,6 +125,8 @@ public class RequestQueryFilter implements Filter {
         HttpSession session = ((HttpServletRequest) request).getSession();
 
         String url = ((HttpServletRequest) request).getRequestURI();
+        
+        
         if ("/MyCinema/oggialcinema.jsp".equals(url)) {
             //CHIAMARE QUERY PER PRENDERE FILM DI OGGI
             List<FilmSpettacolo> films = null;
@@ -133,22 +135,32 @@ public class RequestQueryFilter implements Filter {
             } catch (SQLException ex) {
                 Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-
             session.setAttribute("filmsOggi", films);
 
-        } else if("/MyCinema/filminprogramma.jsp".equals(url)){
+        } else if("/MyCinema/filminprogramma.jsp".equals(url)) {
             List<FilmSpettacolo> films = null;
             try {
                 films = manager.getFilmsAll();
             } catch (SQLException ex) {
                 Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
             }
-
             session.setAttribute("filmInProgramma", films);
-        } else if ("/MyCinema/prenotazione.jsp".equals(url)){
+            
+        } else if ("/MyCinema/index.jsp".equals(url)) {
+            List<FilmSpettacolo> films = null;
+            int filmsLength = 0;
+            try {
+                films = manager.getFilmsAll();
+                filmsLength = films.size();
+            } catch (SQLException ex) {
+                Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            session.setAttribute("filmInProgramma", films);
+            session.setAttribute("filmInProgrammaLength", filmsLength);
+            
+        } else if ("/MyCinema/prenotazione.jsp".equals(url)) {
             List <Spettacolo> spett = null;
-            int i =Integer.parseInt (request.getParameter("id"));
+            int i = Integer.parseInt (request.getParameter("id"));
             try {
                 spett = manager.getSpettacoli(i);
             } catch (SQLException ex) {
