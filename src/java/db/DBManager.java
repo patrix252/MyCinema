@@ -391,7 +391,7 @@ public class DBManager implements Serializable {
    
     public List<Posto> getPostiOccupati (Spettacolo s) throws SQLException{
         List<Posto> posti = new ArrayList<Posto>();
-        PreparedStatement stm = con.prepareStatement("SELECT Posto.id_posto, id_sala, riga, colonna FROM myCinema.Posto INNER JOIN myCinema.Prenotazione WHERE Posto.id_posto=Prenotazione.id_posto AND Prenotazione.id_spettacolo=?;");
+        PreparedStatement stm = con.prepareStatement("SELECT Posto.id_posto, id_sala, riga, colonna, esiste FROM myCinema.Posto INNER JOIN myCinema.Prenotazione WHERE Posto.id_posto=Prenotazione.id_posto AND Prenotazione.id_spettacolo=?;");
         
         stm.setInt(1,s.getId_spettacolo());
         
@@ -414,7 +414,9 @@ public class DBManager implements Serializable {
         } finally {
             stm.close();
         }
-
+        /*if(posti.isEmpty()){
+            posti.add(new Posto());
+        }*/
        return posti;
     
     

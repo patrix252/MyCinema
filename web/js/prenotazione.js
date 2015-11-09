@@ -9,7 +9,15 @@ var firstSeatLabel = 1;
                 $("#acquista").hide();
             });
 		
-            function mappa() {
+            function mappa(posti) {
+                var postiPerSpettacolo = new Array();
+                for(var i=0; i<posti.length; i++){
+                    if(posti[i][0]==$("#ora").val()){
+                        for(var j=0; j<posti[i].length; j++){
+                            postiPerSpettacolo.push(posti[i][j]);
+                        }
+                    }
+                }
                     $("#acquista").show();
                     var $cart = $('#selected-seats'),
                     $counter_intero = $('#counter_intero'),
@@ -108,12 +116,11 @@ var firstSeatLabel = 1;
                             //let's just trigger Click event on the appropriate seat, so we don't have to repeat the logic here
                             sc.get($(this).parents('li:first').data('seatId')).click();
                     });
-
-                    //let's pretend some seats have already been booked
-
-                    //DA SOSTITUIRE CON QUERY AL DB PER VEDERE QUALI POSTI SONO PRENOTATI!!!!!!!!!
-
-                    sc.get(['1_2', '4_1', '7_1', '7_2']).status('unavailable');
+                    
+                    sc.find('unavailable').each(function () {
+                        this.status('available');
+                    });
+                    sc.get(postiPerSpettacolo).status('unavailable');
 
             }
 
