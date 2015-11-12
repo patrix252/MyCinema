@@ -4,6 +4,8 @@
     Author     : Francesco
 --%>
 
+<%@page import="java.lang.String"%>
+<%@page import="beans.Posto"%>
 <%@page import="java.util.LinkedHashSet"%>
 <%@page import="java.sql.Date"%>
 <%@page import="java.util.Set"%>
@@ -14,10 +16,19 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
-    //Questo passaggio serve per eliminare le date duplicate, tanto per la medesima data vengono
-    //prese tutte le ore nella funzione in javascript
     List<Spettacolo> temp = (ArrayList<Spettacolo>) (session.getAttribute("orariPrenotazione"));
-   
+    List<List<Posto>> postiOccupati = (ArrayList<List<Posto>>) (session.getAttribute("postiOccupati"));
+    List<List<String>> posti = new ArrayList<List<String>>();
+    for(int i=0; i<postiOccupati.size(); i++){
+            for(int j=0; j<postiOccupati.get(i).size(); j++){
+                int x = postiOccupati.get(i).get(j).getRiga();
+                int y = postiOccupati.get(i).get(j).getColonna();
+                List<String> t = new ArrayList<>();
+                t.add("\""+Integer.toString(i)+"\"");
+                t.add("\""+Integer.toString(x)+"_"+Integer.toString(y)+"\"");
+                posti.add(t);
+            }
+    }
     //Uso un LinkedHashSet per non avere date ripetute ma per mantenere l'ordine di inserimento
     //Visto che nella mia ArrayList le ho già ordinate
     Set<Date> insieme = new LinkedHashSet<>();
@@ -95,7 +106,7 @@
                             <option value="${orari}"><c:out value="${orari}"/></option>
                         </c:forEach>
                     </select>
-                    <select name="ora" id="ora" onchange="mappa()" hidden></select>   
+                    <select name="ora" id="ora" onchange="mappa(posti)" hidden></select>   
                 </form>
             </div>
                         
@@ -121,11 +132,28 @@
         </div>           
         <!-- footer -->           
         <script>
-
+            var posti = <%= posti.toString() %>;
             $("#ora").click(function(){
                 $("#link").attr("href", "pagamento.jsp?ns="+$("#ora").val());
             });
-            
+           
+           $("#link").click(function(){
+               var postiselezionati = new Array();
+              sc.find('selected').each(function () {
+                    postiselezionati.push(this);
+              });
+              
+              
+              
+              
+              //aggiungere postiselezionati alla post della request
+              
+              
+              
+              
+              
+           });
+           
             var date = [<%= values.toString()%>];
             var orari = [<%= values1.toString()%>];
             var i = 0;

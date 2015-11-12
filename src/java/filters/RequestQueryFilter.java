@@ -7,6 +7,7 @@ package filters;
 
 import beans.Film;
 import beans.Genere;
+import beans.Posto;
 import beans.Spettacolo;
 import db.DBManager;
 import java.lang.Object;
@@ -30,6 +31,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import sun.org.mozilla.javascript.internal.Scriptable;
 import util.Classi.FilmSpettacolo;
 
 /**
@@ -165,9 +167,16 @@ public class RequestQueryFilter implements Filter {
                 Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
             }
             session.setAttribute("orariPrenotazione", spett);
+            List <List<Posto>> posti = new ArrayList<>();
+            for(int j=0; j<spett.size(); j++){
+                try {
+                    posti.add(manager.getPostiOccupati(spett.get(j)));
+                } catch (SQLException ex) {
+                    Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
             
-            //PROBABILMENTE QUI LA QUERY CHE PER TUTTI GLI SPETTACOLI CHE COINVOLGONO IL FILM IN QUESTIONE RITORNARE 
-            //UNA LISTA DI LISTE DI POSTI
+            session.setAttribute("postiOccupati", posti);
         
         } else if ("/MyCinema/logout.jsp".equals(url)){
             Cookie[] cookies = ((HttpServletRequest) request).getCookies();
