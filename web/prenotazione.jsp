@@ -1,9 +1,3 @@
-<%-- 
-    Document   : prenotazione
-    Created on : 14-ago-2015, 11.36.30
-    Author     : Francesco
---%>
-
 <%@page import="java.lang.String"%>
 <%@page import="beans.Posto"%>
 <%@page import="java.util.LinkedHashSet"%>
