@@ -5,7 +5,7 @@
 --%>
 
 <%-- navbar-fixed-top --%>
-    <nav class="navbar navbar-inverse " role="navigation">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">

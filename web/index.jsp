@@ -30,6 +30,7 @@
 
         <!-- jQuery library -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        
         <generalcode:navbar_header/>
     </head>
     <body>
@@ -43,7 +44,7 @@
                 sessionScope.filmInProgrammaLength = numero film in filmInProgramma
                 sessionScope.filmInProgramma = lista di film da visualizzare nel carosel
             -->
-            <div class="row">
+            <div class="row" style="padding-top: 80px;">
                 <div id="myCarousel" class="carousel slide" data-ride="carousel">
                     <!-- Indicators -->
                     <ol class="carousel-indicators">
