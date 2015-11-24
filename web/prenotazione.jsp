@@ -137,12 +137,7 @@
                 $("#link").attr("href", "pagamento.jsp?ns="+$("#ora").val());
             });
            
-           $("#link").click(function(){
-               var postiselezionati = new Array();
-              sc.find('selected').each(function () {
-                    postiselezionati.push(this);
-              });
-              
+                       
               
               
               
@@ -150,9 +145,7 @@
               
               
               
-              
-              
-           });
+             
            
             var date = [<%= values.toString()%>];
             var orari = [<%= values1.toString()%>];

@@ -121,6 +121,13 @@ var firstSeatLabel = 1;
                         this.status('available');
                     });
                     sc.get(postiPerSpettacolo).status('unavailable');
+                    
+                    $("#link").click(function(){
+                        var postiselezionati = new Array();
+                        sc.find('selected').each(function () {
+                            postiselezionati.push(this);
+                        });
+                    });
 
             }
 
