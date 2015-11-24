@@ -1,8 +1,3 @@
-<%-- 
-    Document   : index
-    Created on : 12-ago-2015, 18.36.35
-    Author     : Paolo
---%>
 <%@taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib prefix="generalcode" tagdir="/WEB-INF/tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
