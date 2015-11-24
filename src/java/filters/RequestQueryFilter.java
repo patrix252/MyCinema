@@ -188,6 +188,15 @@ public class RequestQueryFilter implements Filter {
             int i = Integer.parseInt(request.getParameter("ns"));
             Spettacolo spett = ((List<Spettacolo>)session.getAttribute("orariPrenotazione")).get(i);
             //QUERY AL DATABASE CON SPETTACOLO spett E LISTA DI POSTI PRENOTATI DALL'UTENTE IDENTIFICATO DALLA SUA MAIL
+        } else if ("/MyCinema/descrizionefilm.jsp".equals(url)){
+            int i = Integer.parseInt(request.getParameter("id"));
+            Film f = null;
+            try {
+                 f = manager.getFilm(i);
+            } catch (SQLException ex) {
+                Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            session.setAttribute("film", f);
         }
 
         if (debug) {
