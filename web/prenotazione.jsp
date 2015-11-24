@@ -60,24 +60,26 @@
 <!DOCTYPE html>
 <html lang="it">
     <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
-        <meta name="author" content="noi">
-        <link rel="icon" type="image/ico" href="img/logo.ico">
-        <title>Prenotazioni on-line!</title>
-        
+        <title>Prenotazione</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="./lib/seat-charts.css">
         <link rel="stylesheet" type="text/css" href="./lib/seat-charts2.css">
         <link rel="stylesheet" type="css/my.css" href="./lib/mycss.css">
         <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> 
+
+        
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        
+        
         <script src="./lib/seat-charts.min.js"></script> 
         <script src="js/prenotazione.js"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+        <generalcode:navbar_header/>
         
     </head>
     <body>
@@ -85,29 +87,47 @@
         <!-- INSERIRE NAVBAR -->
         
         <div class="container">
+            
+            <jsp:include page="navbar.jsp" />
+            
             <div class="row">   
                 <c:set var="film" value="${param.titolo}"/>
                 <h1>Titolo film : <c:out value="${film}" /></h1>
             </div>
             
-            <div class="row">
-                <table style="width:26%">
-                    <tr>
-                        <td><h4>Data</h4></td>
-                        <td><h4>Ora</h4></td>
-                    </tr>
-                </table>
-            
-                <form id="prenota" name="prenota">
-                    <select name="data" id="data" onchange="cambia(this)">
-                        <option disabled selected> -- Seleziona una data -- </option>
-                        <c:set var="dataScelta" value="null"/>
-                        <c:forEach items="${sessionScope.orari}" var="orari">
-                            <option value="${orari}"><c:out value="${orari}"/></option>
-                        </c:forEach>
-                    </select>
-                    <select name="ora" id="ora" onchange="mappa(posti)" hidden></select>   
-                </form>
+            <div class="row" style="margin-top: 20px">
+                <div class="col-lg-6">
+                    <dl class="dl-horizontal">
+                        <dt><h4>Data spettacolo:</h4></dt>
+                        <dd>
+                            <div class="form-group">
+                                <!-- ==================================================
+                                DATE PICKER // NON DISABILITA LE DATE PRECEDENTI A "OGGI"
+                                ================================================== -->
+                                <select class="form-control" name="data" id="data" onchange="cambia(this)">
+                                    <option disabled selected> -- Seleziona una data -- </option>
+                                    <c:set var="dataScelta" value="null"/>
+                                    <c:forEach items="${sessionScope.orari}" var="orari">
+                                    <option value="${orari}"><c:out value="${orari}"/></option>
+                                    </c:forEach>
+                                </select>
+                                
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="col-lg-6">
+                    <dl class="dl-horizontal">
+                        <dt><h4>Ora spettacolo:</h4></dt>
+                        <dd>
+                            <div class="form-group">
+                                <select class="form-control" name="ora" id="ora" onchange="mappa(posti)" hidden>
+                                    
+                                </select>
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
             </div>
                         
             
@@ -128,9 +148,12 @@
                     <a href="pagamento.jsp" id="link"><button class="btn center-block btn-success">Acquista!</button></a>        
                 </div>
                 <br>
-            </div>                   
+            </div>    
+                                    
+            <jsp:include page="footer.jsp" />
         </div>           
-        <!-- footer -->           
+       
+        
         <script>
             var posti = <%= posti.toString() %>;
             $("#ora").click(function(){
