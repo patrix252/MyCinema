@@ -5,7 +5,7 @@
 --%>
 
 <%-- navbar-fixed-top --%>
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <nav class="navbar navbar-inverse" role="navigation">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -14,26 +14,26 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html" title="MyCinema">
+                <a class="navbar-brand" href="index.jsp" title="MyCinema">
                     <img style= "max-width:90px; margin-top: -37px;" src="./lib/img/logo.png">
                 </a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-left">
                     <li>
-                        <a href="oggialcinema.html">Oggi al cinema</a>
+                        <a href="oggialcinema.jsp">Oggi al cinema</a>
                     </li>
                     <li>
-                        <a href="prezzi.html">Prezzi</a>
+                        <a href="prezzi.jsp">Prezzi</a>
                     </li>
                     <li>
-                        <a href="contatti.html">Contatti</a>
+                        <a href="contatti.jsp">Contatti</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <!-- REGISTRAZIONE-->
                     <li> 
-                        <a href="registrazione.html">Registrati!</a>
+                        <a href="registrazione.jsp">Registrati!</a>
                     </li>
                     <!-- EFFETTUA ACCESSO --> 
                     <li class="dropdown">
