@@ -6,7 +6,6 @@
 var firstSeatLabel = 1;
 
             $(document).ready(function () {
-                $("#acquista").hide();
             });
 		
             function mappa(posti) {
@@ -123,9 +122,9 @@ var firstSeatLabel = 1;
                     sc.get(postiPerSpettacolo).status('unavailable');
                     
                     $("#link").click(function(){
-                        var postiselezionati = new Array();
+                        $("#link").attr("href", $("#link").attr("href")+"&posti=");
                         sc.find('selected').each(function () {
-                            postiselezionati.push(this);
+                            $("#link").attr("href", $("#link").attr("href")+this.settings.id+",");
                         });
                     });
 

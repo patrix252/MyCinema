@@ -9,6 +9,7 @@ import beans.Film;
 import beans.Genere;
 import beans.Posto;
 import beans.Spettacolo;
+import beans.Utente;
 import db.DBManager;
 import java.lang.Object;
 import java.io.IOException;
@@ -24,6 +25,7 @@ import java.util.logging.Logger;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -116,6 +118,18 @@ public class RequestQueryFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
+        RequestDispatcher view = new RequestDispatcher() {
+
+            @Override
+            public void forward(ServletRequest request, ServletResponse response) throws ServletException, IOException {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void include(ServletRequest request, ServletResponse response) throws ServletException, IOException {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        };
         try {
             manager = new DBManager("jdbc:mysql://46.101.19.71/myCinema", "user", "asdd");
         } catch (SQLException ex) {
@@ -187,6 +201,34 @@ public class RequestQueryFilter implements Filter {
         } else if ("/MyCinema/pagamento.jsp".equals(url)){
             int i = Integer.parseInt(request.getParameter("ns"));
             Spettacolo spett = ((List<Spettacolo>)session.getAttribute("orariPrenotazione")).get(i);
+            String p = ((HttpServletRequest) request).getParameter("posti");
+            String mail = null;
+            try{
+                mail = ((Utente)session.getAttribute("utente")).getEmail();
+            } catch(Exception e){
+                
+                
+                //DA SISTEMARE CHE UNA VOLTA FATTO IL LOGIN DEVE TORNARE ALLA PAGINA DI PRENOTAZIONE DOV'ERA PRIMA
+                
+                
+                
+                view = request.getRequestDispatcher("login.jsp?from="+((HttpServletRequest)request).getRequestURI());
+                view.forward(request, response);
+            }
+            //PRENDO IL VALORE DELLA STRINGA SALVATA NELLA GET DELLA REQUEST E PRENDO I VALORI OPPORTUNI PER CREARE UNA LISTA
+            //DI POSTI IN CUI SETTO I VALORI DI RIGA E COLONNA
+            List<Posto> posti = new ArrayList<>();
+            for(int j=0; (j+3)<p.length(); j+=4){
+                Posto po = new Posto();
+                po.setRiga(Character.getNumericValue(p.charAt(j)));
+                po.setColonna(Character.getNumericValue(p.charAt(j+2)));
+                posti.add(po);
+            }
+            //CONTROLLARE NEL DATABASE CHE NON CI SIANO GIà PRENOTAZIONI PER QUEI POSTI PER QUELLO SPETTACOLO
+            
+            //POSTI PASSATI NELLA GET, POSSIBILMENTE MODIFICABILI DALL'UTENTE, AGGIUNGERE CONTROLLO CHE NUMERO RIGA E COLONNA
+            //SIA NEL RANGE E CHE IL NUMERO DELLA RIGA SIA DIVERSO DA 5
+            
             //QUERY AL DATABASE CON SPETTACOLO spett E LISTA DI POSTI PRENOTATI DALL'UTENTE IDENTIFICATO DALLA SUA MAIL
         } else if ("/MyCinema/descrizionefilm.jsp".equals(url)){
             int i = Integer.parseInt(request.getParameter("id"));

@@ -111,7 +111,7 @@
             </div>
                         
             
-            <div class="row" style="padding-top: 5%;" id="acquista">
+            <div class="row" style="padding-top: 5%;" id="acquista" hidden>
                 <div class="col-sm-6 col-lg-6 col-md-6">
                     <div id="seat-map" class="noselect">
                         <div class="front-indicator">Front</div>
