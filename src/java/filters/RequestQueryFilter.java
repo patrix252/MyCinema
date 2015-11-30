@@ -171,6 +171,7 @@ public class RequestQueryFilter implements Filter {
             }
             session.setAttribute("filmInProgramma", films);
             session.setAttribute("filmInProgrammaLength", filmsLength);
+            session.setAttribute("loginAction", null);
             
         } else if ("/MyCinema/prenotazione.jsp".equals(url)) {
             List <Spettacolo> spett = null;
@@ -208,11 +209,11 @@ public class RequestQueryFilter implements Filter {
             } catch(Exception e){
                 
                 
-                //DA SISTEMARE CHE UNA VOLTA FATTO IL LOGIN DEVE TORNARE ALLA PAGINA DI PRENOTAZIONE DOV'ERA PRIMA
+                //Controllare di risettare il valore a "LoginServlet" una volta effettuato il login
+                session.setAttribute("loginAction", (((HttpServletRequest) request).getRequestURL().append('?').append(((HttpServletRequest) request).getQueryString())));
                 
                 
-                
-                view = request.getRequestDispatcher("login.jsp?from="+((HttpServletRequest)request).getRequestURI());
+                view = request.getRequestDispatcher("login.jsp");
                 view.forward(request, response);
             }
             //PRENDO IL VALORE DELLA STRINGA SALVATA NELLA GET DELLA REQUEST E PRENDO I VALORI OPPORTUNI PER CREARE UNA LISTA

@@ -116,9 +116,17 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("utente", user);
                 //AGGIUNGERE IL TEMPO DI VITA DEL COOKIE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 Cookie biscotto = new Cookie("idUtente", user.getEmail());
-                ((HttpServletResponse) response).addCookie(biscotto);                
-                view = request.getRequestDispatcher("loggato.jsp");
-                view.forward(request, response);
+                ((HttpServletResponse) response).addCookie(biscotto);
+                if(session.getAttribute("loginAction")==null){
+                    view = request.getRequestDispatcher("loggato.jsp");
+                    view.forward(request, response);
+                } else {
+                    String temp = ((StringBuffer)session.getAttribute("loginAction")).toString();
+                    //view = request.getRequestDispatcher(temp);
+                    session.setAttribute("loginAction", null);
+                    ((HttpServletResponse)response).sendRedirect(temp);
+                }
+                //view.forward(request, response);
             }
         } else {
             view = request.getRequestDispatcher("login.jsp");
