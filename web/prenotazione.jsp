@@ -154,16 +154,7 @@
                 $("#link").attr("href", "pagamento.jsp?ns="+$("#ora").val());
             });
            
-                       
-              
-              
-              
-              //aggiungere postiselezionati alla post della request
-              
-              
-              
-             
-           
+                      
             var date = [<%= values.toString()%>];
             var orari = [<%= values1.toString()%>];
             var i = 0;

@@ -126,6 +126,10 @@ var firstSeatLabel = 1;
                         sc.find('selected').each(function () {
                             $("#link").attr("href", $("#link").attr("href")+this.settings.id+",");
                         });
+                        $("#link").attr("href", $("#link").attr("href")+"&postiRidotti=");
+                        sc.find('selected_ridotto').each(function () {
+                            $("#link").attr("href", $("#link").attr("href")+this.settings.id+",");
+                        });
                     });
 
             }
