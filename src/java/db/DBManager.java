@@ -385,13 +385,20 @@ public class DBManager implements Serializable {
          
     }
     /*
-    Ritorna tutti i posti occupati passato come input uno spettacolo 
-    DATESTARE non funziona esiste
+    
+    
     */
+    /**
+     * 
+     * @param s Spettacolo
+     * @return posti occupati
+     * @throws SQLException 
+     * Ritorna tutti i posti occupati passato come input uno spettacolo 
+     */
    
     public List<Posto> getPostiOccupati (Spettacolo s) throws SQLException{
         List<Posto> posti = new ArrayList<Posto>();
-        PreparedStatement stm = con.prepareStatement("SELECT Posto.id_posto, id_sala, riga, colonna FROM myCinema.Posto INNER JOIN myCinema.Prenotazione WHERE Posto.id_posto=Prenotazione.id_posto AND Prenotazione.id_spettacolo=?;");
+        PreparedStatement stm = con.prepareStatement("SELECT Posto.id_posto, id_sala, riga, colonna, esiste FROM myCinema.Posto INNER JOIN myCinema.Prenotazione WHERE Posto.id_posto=Prenotazione.id_posto AND Prenotazione.id_spettacolo=?;");
         
         stm.setInt(1,s.getId_spettacolo());
         
@@ -420,8 +427,37 @@ public class DBManager implements Serializable {
     
     }
     
+    /* 
+    array ["x,y"] dove x e y sono riga e colonna del posto prenotato ,email, spettacolo
+    Ritorno: query che prende i posti avendo l'array di x e y e poi per ogni posto salvi una prenotazione per l'email fornita 
+    per la data e l'ora al momento della query prendi la data e l'ora attuali
+    */
     
-    
+    public void addPrenotations (List <Posto> posti, String email,Spettacolo s ) throws SQLException {
+        
+        
+        while (posti.iterator().hasNext()){
+            PreparedStatement stm = con.prepareStatement("SELECT id_posto, id_sala, esiste FROM myCinema.Posto WHERE riga=? AND colonna=? ;");
+            Posto p = posti.iterator().next();
+            stm.setInt(1,p.getRiga());
+            stm.setInt(2,p.getColonna());
+            try {
+                ResultSet rs = stm.executeQuery();
+                try {
+                    while (rs.next()) {
+                        p.setId_posto(rs.getInt(Util.Posto.COLUMN_ID_POSTO));
+                        p.setId_sala(rs.getInt(Util.Posto.COLUMN_ID_SALA));
+                    }
+                } finally {
+
+                }
+            } finally {
+
+            }
+
+        }
+
+    }
         
                 
         
