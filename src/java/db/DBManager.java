@@ -435,7 +435,7 @@ public class DBManager implements Serializable {
     per la data e l'ora al momento della query prendi la data e l'ora attuali
     */
     
-    public void addPrenotations (List <Posto> posti, String email,Spettacolo s ) throws SQLException {
+    public boolean addPrenotations (List <Posto> posti, String email,Spettacolo s ) throws SQLException {
         
         
         while (posti.iterator().hasNext()){
@@ -458,6 +458,7 @@ public class DBManager implements Serializable {
             }
 
         }
+        return true;
 
     }
         
