@@ -33,7 +33,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import sun.org.mozilla.javascript.internal.Scriptable;
 import util.Classi.FilmSpettacolo;
 
 /**
