@@ -202,6 +202,7 @@ public class RequestQueryFilter implements Filter {
             int i = Integer.parseInt(request.getParameter("ns"));
             Spettacolo spett = ((List<Spettacolo>)session.getAttribute("orariPrenotazione")).get(i);
             String p = ((HttpServletRequest) request).getParameter("posti");
+            String pr = ((HttpServletRequest) request).getParameter("postiRidotti");
             String mail = null;
             try{
                 mail = ((Utente)session.getAttribute("utente")).getEmail();
@@ -224,10 +225,23 @@ public class RequestQueryFilter implements Filter {
                 po.setColonna(Character.getNumericValue(p.charAt(j+2)));
                 posti.add(po);
             }
+            List<Posto> postiRidotti = new ArrayList<>();
+            for(int j=0; (j+3)<pr.length(); j+=4){
+                Posto po = new Posto();
+                po.setRiga(Character.getNumericValue(pr.charAt(j)));
+                po.setColonna(Character.getNumericValue(pr.charAt(j+2)));
+                postiRidotti.add(po);
+            }
+            
             //CONTROLLARE NEL DATABASE CHE NON CI SIANO GIà PRENOTAZIONI PER QUEI POSTI PER QUELLO SPETTACOLO
             
             //POSTI PASSATI NELLA GET, POSSIBILMENTE MODIFICABILI DALL'UTENTE, AGGIUNGERE CONTROLLO CHE NUMERO RIGA E COLONNA
             //SIA NEL RANGE E CHE IL NUMERO DELLA RIGA SIA DIVERSO DA 5
+            
+            
+            
+            
+            
             
             //QUERY AL DATABASE CON SPETTACOLO spett E LISTA DI POSTI PRENOTATI DALL'UTENTE IDENTIFICATO DALLA SUA MAIL
         } else if ("/MyCinema/descrizionefilm.jsp".equals(url)){
