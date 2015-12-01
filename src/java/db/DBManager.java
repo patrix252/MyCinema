@@ -449,15 +449,20 @@ public class DBManager implements Serializable {
                     while (rs.next()) {
                         p.setId_posto(rs.getInt(Util.Posto.COLUMN_ID_POSTO));
                         p.setId_sala(rs.getInt(Util.Posto.COLUMN_ID_SALA));
+                        //esiste???
                     }
                 } finally {
-
+                    rs.close();
                 }
             } finally {
-
+                stm.close();
             }
 
         }
+        
+        //aggiunta dei posti con controllo 
+        //controllo se posti liberi e nel range 
+        
         return true;
 
     }
