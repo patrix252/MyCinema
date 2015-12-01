@@ -421,7 +421,9 @@ public class DBManager implements Serializable {
         } finally {
             stm.close();
         }
-
+        /*if(posti.isEmpty()){
+            posti.add(new Posto());
+        }*/
        return posti;
     
     
@@ -472,6 +474,37 @@ public class DBManager implements Serializable {
         
     
     return null;
+    }
+    
+    public Film getFilm (int n) throws SQLException{
+        Film f = new Film();
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Film, myCinema.Genere WHERE Film.id_genere = Genere.id_genere AND Film.id_film = ?;");
+        stm.setInt(1, n);        
+        try {
+            ResultSet rs = stm.executeQuery();
+            try {
+                while (rs.next()) {
+                    Genere g = new Genere();
+                    g.setId_genere(rs.getInt(Util.Genere.COLUMN_ID_GENERE));
+                    g.setDescrizione(rs.getString(Util.Genere.COLUMN_DESCRIZIONE));
+                    f.setGenere(g);
+                    f.setId_film(rs.getInt(Util.Film.COLUMN_ID_FILM));
+                    f.setTitolo(rs.getString(Util.Film.COLUMN_TITOLO));
+                    f.setUrl_trailer(rs.getString(Util.Film.COLUMN_URL_TRAILER));
+                    f.setDurata(rs.getInt(Util.Film.COLUMN_DURATA));
+                    f.setTrama(rs.getString(Util.Film.COLUMN_TRAMA));
+                    f.setUri_locandina(rs.getString(Util.Film.COLUMN_URI_LOCANDINA));
+                    f.setRegista(rs.getString(Util.Film.COLUMN_REGISTA));
+                }
+                
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+        
+        return f;
     }
     
     public void shutdown() {

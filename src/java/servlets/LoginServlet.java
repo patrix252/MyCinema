@@ -98,7 +98,8 @@ public class LoginServlet extends HttpServlet {
 //ALTRIMENTI I VALORI CI SONO E LI CONTROLLO
         String mail = request.getParameter("Mail");
         String password = request.getParameter("Password");
-        if (mail != null && password != null) {
+        String metodo = request.getMethod();
+        if ("POST".equals(metodo)) {
             InputStream is = new ByteArrayInputStream(password.getBytes());
             String hashPassword = calcolaHash(is);
             Utente user= new Utente();
@@ -109,17 +110,28 @@ public class LoginServlet extends HttpServlet {
             }
             if (user==null){
                 session.setAttribute("loginError", true);
+                view = request.getRequestDispatcher("login.jsp");
+                view.forward(request, response);
             } else {
                 session.setAttribute("utente", user);
                 //AGGIUNGERE IL TEMPO DI VITA DEL COOKIE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 Cookie biscotto = new Cookie("idUtente", user.getEmail());
                 ((HttpServletResponse) response).addCookie(biscotto);
-                view = request.getRequestDispatcher("loggato.jsp");
-                view.forward(request, response);
+                if(session.getAttribute("loginAction")==null){
+                    view = request.getRequestDispatcher("loggato.jsp");
+                    view.forward(request, response);
+                } else {
+                    String temp = ((StringBuffer)session.getAttribute("loginAction")).toString();
+                    //view = request.getRequestDispatcher(temp);
+                    session.setAttribute("loginAction", null);
+                    ((HttpServletResponse)response).sendRedirect(temp);
+                }
+                //view.forward(request, response);
             }
+        } else {
+            view = request.getRequestDispatcher("login.jsp");
+            view.forward(request, response);
         }
-        view = request.getRequestDispatcher("login.jsp");
-        view.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

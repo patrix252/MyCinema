@@ -15,7 +15,7 @@
     <body>
         <h1>Oggi al cinema!</h1>
         
-        <table  style="width:100%">
+        <table style="width:100%">
             <tr>
                 <td><h4>Titolo</h4></td>
                 <td><h4>Genere</h4></td>
@@ -29,9 +29,9 @@
                 <td><h4>Trailer</h4></td>
                 <td><h4>Locandina</h4></td>
             </tr>
-            <c:forEach items="${sessionScope.filmInProgramma}" var="film">
+                <c:forEach items="${sessionScope.filmInProgramma}" var="film">
                 <tr> 
-                    <td><a href="descrizionefilm.jsp?id=${film.f.id_film}&provenienza=filmInProgramma"><c:out value="${film.f.titolo}"/></a></td>
+                    <td><a href="descrizionefilm.jsp?id=${film.f.id_film}"><c:out value="${film.f.titolo}"/></a></td>
                     <td><c:out value="${film.f.genere.descrizione}"/></td>
                     <td><c:out value="${film.s.ora}"/></td>
                     <td><c:out value="${film.s.id_sala}"/></td>

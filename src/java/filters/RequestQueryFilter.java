@@ -7,7 +7,9 @@ package filters;
 
 import beans.Film;
 import beans.Genere;
+import beans.Posto;
 import beans.Spettacolo;
+import beans.Utente;
 import db.DBManager;
 import java.lang.Object;
 import java.io.IOException;
@@ -23,11 +25,15 @@ import java.util.logging.Logger;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import sun.org.mozilla.javascript.internal.Scriptable;
 import util.Classi.FilmSpettacolo;
 
 /**
@@ -112,6 +118,18 @@ public class RequestQueryFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
+        RequestDispatcher view = new RequestDispatcher() {
+
+            @Override
+            public void forward(ServletRequest request, ServletResponse response) throws ServletException, IOException {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void include(ServletRequest request, ServletResponse response) throws ServletException, IOException {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        };
         try {
             manager = new DBManager("jdbc:mysql://46.101.19.71/myCinema", "user", "asdd");
         } catch (SQLException ex) {
@@ -121,6 +139,8 @@ public class RequestQueryFilter implements Filter {
         HttpSession session = ((HttpServletRequest) request).getSession();
 
         String url = ((HttpServletRequest) request).getRequestURI();
+        
+        
         if ("/MyCinema/oggialcinema.jsp".equals(url)) {
             //CHIAMARE QUERY PER PRENDERE FILM DI OGGI
             List<FilmSpettacolo> films = null;
@@ -129,29 +149,97 @@ public class RequestQueryFilter implements Filter {
             } catch (SQLException ex) {
                 Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-
             session.setAttribute("filmsOggi", films);
 
-        } else if("/MyCinema/filminprogramma.jsp".equals(url)){
+        } else if("/MyCinema/filminprogramma.jsp".equals(url)) {
             List<FilmSpettacolo> films = null;
             try {
                 films = manager.getFilmsAll();
             } catch (SQLException ex) {
                 Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
             }
-
             session.setAttribute("filmInProgramma", films);
-        } else if ("/MyCinema/prenotazione.jsp".equals(url)){
+            
+        } else if ("/MyCinema/index.jsp".equals(url)) {
+            List<FilmSpettacolo> films = null;
+            int filmsLength = 0;
+            try {
+                films = manager.getFilmsAll();
+                filmsLength = films.size();
+            } catch (SQLException ex) {
+                Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            session.setAttribute("filmInProgramma", films);
+            session.setAttribute("filmInProgrammaLength", filmsLength);
+            session.setAttribute("loginAction", null);
+            
+        } else if ("/MyCinema/prenotazione.jsp".equals(url)) {
             List <Spettacolo> spett = null;
-            int i =Integer.parseInt (request.getParameter("id"));
+            int i = Integer.parseInt (request.getParameter("id"));
             try {
                 spett = manager.getSpettacoli(i);
             } catch (SQLException ex) {
                 Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
             }
             session.setAttribute("orariPrenotazione", spett);
+            List <List<Posto>> posti = new ArrayList<>();
+            for(int j=0; j<spett.size(); j++){
+                try {
+                    posti.add(manager.getPostiOccupati(spett.get(j)));
+                } catch (SQLException ex) {
+                    Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            session.setAttribute("postiOccupati", posti);
         
+        } else if ("/MyCinema/logout.jsp".equals(url)){
+            Cookie[] cookies = ((HttpServletRequest) request).getCookies();
+            for (Cookie cookie : cookies) {
+                cookie.setMaxAge(0);
+                ((HttpServletResponse) response).addCookie(cookie);
+            }
+        } else if ("/MyCinema/pagamento.jsp".equals(url)){
+            int i = Integer.parseInt(request.getParameter("ns"));
+            Spettacolo spett = ((List<Spettacolo>)session.getAttribute("orariPrenotazione")).get(i);
+            String p = ((HttpServletRequest) request).getParameter("posti");
+            String mail = null;
+            try{
+                mail = ((Utente)session.getAttribute("utente")).getEmail();
+            } catch(Exception e){
+                
+                
+                //Controllare di risettare il valore a "LoginServlet" una volta effettuato il login
+                session.setAttribute("loginAction", (((HttpServletRequest) request).getRequestURL().append('?').append(((HttpServletRequest) request).getQueryString())));
+                
+                
+                view = request.getRequestDispatcher("login.jsp");
+                view.forward(request, response);
+            }
+            //PRENDO IL VALORE DELLA STRINGA SALVATA NELLA GET DELLA REQUEST E PRENDO I VALORI OPPORTUNI PER CREARE UNA LISTA
+            //DI POSTI IN CUI SETTO I VALORI DI RIGA E COLONNA
+            List<Posto> posti = new ArrayList<>();
+            for(int j=0; (j+3)<p.length(); j+=4){
+                Posto po = new Posto();
+                po.setRiga(Character.getNumericValue(p.charAt(j)));
+                po.setColonna(Character.getNumericValue(p.charAt(j+2)));
+                posti.add(po);
+            }
+            //CONTROLLARE NEL DATABASE CHE NON CI SIANO GIà PRENOTAZIONI PER QUEI POSTI PER QUELLO SPETTACOLO
+            
+            //POSTI PASSATI NELLA GET, POSSIBILMENTE MODIFICABILI DALL'UTENTE, AGGIUNGERE CONTROLLO CHE NUMERO RIGA E COLONNA
+            //SIA NEL RANGE E CHE IL NUMERO DELLA RIGA SIA DIVERSO DA 5
+            
+            //QUERY AL DATABASE CON SPETTACOLO spett E LISTA DI POSTI PRENOTATI DALL'UTENTE IDENTIFICATO DALLA SUA MAIL
+        } else if ("/MyCinema/descrizionefilm.jsp".equals(url)){
+            int i = Integer.parseInt(request.getParameter("id"));
+            Film f = null;
+            try {
+                 f = manager.getFilm(i);
+            } catch (SQLException ex) {
+                Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            session.setAttribute("film", f);
         }
 
         if (debug) {

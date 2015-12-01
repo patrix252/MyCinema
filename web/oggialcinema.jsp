@@ -1,47 +1,56 @@
-<%-- 
-    Document   : oggialcinema
-    Created on : 13-ago-2015, 15.11.19
-    Author     : Paolo
---%>
-
 <%@taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib prefix="generalcode" tagdir="/WEB-INF/tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page session="true" %>
+
+
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Index page</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="css/my.css" href="./lib/mycss.css">
+
+        
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        
+
+        <generalcode:navbar_header/>
     </head>
     <body>
-        <h1>Oggi al cinema!</h1>
         
-        <table  style="width:100%">
-            <tr>
-                <td><h4>Titolo</h4></td>
-                <td><h4>Genere</h4></td>
-                <td><h4>Ora</h4></td>
-                <td><h4>Sala</h4></td>
-                <td><h4>Regista</h4></td>
-                <td><h4>Durata</h4></td>
-                <td><h4>Trama</h4></td>
-                <td><h4>3D</h4></td>
-                <td><h4>Trailer</h4></td>
-                <td><h4>Locandina</h4></td>
-            </tr>
-            <c:forEach items="${sessionScope.filmsOggi}" var="film">
-                <tr> 
-                    <td><a href="descrizionefilm.jsp?id=${film.f.id_film}&provenienza=filmsOggi"><c:out value="${film.f.titolo}"/></a></td>
-                    <td><c:out value="${film.f.genere.descrizione}"/></td>
-                    <td><c:out value="${film.s.ora}"/></td>
-                    <td><c:out value="${film.s.id_sala}"/></td>
-                    <td><c:out value="${film.f.regista}"/></td>
-                    <td><c:out value="${film.f.durata}"/></td>  
-                    <td><c:out value="${film.f.trama}"/></td>  
-                    <td><c:choose><c:when test="${film.f.is3D==0}">No</c:when><c:otherwise>Sì</c:otherwise></c:choose></td>
-                    <td><a href="${film.f.url_trailer}">Trailer</a></td>
-                    <td><img src="${film.f.uri_locandina}" style="width:200px;height:280px;"/></td>
-                </tr>
-            </c:forEach>
-        </table>
+        <div class="container">
+           
+            <jsp:include page="navbar.jsp" />
+
+            <div class="row">
+            <!--  ----------------------------------- -->
+                <c:forEach items="${sessionScope.filmInProgramma}" var="film" varStatus = "status">
+                <div class="col-sm-4 col-lg-4 col-md-4">      
+                    <div class="thumbnail">
+                        <a href="descrizionefilm.jsp?id=${film.f.id_film}"><img src="${film.f.uri_locandina}"></a>
+                            <div class="caption">
+                                <!-- ================================================== 
+                                QUI VANNO LA LOCANDINA, TITOLO, GENERE, DURATA, REGISTA, ATTORI E TRAMA IN BREVE
+                                ================================================== -->
+                                <p><b><a href="descrizionefilm.jsp?id=${film.f.id_film}">Titolo Film</a></b></p>
+                                <p>${film.f.genere}, <br> ${film.f.durata}, <br> ${film.f.regista}, <br> ${film.f.trama}!</p>
+                            </div>
+                    </div>
+                </div>
+                </c:forEach>    
+            <!--  ----------------------------------- -->
+            </div>
+            
+            
+             
+            <jsp:include page="footer.jsp" />
+            
+        </div>
     </body>
 </html>
