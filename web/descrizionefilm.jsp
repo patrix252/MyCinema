@@ -8,7 +8,6 @@
         <title>Descrizione film</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="css/my.css" href="./lib/mycss.css">
 
         
         <!-- jQuery library -->
@@ -23,6 +22,7 @@
         <link href="./lib/css/carousel.css" rel="stylesheet">
 
         <generalcode:navbar_header/>
+        <link href="./lib/css/carousel.css" rel="stylesheet">
     </head>
     <body>    
 	<div class="container">	

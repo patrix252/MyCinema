@@ -11,6 +11,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        
+        <link href="./lib/css/carousel.css" rel="stylesheet">s
     </head>
     <body>
         <h1>Oggi al cinema!</h1>

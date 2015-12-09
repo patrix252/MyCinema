@@ -10,7 +10,6 @@
         <title>Prezzi</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="css/my.css" href="./lib/mycss.css">
 
         
         <!-- jQuery library -->
@@ -18,8 +17,10 @@
         
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
         
         <generalcode:navbar_header/>
+        <link rel="stylesheet" type="css/my.css" href="./lib/mycss.css">
     </head>
     <body>
         

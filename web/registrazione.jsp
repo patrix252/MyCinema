@@ -1,9 +1,3 @@
-    <%-- 
-    Document   : registrazione
-    Created on : 11-ago-2015, 16.12.04
-    Author     : Paolo
---%>
-
 <%@taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -12,26 +6,68 @@
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+        
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        
+        <generalcode:navbar_header/>
+        <link rel="stylesheet" type="css/my.css" href="./lib/mycss.css">
     </head>
     <body>
-        <div>TODO write content</div>
-        <form name="modulo" id="modulo" onSubmit="return controllo();" action="registrazione.jsp" method="POST">
-            <label style="display: block;">Nome:</label><input id="nome" name="Nome" size="10"/><br>
-            <label style="display: block;">Cognome:</label><input id="cognome" name="Cognome" size="10"/><br>
-            <label style="display: block;">Data di Nascita:</label>
-            <select id="daydropdown" name="Giorno"></select> 
-            <select id="monthdropdown" name="Mese"></select> 
-            <select id="yeardropdown" name="Anno"></select> 
-            <label style="display: block;">Mail:</label><input id="mail" name="Mail" size="10"/><br>
-            <label style="display: block;">Password:</label><input type="password" id="password" name="Password" size="10"/><br>
-            <input type="submit" value="Submit"/>
-        </form>
         
-        <c:if test="${sessionScope.EmailErrata==true}">
-            <FONT COLOR="#FF0000">Email non valida, reinserisci i dati</FONT>
-            <c:set var="EmailErrata" value="false" scope="session"/>
-        </c:if>
+        
+        <div class="container">
+            <jsp:include page="navbar.jsp" />
+            
+            <h1>Nuovo cliente?</h1>
+
+                
+            <form id="modulo" class="form-inline" name="modulo"  onSubmit="return controllo();" action="registrazione.jsp" method="POST">
+                <div class="form-group">
+                    <div class="row">
+                        <h2 class="text-center"><b>Impostazioni account!</b></h2>
+                    </div>
+                    
+                    <div class="row">
+                        <dl class="dl-horizontal">
+                            <dt><h4>Nome:</h4></dt>
+                            <dd><input id="nome" class="form-control" type="text" name="Nome" size="10" placeholder="Nome"/></dd>
+                            <dt><h4>Cognome:</h4></dt>
+                            <dd><input id="cognome" class="form-control" type="text" name="Cognome" size="10" placeholder="Cognome"/></dd>
+
+                            <dt><h4>Data di nascita:</h4></dt>
+                            <dd>
+                                <select id="daydropdown" class="form-control" name="Giorno"></select> 
+                                <select id="monthdropdown" class="form-control" name="Mese"></select> 
+                                <select id="yeardropdown" class="form-control" name="Anno"></select> 
+                            </dd>
+                            <dt><h4>Mail:</h4></dt>
+                            <dd><input id="mail" class="form-control" type="text" name="Mail" placeholder="yourmail@sample.com" size="10"/></dd>
+                            <dt><h4>Password:</h4></dt>
+                            <dd><input id="password" class="form-control" type="password" name="Password" size="10" placeholder="Password"/></dd>
+                        </dl>
+                    </div>
+                    
+                    <c:if test="${sessionScope.EmailErrata==true}">
+                        <p style="color: red;">Email non valida, reinserisci i dati</p>
+                        <c:set var="EmailErrata" value="false" scope="session"/>
+                    </c:if>
+                    
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <button type="submit" class="btn btn-lg center-block btn-success">Crea Account!</button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+            
+            <jsp:include page="footer.jsp" />
+        </div>
+
         
         <script type="text/javascript">
             window.onload = function () {

@@ -59,7 +59,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="./lib/seat-charts.css">
         <link rel="stylesheet" type="text/css" href="./lib/seat-charts2.css">
-        <link rel="stylesheet" type="css/my.css" href="./lib/mycss.css">
         <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
 
         
@@ -74,6 +73,7 @@
         <script src="js/prenotazione.js"></script>
 
         <generalcode:navbar_header/>
+        <link href="./lib/css/carousel.css" rel="stylesheet">
         
     </head>
     <body>

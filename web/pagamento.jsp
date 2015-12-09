@@ -10,6 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <link href="./lib/css/carousel.css" rel="stylesheet">
     </head>
     <body>
         <h1>Totale: totale preso dal valore della sessione</h1>

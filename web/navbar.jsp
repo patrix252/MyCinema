@@ -1,11 +1,9 @@
-<%-- 
-    Document   : navbar
-    Created on : Oct 31, 2015, 1:57:28 PM
-    Author     : Patrix
---%>
+
+<%@taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%-- navbar-fixed-top --%>
-    <nav class="navbar navbar-inverse" role="navigation">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -29,32 +27,51 @@
                     <li>
                         <a href="contatti.jsp">Contatti</a>
                     </li>
+                    
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <!-- REGISTRAZIONE-->
-                    <li> 
-                        <a href="registrazione.jsp">Registrati!</a>
-                    </li>
-                    <!-- EFFETTUA ACCESSO --> 
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Effettua l'accesso<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <div class="col-sm-12">
-                                <form class="form-inline">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" id="mail" placeholder="yourmail@sample.com">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="password" class="form-control" id="password" placeholder="Password">
-                                    </div>
-                                    <div>
-                                        <a href="passwordimenticata.html">Password dimenticata?</a>
-                                        <button type="submit"  class="btn btn-success pull-right">Accedi!</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </ul>
-                    </li>
+                    
+                    <c:if test="${sessionScope.utente.getEmail()!=null}">
+                        <!-- Loggato -->
+                        <li>
+                            <a href="logout.jsp">Log Out</a>
+                        </li>
+                    </c:if>
+                    <c:if test="${sessionScope.utente.getEmail()==null}">
+                        <!-- Non loggato -->
+                        <li> 
+                            <a href="registrazione.jsp">Registrati!</a>
+                        </li>
+                        
+                        
+                        
+                        <li class="dropdown"> 
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Effettua l'accesso<span class="caret"></span></a>
+                            <ul class="dropdown-menu" style="width: 200px">
+                                <div class="">
+                                    
+                                    <form class="form-inline" action="LoginServlet" method="POST">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" id="mail" name="Mail" size="10" placeholder="yourmail@sample.com" style="width: 100%">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control" id="password" name="Password" size="10" placeholder="Password" >
+                                        </div>
+                                        <c:if test="${sessionScope.loginError}">
+                                            <p style="color: red;">Email o password non valide, reinserisci i dati!</p>
+                                            <c:set var="loginError" value="false" scope="session"/>
+                                        </c:if>
+                                        <div>
+                                            <a href="passwordimenticata.html">Password dimenticata?</a>
+                                            <button type="submit"  class="btn btn-success pull-right">Accedi!</button>
+                                        </div>
+                                    </form>
+                                  
+                                </div>
+                            </ul>
+                        </li>
+                        
+                    </c:if>
                 </ul>
             </div>
         </div>
