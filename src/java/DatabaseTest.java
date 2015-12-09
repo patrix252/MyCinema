@@ -67,6 +67,8 @@ public class DatabaseTest extends HttpServlet {
             throw new ServletException(ex);
         }
         
+       
+        
         
         
         response.setContentType("text/html;charset=UTF-8");
