@@ -246,10 +246,14 @@ public class RequestQueryFilter implements Filter {
         } else if("/MyCinema/pagamentoEffettuato.jsp".equals(url)) {
             
             try {
-                 if(manager.addPrenotations((List<Posto>)session.getAttribute("postiInteri"), 
-                                            (List<Posto>)session.getAttribute("postiRidotti"), 
+                 if(manager.addPrenotations((List<Posto>)session.getAttribute("postiTotali"), 
                                             (String)session.getAttribute("mail"), 
-                                            (Spettacolo)session.getAttribute("spettacoloPrenotazione"))){
+                                            (Spettacolo)session.getAttribute("spettacoloPrenotazione"),
+                                            
+                    //DA SISTEMARE
+                                            
+                                            
+                                            false)){
                     //I POSTI ERANO LIBERI E CONTINUA LA TRANSAZIONE
                  } else {
                      //I POSTI ERANO OCCUPATI O C'ERA QUALCHE PROBLEMA NELL'URL, QUINDI REINDIRIZZARE VERSO PAGINA DI ERRORE
