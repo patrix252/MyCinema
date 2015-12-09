@@ -12,7 +12,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.rmi.ServerException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -66,6 +69,39 @@ public class DatabaseTest extends HttpServlet {
         } catch (SQLException ex){
             throw new ServletException(ex);
         }
+         //TESTING FUNZIONE INSERIMENTO PRENOTAZIONE
+        
+        List a = new ArrayList();
+        List b = new ArrayList();
+        Spettacolo q = new Spettacolo();
+        q.setId_spettacolo(2);
+        q.setId_sala(1);
+        Posto x = new Posto();
+        Posto y = new Posto();
+        x.setId_posto(13);
+        x.setColonna(13);
+        x.setRiga(13);
+        x.setEsiste(1);
+        x.setId_sala(1);
+        y.setId_posto(15);
+        y.setColonna(15);
+        y.setRiga(15);
+        y.setEsiste(1);
+        y.setId_sala(1);
+        a.add(x);
+        a.add(y);
+            try {
+                //TESTING FUNZIONE INSERIMENTO PRENOTAZIONE
+
+                boolean RESULTEDEZ=manager.addPrenotations(a, "qwe", q,true);
+                String ass = "kdfjvj";
+             
+            } catch (SQLException ex) {
+               
+                Logger.getLogger(DatabaseTest.class.getName()).log(Level.SEVERE, null, ex);
+               
+                
+            }
         
        
         
