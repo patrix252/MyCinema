@@ -4,8 +4,13 @@
  * and open the template in the editor.
  */
 var firstSeatLabel = 1;
+var postiTotali = {
+    postiInteri : [],
+    postiRidotti : []
+};
 
             $(document).ready(function () {
+                $("#data option[value='InfoData']").prop('selected', true);
             });
 		
             function mappa(posti) {
@@ -120,17 +125,25 @@ var firstSeatLabel = 1;
                         this.status('available');
                     });
                     sc.get(postiPerSpettacolo).status('unavailable');
-                    
+                   
+
+                    //INVIARE JSON AL SERVER
                     $("#link").click(function(){
-                        $("#link").attr("href", $("#link").attr("href")+"&posti=");
                         sc.find('selected').each(function () {
-                            $("#link").attr("href", $("#link").attr("href")+this.settings.id+",");
+                            postiTotali.postiInteri.push(this.settings.id);
                         });
-                        $("#link").attr("href", $("#link").attr("href")+"&postiRidotti=");
                         sc.find('selected_ridotto').each(function () {
-                            $("#link").attr("href", $("#link").attr("href")+this.settings.id+",");
+                            postiTotali.postiRidotti.push(this.settings.id);
+                        }); 
+                        $.ajax({
+                            url: $("#link").attr("href"),
+                            method: "POST",
+                            contentType:'application/json',
+                            data: JSON.stringify(postiTotali),
+                            dataType:'text'
                         });
                     });
+
 
             }
 

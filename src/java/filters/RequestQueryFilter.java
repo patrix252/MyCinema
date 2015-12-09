@@ -201,8 +201,8 @@ public class RequestQueryFilter implements Filter {
         } else if ("/MyCinema/pagamento.jsp".equals(url)){
             int i = Integer.parseInt(request.getParameter("ns"));
             Spettacolo spett = ((List<Spettacolo>)session.getAttribute("orariPrenotazione")).get(i);
-            String p = ((HttpServletRequest) request).getParameter("posti");
-            String pr = ((HttpServletRequest) request).getParameter("postiRidotti");
+            session.setAttribute("spettacoloPrenotazione", spett);
+            String p = ((HttpServletRequest) request).getParameter("pt");
             String mail = null;
             try{
                 mail = ((Utente)session.getAttribute("utente")).getEmail();
@@ -216,9 +216,10 @@ public class RequestQueryFilter implements Filter {
                 view = request.getRequestDispatcher("login.jsp");
                 view.forward(request, response);
             }
+            session.setAttribute("mail", mail);
             //PRENDO IL VALORE DELLA STRINGA SALVATA NELLA GET DELLA REQUEST E PRENDO I VALORI OPPORTUNI PER CREARE UNA LISTA
             //DI POSTI IN CUI SETTO I VALORI DI RIGA E COLONNA
-            List<Posto> posti = new ArrayList<>();
+            /*List<Posto> posti = new ArrayList<>();
             for(int j=0; (j+3)<p.length(); j+=4){
                 Posto po = new Posto();
                 po.setRiga(Character.getNumericValue(p.charAt(j)));
@@ -233,17 +234,30 @@ public class RequestQueryFilter implements Filter {
                 postiRidotti.add(po);
             }
             
+            session.setAttribute("postiInteri", posti);
+            session.setAttribute("postiRidotti", postiRidotti);
+            */
             //CONTROLLARE NEL DATABASE CHE NON CI SIANO GIà PRENOTAZIONI PER QUEI POSTI PER QUELLO SPETTACOLO
             
             //POSTI PASSATI NELLA GET, POSSIBILMENTE MODIFICABILI DALL'UTENTE, AGGIUNGERE CONTROLLO CHE NUMERO RIGA E COLONNA
             //SIA NEL RANGE E CHE IL NUMERO DELLA RIGA SIA DIVERSO DA 5
-            
-            
-            
-            
-            
-            
+
             //QUERY AL DATABASE CON SPETTACOLO spett E LISTA DI POSTI PRENOTATI DALL'UTENTE IDENTIFICATO DALLA SUA MAIL
+        } else if("/MyCinema/pagamentoEffettuato.jsp".equals(url)) {
+            
+            try {
+                 if(manager.addPrenotations((List<Posto>)session.getAttribute("postiInteri"), 
+                                            (List<Posto>)session.getAttribute("postiRidotti"), 
+                                            (String)session.getAttribute("mail"), 
+                                            (Spettacolo)session.getAttribute("spettacoloPrenotazione"))){
+                    //I POSTI ERANO LIBERI E CONTINUA LA TRANSAZIONE
+                 } else {
+                     //I POSTI ERANO OCCUPATI O C'ERA QUALCHE PROBLEMA NELL'URL, QUINDI REINDIRIZZARE VERSO PAGINA DI ERRORE
+                 }
+            } catch (SQLException ex) {
+                Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         } else if ("/MyCinema/descrizionefilm.jsp".equals(url)){
             int i = Integer.parseInt(request.getParameter("id"));
             Film f = null;

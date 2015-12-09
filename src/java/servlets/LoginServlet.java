@@ -113,6 +113,13 @@ public class LoginServlet extends HttpServlet {
                 view = request.getRequestDispatcher("login.jsp");
                 view.forward(request, response);
             } else {
+                if(user.getRuolo()==1){
+                    
+
+                    //sei un admin del cazzo
+                    session.setAttribute("admin", true);
+                   
+                }
                 session.setAttribute("utente", user);
                 //AGGIUNGERE IL TEMPO DI VITA DEL COOKIE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 Cookie biscotto = new Cookie("idUtente", user.getEmail());

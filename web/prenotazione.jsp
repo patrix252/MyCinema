@@ -99,7 +99,7 @@
                                 DATE PICKER // NON DISABILITA LE DATE PRECEDENTI A "OGGI"
                                 ================================================== -->
                                 <select class="form-control" name="data" id="data" onchange="cambia(this)">
-                                    <option disabled selected> -- Seleziona una data -- </option>
+                                    <option value="InfoData" disabled> -- Seleziona una data -- </option>
                                     <c:set var="dataScelta" value="null"/>
                                     <c:forEach items="${sessionScope.orari}" var="orari">
                                     <option value="${orari}"><c:out value="${orari}"/></option>
