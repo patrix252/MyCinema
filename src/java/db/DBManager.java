@@ -19,7 +19,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 import util.Classi;
@@ -433,35 +438,95 @@ public class DBManager implements Serializable {
     array ["x,y"] dove x e y sono riga e colonna del posto prenotato ,email, spettacolo
     Ritorno: query che prende i posti avendo l'array di x e y e poi per ogni posto salvi una prenotazione per l'email fornita 
     per la data e l'ora al momento della query prendi la data e l'ora attuali
+    1.controllo che i posti non siano gia prenotati
+    2.inserisco una prenotazione per ogni posto
+    
+    
+    
     */
     
-    public boolean addPrenotations (List <Posto> posti, List <Posto> postiRidotti, String email,Spettacolo s ) throws SQLException {
-        
-        
-        while (posti.iterator().hasNext()){
-            PreparedStatement stm = con.prepareStatement("SELECT id_posto, id_sala, esiste FROM myCinema.Posto WHERE riga=? AND colonna=? ;");
-            Posto p = posti.iterator().next();
-            stm.setInt(1,p.getRiga());
-            stm.setInt(2,p.getColonna());
-            try {
-                ResultSet rs = stm.executeQuery();
-                try {
-                    while (rs.next()) {
-                        p.setId_posto(rs.getInt(Util.Posto.COLUMN_ID_POSTO));
-                        p.setId_sala(rs.getInt(Util.Posto.COLUMN_ID_SALA));
+    public boolean addPrenotations (List <Posto> posti, String email,Spettacolo s,boolean ridotto ) throws SQLException {
+            
+                
+               
+            //inserisco le prenotazioni
+            
+            while (posti.iterator().hasNext()) {
+            PreparedStatement stm = con.prepareStatement("SELECT id_posto FROM myCinema.Posto WHERE id_sala=? AND riga=? AND colonna=?;");
+            stm.setInt(1, s.getId_sala());
+            stm.setInt(2,posti.iterator().next().getRiga());
+            stm.setInt(3,posti.iterator().next().getColonna());
+        try {
+            ResultSet rs = stm.executeQuery();
+            try{
+                while (rs.next()){
+                    int id_posto = rs.getInt(Util.Posto.COLUMN_ID_POSTO);
+                    //controllo che non ci sia gia una prenotazione con questo posto 
+                    PreparedStatement stm2 = con.prepareStatement("SELECT id_posto FROM myCinema.Prenotazione WHERE id_spettacolo=?;");
+                    stm2.setInt(1,s.getId_spettacolo());
+                    try{
+                        ResultSet prenotazioni = stm2.executeQuery();
+                        try{
+                        while(prenotazioni.next()){
+                            if ((prenotazioni.getInt(Util.Prenotazione.COLUMN_ID_POSTO)) == id_posto){
+                                return false;
+                            }
+                        }
+                        } finally {
+                            prenotazioni.close();
+                        }
+                    } finally {
+                        stm2.close();
                     }
-                } finally {
-
+                    
+                    
+                    
+                    
+                    PreparedStatement insert = con.prepareStatement("INSERT INTO myCinema.Prenotazione (id_spettacolo, id_prezzo, id_posto, email, data, ora) VALUES (?,?,?,?,?,?);");
+                        insert.setInt(1,s.getId_spettacolo());
+                        if (ridotto){
+                        insert.setInt(2,1);
+                        } else {
+                        insert.setInt(2,0);
+                        }
+                        insert.setInt(3,id_posto);
+                        insert.setString(4,email);
+                        //data odierna
+                        
+                        //java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+                        DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
+                        java.util.Date data = new java.util.Date();
+                        String datestring = dateformat.format(data);
+                        insert.setString(5,datestring);
+                        //ora odierna
+                        DateFormat dateformatime = new SimpleDateFormat("HH:mm:ss");
+                        String timestring = dateformatime.format(data);
+                        insert.setString(6,timestring);
+                        //la salta
+                        String porcodio="porcodio";
+                        insert.executeUpdate();
+                
                 }
-            } finally {
-
+            } finally{
+                rs.close();
             }
-
-        }
-        return true;
-
+        } finally{
+            stm.close();
+        }   
+            
+            
+            }
+      return true;     
     }
-        
+            
+            
+            
+            
+            
+            
+            
+            
+              
                 
         
       
