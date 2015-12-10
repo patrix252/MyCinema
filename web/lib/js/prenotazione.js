@@ -61,9 +61,8 @@ var postiTotali = {
                         legend : {
                             node : $('#legend'),
                             items : [
-                                        [ 'f', 'available',   'First Class' ],
-                                        [ 'e', 'available',   'Economy Class'],
-                                        [ 'f', 'unavailable', 'Already Booked']
+                                        [ 'f', 'selected',   'Normale' ],
+                                        [ 'e', 'selected_ridotto',   'Ridotto']
                             ]					
                         },
                         click: function () {
