@@ -47,15 +47,15 @@
                         
                         <li class="dropdown"> 
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Effettua l'accesso<span class="caret"></span></a>
-                            <ul class="dropdown-menu" style="width: 200px">
-                                <div class="">
+                            <ul class="dropdown-menu" style="width: 250px">
+                                <div class="col-sm-12">
                                     
                                     <form class="form-inline" action="LoginServlet" method="POST">
-                                        <div class="form-group">
+                                        <div class="form-group" style="width: 100%">
                                             <input type="text" class="form-control" id="mail" name="Mail" size="10" placeholder="yourmail@sample.com" style="width: 100%">
                                         </div>
-                                        <div class="form-group">
-                                            <input type="password" class="form-control" id="password" name="Password" size="10" placeholder="Password" >
+                                        <div class="form-group" style="width: 100%">
+                                            <input type="password" class="form-control" id="password" name="Password" size="10" placeholder="Password" style="width: 100%">
                                         </div>
                                         <c:if test="${sessionScope.loginError}">
                                             <p style="color: red;">Email o password non valide, reinserisci i dati!</p>

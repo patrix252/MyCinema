@@ -13,8 +13,7 @@
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         
-        <generalcode:navbar_header/>
-        <link rel="stylesheet" type="css/my.css" href="./lib/mycss.css">
+        <link rel="stylesheet" type="css/my.css" href="./lib/css/mycss.css">
     </head>
     <body>
         
@@ -28,15 +27,15 @@
             <form id="modulo" class="form-inline" name="modulo"  onSubmit="return controllo();" action="registrazione.jsp" method="POST">
                 <div class="form-group">
                     <div class="row">
-                        <h2 class="text-center"><b>Impostazioni account!</b></h2>
+                        <h2 class="text-center"><b>Impostazioni account</b></h2>
                     </div>
                     
                     <div class="row">
                         <dl class="dl-horizontal">
                             <dt><h4>Nome:</h4></dt>
-                            <dd><input id="nome" class="form-control" type="text" name="Nome" size="10" placeholder="Nome"/></dd>
+                            <dd><input id="nome" class="form-control" type="text" name="Nome" size="10" placeholder="Nome" style="width: 100%"/></dd>
                             <dt><h4>Cognome:</h4></dt>
-                            <dd><input id="cognome" class="form-control" type="text" name="Cognome" size="10" placeholder="Cognome"/></dd>
+                            <dd><input id="cognome" class="form-control" type="text" name="Cognome" size="10" placeholder="Cognome" style="width: 100%"/></dd>
 
                             <dt><h4>Data di nascita:</h4></dt>
                             <dd>
@@ -45,9 +44,9 @@
                                 <select id="yeardropdown" class="form-control" name="Anno"></select> 
                             </dd>
                             <dt><h4>Mail:</h4></dt>
-                            <dd><input id="mail" class="form-control" type="text" name="Mail" placeholder="yourmail@sample.com" size="10"/></dd>
+                            <dd><input id="mail" class="form-control" type="text" name="Mail" placeholder="yourmail@sample.com" size="10" style="width: 100%"/></dd>
                             <dt><h4>Password:</h4></dt>
-                            <dd><input id="password" class="form-control" type="password" name="Password" size="10" placeholder="Password"/></dd>
+                            <dd><input id="password" class="form-control" type="password" name="Password" size="10" placeholder="Password" style="width: 100%"/></dd>
                         </dl>
                     </div>
                     
