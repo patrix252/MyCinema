@@ -91,6 +91,10 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("utente", user);
                     view = request.getRequestDispatcher("loggato.jsp");
                     view.forward(request, response);
+                } else {
+                    //PROBLEMA LOGIN, USCIRE
+                    view = request.getRequestDispatcher("login.jsp");
+                    view.forward(request, response);
                 }
             }
         }
@@ -99,7 +103,7 @@ public class LoginServlet extends HttpServlet {
         String mail = request.getParameter("Mail");
         String password = request.getParameter("Password");
         String metodo = request.getMethod();
-        if ("POST".equals(metodo)) {
+        if ("POST".equals(metodo) && password!=null && mail!=null && !"".equals(password) && !"".equals(mail) ) {
             InputStream is = new ByteArrayInputStream(password.getBytes());
             String hashPassword = calcolaHash(is);
             Utente user= new Utente();
@@ -116,7 +120,7 @@ public class LoginServlet extends HttpServlet {
                 if(user.getRuolo()==1){
                     
 
-                    //sei un admin del cazzo
+                    //sei un admin
                     session.setAttribute("admin", true);
                    
                 }

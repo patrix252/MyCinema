@@ -6,7 +6,8 @@
 var firstSeatLabel = 1;
 var postiTotali = {
     postiInteri : [],
-    postiRidotti : []
+    postiRidotti : [],
+    ns : ""
 };
 
             $(document).ready(function () {
@@ -126,7 +127,10 @@ var postiTotali = {
                     });
                     sc.get(postiPerSpettacolo).status('unavailable');
                    
-
+                    $("#ora").click(function(){
+                        postiTotali.ns = $("#ora").val();
+                    });
+                    
                     //INVIARE JSON AL SERVER
                     $("#link").click(function(){
                         sc.find('selected').each(function () {
@@ -135,6 +139,7 @@ var postiTotali = {
                         sc.find('selected_ridotto').each(function () {
                             postiTotali.postiRidotti.push(this.settings.id);
                         }); 
+                        
                         $.ajax({
                             url: $("#link").attr("href"),
                             method: "POST",

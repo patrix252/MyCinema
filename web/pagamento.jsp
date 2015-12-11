@@ -39,7 +39,7 @@
         </dl>  
         <br>
         <br>
-        <form action="EmailQrCode" method="POST">
+        <form action="pagamentoEffettuato.jsp" method="POST">
             <input type="submit" value="Conferma Dati e procedi al PAGAH!mento"/>
         </form>
     </body>

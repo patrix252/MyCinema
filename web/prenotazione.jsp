@@ -77,7 +77,6 @@
         
     </head>
     <body>
-       
         <!-- INSERIRE NAVBAR -->
         
         <div class="container">
@@ -149,11 +148,7 @@
        
         
         <script>
-            var posti = <%= posti.toString() %>;
-            $("#ora").click(function(){
-                $("#link").attr("href", "pagamento.jsp?ns="+$("#ora").val());
-            });
-           
+            var posti = <%= posti.toString() %>;         
                       
             var date = [<%= values.toString()%>];
             var orari = [<%= values1.toString()%>];
