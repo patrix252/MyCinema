@@ -57,8 +57,8 @@
         <title>Prenotazione</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="./lib/seat-charts.css">
-        <link rel="stylesheet" type="text/css" href="./lib/seat-charts2.css">
+     
+        <link rel="stylesheet" type="text/css" href="./lib/css/seat-charts2.css">
         <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
 
         
@@ -69,11 +69,11 @@
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         
         
-        <script src="./lib/seat-charts.min.js"></script> 
-        <script src="js/prenotazione.js"></script>
+        <script src="./lib/js/seat-charts.min.js"></script> 
+        <script src="./lib/js/prenotazione.js"></script>
 
-        <generalcode:navbar_header/>
-        <link href="./lib/css/carousel.css" rel="stylesheet">
+
+        <link rel="stylesheet" href="./lib/css/mycss.css">
         
     </head>
     <body>
@@ -126,20 +126,35 @@
                         
             
             <div class="row" style="padding-top: 5%;" id="acquista" hidden>
-                <div class="col-sm-6 col-lg-6 col-md-6">
-                    <div id="seat-map" class="noselect">
-                        <div class="front-indicator">Front</div>
+                <div class="col-md-1"></div>
+                <div class="col-md-5">
+                    <div class="row">
+                        <div id="seat-map" class="noselect">
+                            <div class="front-indicator">Front</div>
+                        </div>
                     </div>
-                    
-                    <div id="legend"></div>
+                    <div class="row">
+                        <div id="legend"></div>
+                    </div>
                 </div>
-
-                <div class="col-sm-3 col-lg-3 col-md-3" style="padding-top: 10%;">    
-                    <p><b>Riepilogo:</b></p>
+                
+                
+                <div class="col-md-5" style="padding-top: 5%;">    
+                    <div class="row" style="margin-bottom: 20px">
+                        <p style="font-size: 30px"><b>Riepilogo:</b> </p>
+                    </div>
+                    <div class="row">
                     <p><b>n° posti interi: </b><span id="counter_intero">0</span></p>
+                    </div>
+                    <div class="row">
                     <p><b>n° posti ridotti: </b><span id="counter_ridotto">0</span></p>
+                    </div>
+                    <div class="row" style="margin-bottom: 20px">
                     <p><b>Prezzo totale: </b>€ <span id="total">0</span></p>
-                    <a href="pagamento.jsp" id="link"><button class="btn center-block btn-success">Acquista!</button></a>        
+                    </div>
+                    <div class="row">
+                    <a href="pagamento.jsp" id="link"><button class="btn center-block btn-success">Acquista!</button></a>
+                    </div>
                 </div>
                 <br>
             </div>    

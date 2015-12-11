@@ -12,7 +12,7 @@
         <title>Index page</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="css/my.css" href="./lib/mycss.css">
+        
 
         
         <!-- jQuery library -->
@@ -27,6 +27,8 @@
 
 
         <link href="./lib/css/carousel.css" rel="stylesheet">
+        <link rel="stylesheet" href="./lib/css/mycss.css">
+        
     </head>
     <body>
         
@@ -39,23 +41,25 @@
                 sessionScope.filmInProgrammaLength = numero film in filmInProgramma
                 sessionScope.filmInProgramma = lista di film da visualizzare nel carosel
             -->
-            <div class="row" style="padding-top: 80px;">
+            <div class="row">
                 <div id="myCarousel" class="carousel slide" data-ride="carousel">
                     <!-- Indicators -->
                     <ol class="carousel-indicators">
-                        <c:forEach var="i" begin="0" end="${sessionScope.filmInProgrammaLength-1}" varStatus = "status">
+                        <c:forEach var="i" begin="0" end="${sessionScope.filmCaroselloLength-1}" varStatus = "status">
                         <li data-target="#myCarousel" data-slide-to="${i}" class="${status.first ? 'active' : ''}"></li>
                         </c:forEach>
                     </ol>
                     <div class="carousel-inner" role="listbox">        
-                        <c:forEach items="${sessionScope.filmInProgramma}" var="film" varStatus = "status">
+                        <c:forEach items="${sessionScope.filmCarosello}" var="film" varStatus = "status">
                         <div class="item ${status.first ? 'active' : ''}">
-                            <img class="second-slide" src="${film.f.uri_locandina}" alt="${film.f.titolo}">
+                            <div class="container_img_slide">
+                                <p><img class="second-slide img_slide" src="${film.uri_locandina}" alt="${film.titolo}"></p>
+                            </div>
                             <div class="container">
                                 <div class="carousel-caption">
-                                    <h1>${film.f.titolo}</h1>
-                                    <p>non so cosa mettere</p>
-                                    <p><a class="btn btn-lg btn-primary" href="http://localhost:8080/MyCinema/descrizionefilm.jsp?id=${film.f.id_film}" role="button">Scheda film</a></p>
+                                    <h1>${film.titolo}</h1>
+                                    
+                                    <p><a class="btn btn-lg btn-primary" href="/descrizionefilm.jsp?id=${film.id_film}" role="button">Scheda film</a></p>
                                 </div>
                             </div>
                         </div>
@@ -83,8 +87,8 @@
                                 <!-- ================================================== 
                                 QUI VANNO LA LOCANDINA, TITOLO, GENERE, DURATA, REGISTA, ATTORI E TRAMA IN BREVE
                                 ================================================== -->
-                                <p><b><a href="descrizionefilm.jsp?id=${film.f.id_film}">Titolo Film</a></b></p>
-                                <p>${film.f.genere}, <br> ${film.f.durata}, <br> ${film.f.regista}, <br> ${film.f.trama}!</p>
+                                <p><b><a href="descrizionefilm.jsp?id=${film.f.id_film}">${film.f.titolo}</a></b></p>
+                                <p>${film.f.genere.descrizione} <br> ${film.f.durata} minuti <br> ${film.f.regista} <br> ${film.f.trama}!</p>
                             </div>
                     </div>
                 </div>
@@ -96,12 +100,10 @@
             
             
             <div class="row">
-                <h1>Index Page</h1><br>
+                
                 <c:if test="${sessionScope.utente.getEmail()!=null}">
                     Benvenuto <c:out value="${sessionScope.utente.getNome()}"/><br>
                 </c:if>
-                <a href="oggialcinema.jsp"> - Oggi al cinema</a><br>
-                <a href="filminprogramma.jsp"> - Tutti i film in programma</a><br>
                 <c:if test="${sessionScope.utente.getEmail()!=null}">
                     <a href="logout.jsp"> - Log Out</a><br>
                 </c:if>
