@@ -123,7 +123,16 @@ var postiTotali = {
                     
                     sc.find('unavailable').each(function () {
                         this.status('available');
+                    });     
+                    sc.find('selected').each(function () {
+                        this.status('available');
+                    });                 
+                    sc.find('selected_ridotto').each(function () {
+                        this.status('available');
                     });
+                    
+                
+                
                     sc.get(postiPerSpettacolo).status('unavailable');
                    
                     $("#ora").click(function(){
@@ -131,7 +140,7 @@ var postiTotali = {
                     });
 
                     //INVIARE JSON AL SERVER
-                    $("#link").click(function(){
+                    $("#link").unbind().click(function(){
                         sc.find('selected').each(function () {
                             postiTotali.postiInteri.push(this.settings.id);
                         });
