@@ -19,8 +19,8 @@
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
         
-        <generalcode:navbar_header/>
-        <link rel="stylesheet" type="css/my.css" href="./lib/mycss.css">
+     
+        <link rel="stylesheet" type="css/my.css" href="./lib/css/mycss.css">
     </head>
     <body>
         

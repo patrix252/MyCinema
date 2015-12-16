@@ -110,7 +110,10 @@ public class LoginServlet extends HttpServlet {
             try {
                 user=manager.chekpassword(mail,hashPassword);
             } catch (SQLException ex) {
-                Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+                //AGGIUNGERE ECCEZIONE
+                session.setAttribute("problemaConnessione", true);
+                view = request.getRequestDispatcher("login.jsp");
+                view.forward(request, response);
             }
             if (user==null){
                 session.setAttribute("loginError", true);

@@ -356,7 +356,7 @@ public class DBManager implements Serializable {
         List<Film> films = new ArrayList<Film>();
         
         //INSERITI FILM CON DATA MAGGIORE DI OGGI AL MASSIMO 5 
-        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Film, myCinema.Genere, myCinema.Spettacolo WHERE Film.id_genere = Genere.id_genere AND Film.id_film = Spettacolo.id_film AND data > CURDATE() LIMIT 5;");
+        PreparedStatement stm = con.prepareStatement("SELECT DISTINCT myCinema.Genere.id_genere, myCinema.Genere.descrizione, myCinema.Film.url_trailer,  myCinema.Film.id_film, myCinema.Film.trama, myCinema.Film.durata, myCinema.Film.regista, myCinema.Film.titolo, myCinema.Film.uri_locandina  FROM myCinema.Film, myCinema.Genere, myCinema.Spettacolo WHERE Film.id_genere = Genere.id_genere AND Film.id_film = Spettacolo.id_film AND data > CURDATE() LIMIT 5;");
         
         try {
             ResultSet rs = stm.executeQuery();

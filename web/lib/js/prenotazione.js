@@ -62,9 +62,8 @@ var postiTotali = {
                         legend : {
                             node : $('#legend'),
                             items : [
-                                        [ 'f', 'available',   'First Class' ],
-                                        [ 'e', 'available',   'Economy Class'],
-                                        [ 'f', 'unavailable', 'Already Booked']
+                                        [ 'f', 'selected',   'Normale' ],
+                                        [ 'e', 'selected_ridotto',   'Ridotto']
                             ]					
                         },
                         click: function () {
@@ -130,7 +129,7 @@ var postiTotali = {
                     $("#ora").click(function(){
                         postiTotali.ns = $("#ora").val();
                     });
-                    
+
                     //INVIARE JSON AL SERVER
                     $("#link").click(function(){
                         sc.find('selected').each(function () {

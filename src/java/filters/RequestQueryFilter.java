@@ -168,16 +168,24 @@ public class RequestQueryFilter implements Filter {
             session.setAttribute("filmInProgramma", films);
             
         } else if ("/MyCinema/index.jsp".equals(url)) {
-            
+            //getFilmsCarosello
+            //getFilm
             List<FilmSpettacolo> films = null;
+            List<Film> filmsCarosello = null;
             int filmsLength = 0;
+            int filmsCaroselloLength = 0;
             try {
+                filmsCarosello = manager.getFilmsCarosello();
+                filmsCaroselloLength = filmsCarosello.size();
+                 Logger.getLogger("filmcarosello length = " + filmsCaroselloLength);
                 films = manager.getFilmsAll();
                 filmsLength = films.size();
             } catch (SQLException ex) {
                 Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
             }
             session.setAttribute("filmInProgramma", films);
+            session.setAttribute("filmCarosello", filmsCarosello);
+            session.setAttribute("filmCaroselloLength", filmsCaroselloLength);
             session.setAttribute("filmInProgrammaLength", filmsLength);
             session.setAttribute("loginAction", null);
             
