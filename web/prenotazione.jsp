@@ -152,7 +152,7 @@
                     <p><b>Prezzo totale: </b>€ <span id="total">0</span></p>
                     </div>
                     <div class="row">
-                    <a href="pagamento.jsp"><button class="btn center-block btn-success" id="link">Acquista!</button></a>
+                    <a href="pagamento.jsp" id="link"><button class="btn center-block btn-success">Acquista!</button></a>
                     </div>
                 </div>
                 <br>

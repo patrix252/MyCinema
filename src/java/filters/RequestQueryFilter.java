@@ -222,9 +222,10 @@ public class RequestQueryFilter implements Filter {
             session.setAttribute("controlloreCodice",false);
             String str = null;
             StringBuffer jb = new StringBuffer();
-            BufferedReader reader = request.getReader();
-            while ((str = reader.readLine()) != null)
+            BufferedReader reader = ((HttpServletRequest) request).getReader();
+            while ((str = reader.readLine()) != null){
                 jb.append(str);
+            }
             
             JSONObject jason = null;
             try {
