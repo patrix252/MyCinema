@@ -37,6 +37,7 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import util.Classi;
 import util.Classi.FilmSpettacolo;
 
 /**
@@ -325,7 +326,7 @@ public class RequestQueryFilter implements Filter {
             
             
             //AGGIUNGERE O QUI O IN UN ALTRO FILE L'INVIO DEL QR-CODE PER EMAIL
-            
+            Classi.inviaEmail();
             
             
         } else if ("/MyCinema/descrizionefilm.jsp".equals(url)){

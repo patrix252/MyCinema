@@ -35,5 +35,9 @@ public class Classi {
         }
         
     }
+    
+    public static void inviaEmail(){
+        
+    }
 }
 
