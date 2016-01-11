@@ -451,7 +451,7 @@ public class DBManager implements Serializable {
                
             //inserisco le prenotazioni
             
-            while (posti.iterator().hasNext()) {
+        while (posti.iterator().hasNext()) {
             PreparedStatement stm = con.prepareStatement("SELECT id_posto FROM myCinema.Posto WHERE id_sala=? AND riga=? AND colonna=?;");
             stm.setInt(1, s.getId_sala());
             stm.setInt(2,posti.iterator().next().getRiga());
