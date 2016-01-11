@@ -10,6 +10,7 @@ import beans.Genere;
 import beans.Posto;
 import beans.Spettacolo;
 import beans.Utente;
+import com.itextpdf.text.DocumentException;
 import db.DBManager;
 import java.io.BufferedReader;
 import java.lang.Object;
@@ -325,8 +326,12 @@ public class RequestQueryFilter implements Filter {
             }
             
             
-            //AGGIUNGERE O QUI O IN UN ALTRO FILE L'INVIO DEL QR-CODE PER EMAIL
-            Classi.inviaEmail();
+            try {
+                //AGGIUNGERE O QUI O IN UN ALTRO FILE L'INVIO DEL QR-CODE PER EMAIL
+                Classi.inviaEmail();
+            } catch (DocumentException ex) {
+                Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
             
         } else if ("/MyCinema/descrizionefilm.jsp".equals(url)){
