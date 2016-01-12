@@ -133,11 +133,7 @@ public class RegisterFilter implements Filter {
 
         if ("POST".equalsIgnoreCase(((HttpServletRequest) request).getMethod())) {
 
-            try {
-                manager = new DBManager("jdbc:mysql://46.101.19.71/myCinema", "user", "asdd");
-            } catch (SQLException ex) {
-                Logger.getLogger(RegisterFilter.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            manager = (DBManager)getFilterConfig().getServletContext().getAttribute("dbmanager");
 
             HttpSession session = ((HttpServletRequest) request).getSession();
 

@@ -7,6 +7,7 @@ package servlets;
 
 import beans.Utente;
 import db.DBManager;
+import filters.RequestQueryFilter;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,7 +35,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
 public class LoginServlet extends HttpServlet {
 
-            private DBManager manager;
+    private DBManager manager;
     
     @Override
     public void init() throws ServletException {

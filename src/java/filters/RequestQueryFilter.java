@@ -135,11 +135,7 @@ public class RequestQueryFilter implements Filter {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         };
-        try {
-            manager = new DBManager("jdbc:mysql://46.101.19.71/myCinema", "user", "asdd");
-        } catch (SQLException ex) {
-            Logger.getLogger(RegisterFilter.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        manager = (DBManager)getFilterConfig().getServletContext().getAttribute("dbmanager");
 
         HttpSession session = ((HttpServletRequest) request).getSession();
 
