@@ -4,6 +4,7 @@
     Author     : Paolo
 --%>
 
+<%@page import="beans.Utente"%>
 <%@taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -23,10 +24,24 @@
         
     </head>
     <body>
+        <%
+            String userName = null;
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals("idUtente"))
+                        userName = cookie.getValue();
+                }
+            }
+            if(session.getAttribute("utente")!=null)
+                userName = ((Utente)session.getAttribute("utente")).getEmail();
+            if (userName == null)
+                response.sendRedirect("login.jsp");
+        %>
         <div class="container">
             <jsp:include page="navbar.jsp" />
             
-            <p class="bg-success"><h1>Benvenuto <c:out value="${sessionScope.utente.getNome()}"/>!</h1></p>
+            <p class="bg-success"><h1>Benvenuto <%=userName%></h1></p>
         
         </div>
             
