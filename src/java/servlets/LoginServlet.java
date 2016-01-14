@@ -103,7 +103,7 @@ public class LoginServlet extends HttpServlet {
             view = request.getRequestDispatcher("login.jsp");
             view.forward(request, response);
         } else {
-            //controllo se le credenziali erano quelle dell'admin
+            //controllo se le credenziali sono quelle dell'admin
             if(user.getRuolo()==1){
                 session.setAttribute("admin", true);  
             }

@@ -47,7 +47,7 @@
 
                 <p><b>Via Sommarive 9, Povo TN </b></p>
                 <p><b>Numero di telefono: </b>0461 123456 </p>
-                <p><b>Email: </b>mycinema@email.com</p>
+                <p><b>Email: </b>mycinemastar@gmail.com</p>
                 <p><b>Orari: </b>Lun-Ven: 15:30-00:00<br>Sab-Dom: 15:30-02:00</p>
                 <p>Per rimanere sempre aggiornato sui film in proiezione, seguici su <b><a href="https://it-it.facebook.com/login">Facebook!</b></p></a>
 

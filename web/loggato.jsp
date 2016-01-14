@@ -41,7 +41,7 @@
         <div class="container">
             <jsp:include page="navbar.jsp" />
             
-            <p class="bg-success"><h1>Benvenuto <%=userName%></h1></p>
+            <p class="bg-success"><h1>Benvenuto ${sessionScope.utente.nome}</h1></p>
         
         </div>
             

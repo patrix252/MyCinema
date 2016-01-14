@@ -7,7 +7,8 @@ var firstSeatLabel = 1;
 var postiTotali = {
     postiInteri : [],
     postiRidotti : [],
-    ns : ""
+    ns : "",
+    totale : ""
 };
 
             $(document).ready(function () {
@@ -30,24 +31,26 @@ var postiTotali = {
                     $total = $('#total'),
                     sc = $('#seat-map').seatCharts({
                         map: [
-                                'ffffffffff',
-                                'ffffffffff',
-                                'ffffffffff',
-                                'ffeffffeff',
-                                '__________',
-                                'ffffffffff',
-                                'ffffffffff',
-                                'ffffffffff',
-                                'ffffffffff',
+                                'ffffffffffff',
+                                'ffffffffffff',
+                                'ffffffffffff',
+                                'ffffffffffff',
+                                'ffffffffffff',
+                                '____________',
+                                'ffffffffffff',
+                                'ffffffffffff',
+                                'ffffffffffff',
+                                'ffffffffffff',
+                                'ffffffffffff',
                         ],
                         seats: {
                             f: {
-                                    price   : 100,
+                                    price   : 8,
                                     classes : 'first-class', //your custom CSS class
                                     category: 'First Class'
                             },
                             e: {
-                                    price   : 40,
+                                    price   : 5,
                                     classes : 'first-class economy-class', //your custom CSS class
                                     category: 'Economy Class'
                             }					
@@ -94,8 +97,8 @@ var postiTotali = {
                                     //and total
                                     $total.text(recalculateTotal(sc)-this.data().price);
                                     $total.text(recalculateTotal(sc)+this.data().price);
-
-
+                                    
+                                    
                                     //seat has been vacated
                                     return 'selected_ridotto';
                             } else if (this.status() == 'selected_ridotto') {
@@ -147,7 +150,7 @@ var postiTotali = {
                         sc.find('selected_ridotto').each(function () {
                             postiTotali.postiRidotti.push(this.settings.id);
                         }); 
-                        
+                        postiTotali.totale = $total.text();
                         $.ajax({
                             url: $("#link").attr("href"),
                             method: "POST",

@@ -234,11 +234,13 @@ public class RequestQueryFilter implements Filter {
             JSONArray pi = null;
             JSONArray pr = null;
             String ns = null;
+            String totale = null;
             if(jason!=null){
                 try {
                     pi = jason.getJSONArray("postiInteri");
                     pr = jason.getJSONArray("postiRidotti");
                     ns = jason.getString("ns");
+                    totale = jason.getString("totale");
                 } catch (JSONException ex) {
                     Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -275,6 +277,7 @@ public class RequestQueryFilter implements Filter {
             }
             if(ns!=null){
                 Spettacolo spett = ((List<Spettacolo>)session.getAttribute("orariPrenotazione")).get(Integer.parseInt(ns));
+                session.setAttribute("totale", totale);
                 session.setAttribute("spettacoloPrenotazione", spett);
                 session.setAttribute("postiInteri", postiInteri);
                 session.setAttribute("postiRidotti", postiRidotti);
@@ -282,15 +285,13 @@ public class RequestQueryFilter implements Filter {
             
             
             String mail = null;
+            //Provo a prendere la mail di chi sta facendo la prenotazione, se fallisco vuol dire che non è loggato
+            //e lo reindirizzo alla pagina di login
             try{
                 mail = ((Utente)session.getAttribute("utente")).getEmail();
-            } catch(Exception e){
-                
-                
+            } catch(Exception e){    
                 //Controllare di risettare il valore a "LoginServlet" una volta effettuato il login
-                session.setAttribute("loginAction", (((HttpServletRequest) request).getRequestURL()));
-                
-                
+                session.setAttribute("loginAction", (((HttpServletRequest) request).getRequestURL()));               
                 view = request.getRequestDispatcher("login.jsp");
                 view.forward(request, response);
 
@@ -300,35 +301,37 @@ public class RequestQueryFilter implements Filter {
                 
         } else if("/MyCinema/pagamentoEffettuato.jsp".equals(url)) {
             
-            try {
-                 if(manager.addPrenotations((List<Posto>)session.getAttribute("postiInteri"), 
-                                            (String)session.getAttribute("mail"), 
-                                            (Spettacolo)session.getAttribute("spettacoloPrenotazione"),
-                                            false)){
-                    //I POSTI ERANO LIBERI E CONTINUA LA TRANSAZIONE
-                 } else {
-                     //I POSTI ERANO OCCUPATI O C'ERA QUALCHE PROBLEMA NELL'URL, QUINDI REINDIRIZZARE VERSO PAGINA DI ERRORE
-                 }
-                 if(manager.addPrenotations((List<Posto>)session.getAttribute("postiRidotti"), 
-                                            (String)session.getAttribute("mail"), 
-                                            (Spettacolo)session.getAttribute("spettacoloPrenotazione"),
-                                            true)){
-                    //I POSTI ERANO LIBERI E CONTINUA LA TRANSAZIONE
-                 } else {
-                     //I POSTI ERANO OCCUPATI O C'ERA QUALCHE PROBLEMA NELL'URL, QUINDI REINDIRIZZARE VERSO PAGINA DI ERRORE
-                 }
-            } catch (SQLException ex) {
+                /*
+                try {
+                if(manager.addPrenotations((List<Posto>)session.getAttribute("postiInteri"),
+                (String)session.getAttribute("mail"),
+                (Spettacolo)session.getAttribute("spettacoloPrenotazione"),
+                false)){
+                //I POSTI ERANO LIBERI E CONTINUA LA TRANSAZIONE
+                } else {
+                //I POSTI ERANO OCCUPATI O C'ERA QUALCHE PROBLEMA NELL'URL, QUINDI REINDIRIZZARE VERSO PAGINA DI ERRORE
+                }
+                if(manager.addPrenotations((List<Posto>)session.getAttribute("postiRidotti"),
+                (String)session.getAttribute("mail"),
+                (Spettacolo)session.getAttribute("spettacoloPrenotazione"),
+                true)){
+                //I POSTI ERANO LIBERI E CONTINUA LA TRANSAZIONE
+                } else {
+                //I POSTI ERANO OCCUPATI O C'ERA QUALCHE PROBLEMA NELL'URL, QUINDI REINDIRIZZARE VERSO PAGINA DI ERRORE
+                }
+                } catch (SQLException ex) {
                 Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            
-            try {
+                }
+                
+                
+                try {
                 //AGGIUNGERE O QUI O IN UN ALTRO FILE L'INVIO DEL QR-CODE PER EMAIL
                 Classi.inviaEmail();
-            } catch (DocumentException ex) {
+                } catch (DocumentException ex) {
                 Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
+                }*/
+                Classi.inviaEmail(getFilterConfig().getServletContext(), session);
+
             
         } else if ("/MyCinema/descrizionefilm.jsp".equals(url)){
             int i = Integer.parseInt(request.getParameter("id"));

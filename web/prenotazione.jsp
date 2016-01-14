@@ -122,9 +122,9 @@
                     </dl>
                 </div>
             </div>
-                        
             
             <div class="row" style="padding-top: 5%;" id="acquista" hidden>
+                <h4 align="center">Per selezionare un posto ridotto (bambini fino a 14 anni, disabili, studenti o militari) cliccare due volte su un posto</h4>                       
                 <div class="col-md-1"></div>
                 <div class="col-md-5">
                     <div class="row">

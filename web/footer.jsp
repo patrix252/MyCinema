@@ -7,7 +7,7 @@
 <div id="footer">
     <div class="col-lg-12">
         <hr>
-        <p><b>MyCinema &copy; Via Sommarive 9, Povo TN <a href="contatti.jsp">Mappa </a> || Telefono: 0461 123456 || email: mycinema@email.com</b></p>
+        <p><b>MyCinema &copy; Via Sommarive 9, Povo TN <a href="contatti.jsp">Mappa </a> || Telefono: 0461 123456 || email: mycinemastar@gmail.com</b></p>
     </div>
 </div>
      
