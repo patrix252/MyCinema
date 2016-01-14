@@ -169,15 +169,26 @@ public class RegisterFilter implements Filter {
             try {
                 manager.inserisciUtente(user);
             } catch (SQLException ex) {
+                session.setAttribute("utente", null);
+                Cookie[] cookies1 = ((HttpServletRequest) request).getCookies();
+                for (Cookie cookie : cookies1) {
+                    cookie.setMaxAge(0);
+                    ((HttpServletResponse) response).addCookie(cookie);
+                }
                 session.setAttribute("EmailErrata", true);
                 controllore = true;
             }
         
             if (controllore == false) {
+                Cookie[] cookies1 = ((HttpServletRequest) request).getCookies();
+                for (Cookie cookie : cookies1) {
+                    cookie.setMaxAge(0);
+                    ((HttpServletResponse) response).addCookie(cookie);
+                }
                 Cookie cookie = new Cookie("idUtente", mail);
                 cookie.setMaxAge(60);
                 ((HttpServletResponse) response).addCookie(cookie);
-                view = request.getRequestDispatcher("loggato.jsp");
+                view = request.getRequestDispatcher("index.jsp");
                 view.forward(request, response);
             }
         }

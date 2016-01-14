@@ -307,7 +307,7 @@ public class RequestQueryFilter implements Filter {
                 
         } else if("/MyCinema/pagamentoEffettuato.jsp".equals(url)) {
             
-                /*
+                
                 try {
                 if(manager.addPrenotations((List<Posto>)session.getAttribute("postiInteri"),
                 (String)session.getAttribute("mail"),
@@ -328,14 +328,7 @@ public class RequestQueryFilter implements Filter {
                 } catch (SQLException ex) {
                 Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
-                
-                try {
-                //AGGIUNGERE O QUI O IN UN ALTRO FILE L'INVIO DEL QR-CODE PER EMAIL
-                Classi.inviaEmail();
-                } catch (DocumentException ex) {
-                Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
-                }*/
+
                 Classi.inviaEmail(getFilterConfig().getServletContext(), session);
 
             
