@@ -123,27 +123,34 @@ public class RequestQueryFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-        RequestDispatcher view = new RequestDispatcher() {
-
-            @Override
-            public void forward(ServletRequest request, ServletResponse response) throws ServletException, IOException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public void include(ServletRequest request, ServletResponse response) throws ServletException, IOException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        };
-        manager = (DBManager)getFilterConfig().getServletContext().getAttribute("dbmanager");
-
-        HttpSession session = ((HttpServletRequest) request).getSession();
-
-        String url = ((HttpServletRequest) request).getRequestURI();
         
+        RequestDispatcher view;
+        manager = (DBManager)getFilterConfig().getServletContext().getAttribute("dbmanager");
+        String url = ((HttpServletRequest) request).getRequestURI();       
+        //Setto i parametri in modo da non salvare la cache
         ((HttpServletResponse) response).setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
         ((HttpServletResponse) response).setHeader("Pragma", "no-cache"); // HTTP 1.0.
-        ((HttpServletResponse) response).setDateHeader("Expires", 0); // Proxies.
+        ((HttpServletResponse) response).setDateHeader("Expires", 0); // Proxies.   
+        HttpSession session = ((HttpServletRequest) request).getSession();
+        String userName = null;
+            Cookie[] cookies = ((HttpServletRequest)request).getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals("idUtente"))
+                        userName = cookie.getValue();
+                }
+            }
+            if (userName != null && session.getAttribute("utente")==null){
+               Utente user;
+                try {
+                    user=manager.trovanome(userName);
+                    session.setAttribute("utente", user);
+                } catch (SQLException ex) {
+                    session.setAttribute("problemaConnessione", true);
+                    String referer = ((HttpServletRequest)request).getHeader("Referer");
+                    ((HttpServletResponse) response).sendRedirect(referer);
+                }
+            }
         
         
         if ("/MyCinema/oggialcinema.jsp".equals(url)) {
@@ -210,8 +217,8 @@ public class RequestQueryFilter implements Filter {
         
         } else if ("/MyCinema/logout.jsp".equals(url)){
             session.setAttribute("utente", null);
-            Cookie[] cookies = ((HttpServletRequest) request).getCookies();
-            for (Cookie cookie : cookies) {
+            Cookie[] cookies1 = ((HttpServletRequest) request).getCookies();
+            for (Cookie cookie : cookies1) {
                 cookie.setMaxAge(0);
                 ((HttpServletResponse) response).addCookie(cookie);
             }

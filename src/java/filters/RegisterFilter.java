@@ -148,12 +148,7 @@ public class RegisterFilter implements Filter {
             int anno1 = Integer.parseInt(anno)-1900;
             int mese1 = Integer.parseInt(mese)-1;
             int giorno1 = Integer.parseInt(giorno);
-            Date data = new Date(anno1, mese1, giorno1);
-            
-            
-          
-           
-            
+            Date data = new Date(anno1, mese1, giorno1);    
             
             //CREO L'HASH DELLA PASSWORD E L'HASH PER L'ID UTENTE
             String hashPassword;
@@ -179,11 +174,9 @@ public class RegisterFilter implements Filter {
             }
         
             if (controllore == false) {
-
-                //AGGIUNGERE IL TEMPO DI VITA DEL COOKIE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 Cookie cookie = new Cookie("idUtente", mail);
+                cookie.setMaxAge(60);
                 ((HttpServletResponse) response).addCookie(cookie);
-
                 view = request.getRequestDispatcher("loggato.jsp");
                 view.forward(request, response);
             }

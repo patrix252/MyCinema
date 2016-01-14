@@ -109,6 +109,7 @@ public class LoginServlet extends HttpServlet {
             }
             session.setAttribute("utente", user);
             Cookie biscotto = new Cookie("idUtente", user.getEmail());
+            biscotto.setMaxAge(60);
             ((HttpServletResponse) response).addCookie(biscotto);
             //loginAction mi serve per proseguire alla pagina di pagamento
             
