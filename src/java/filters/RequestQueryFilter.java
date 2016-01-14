@@ -290,8 +290,7 @@ public class RequestQueryFilter implements Filter {
             try{
                 mail = ((Utente)session.getAttribute("utente")).getEmail();
             } catch(Exception e){    
-                //Controllare di risettare il valore a "LoginServlet" una volta effettuato il login
-                session.setAttribute("loginAction", (((HttpServletRequest) request).getRequestURL()));               
+               
                 view = request.getRequestDispatcher("login.jsp");
                 view.forward(request, response);
 

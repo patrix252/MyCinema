@@ -59,8 +59,14 @@
                                                 <input type="password" class="form-control" id="password" name="Password" size="10" placeholder="Password" style="width: 100%">
                                             </div>
                                             <c:if test="${sessionScope.loginError}">
+                                                <script src="./lib/js/openDropdown.js"></script>
                                                 <p style="color: red;">Email o password non valide, reinserisci i dati!</p>
                                                 <c:set var="loginError" value="false" scope="session"/>
+                                            </c:if>
+                                            <c:if test="${sessionScope.problemaConnessione}">
+                                                <script src="./lib/js/openDropdown.js"></script>
+                                                <p style="color: red;">Problema con la connessione, riprovare più tardi!</p>
+                                                <c:set var="problemaConnessione" value="false" scope="session"/>
                                             </c:if>
                                             <div>
                                                 <a href="passwordimenticata.html">Password dimenticata?</a>
@@ -114,8 +120,14 @@
                                                 <input type="password" class="form-control" id="password" name="Password" size="10" placeholder="Password" style="width: 100%">
                                             </div>
                                             <c:if test="${sessionScope.loginError}">
+                                                <script src="./lib/js/openDropdown.js"></script>
                                                 <p style="color: red;">Email o password non valide, reinserisci i dati!</p>
                                                 <c:set var="loginError" value="false" scope="session"/>
+                                            </c:if>
+                                            <c:if test="${sessionScope.problemaConnessione}">
+                                                <script src="./lib/js/openDropdown.js"></script>
+                                                <p style="color: red;">Problema con la connessione, riprovare più tardi!</p>
+                                                <c:set var="problemaConnessione" value="false" scope="session"/>
                                             </c:if>
                                             <div>
                                                 <a href="passwordimenticata.html">Password dimenticata?</a>

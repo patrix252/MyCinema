@@ -95,13 +95,13 @@ public class LoginServlet extends HttpServlet {
             user=manager.chekpassword(mail,hashPassword);
         } catch (SQLException ex) {
             session.setAttribute("problemaConnessione", true);
-            view = request.getRequestDispatcher("login.jsp");
-            view.forward(request, response);
+            String referer = request.getHeader("Referer");
+            response.sendRedirect(referer);
         }
         if (user==null){
             session.setAttribute("loginError", true);
-            view = request.getRequestDispatcher("login.jsp");
-            view.forward(request, response);
+            String referer = request.getHeader("Referer");
+            response.sendRedirect(referer);
         } else {
             //controllo se le credenziali sono quelle dell'admin
             if(user.getRuolo()==1){
@@ -111,14 +111,10 @@ public class LoginServlet extends HttpServlet {
             Cookie biscotto = new Cookie("idUtente", user.getEmail());
             ((HttpServletResponse) response).addCookie(biscotto);
             //loginAction mi serve per proseguire alla pagina di pagamento
-            if(session.getAttribute("loginAction")==null){
-                view = request.getRequestDispatcher("loggato.jsp");
-                view.forward(request, response);
-            } else {
-                String temp = ((StringBuffer)session.getAttribute("loginAction")).toString();
-                session.setAttribute("loginAction", null);
-                ((HttpServletResponse)response).sendRedirect(temp);
-            }
+            
+            String referer = request.getHeader("Referer");
+            response.sendRedirect(referer);
+            
         }        
     }
 
