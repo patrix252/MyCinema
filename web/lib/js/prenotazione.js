@@ -127,10 +127,6 @@ var postiTotali = {
                 
                 
                     sc.get(postiPerSpettacolo).status('unavailable');
-                   
-                    $("#ora").click(function(){
-                        postiTotali.ns = $("#ora").val();
-                    });
 
                     //INVIARE JSON AL SERVER
                     $("#link").unbind().click(function(){
@@ -140,6 +136,7 @@ var postiTotali = {
                         sc.find('selected_ridotto').each(function () {
                             postiTotali.postiRidotti.push(this.settings.id);
                         }); 
+                        postiTotali.ns = $("#ora").val();
                         postiTotali.totale = $total.text();
                         $.ajax({
                             url: $("#link").attr("href"),
