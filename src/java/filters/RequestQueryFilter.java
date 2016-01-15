@@ -212,7 +212,6 @@ public class RequestQueryFilter implements Filter {
                     Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            
             session.setAttribute("postiOccupati", posti);
         
         } else if ("/MyCinema/logout.jsp".equals(url)){

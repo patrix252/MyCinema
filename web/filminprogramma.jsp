@@ -31,7 +31,7 @@
                 <td><h4>Trailer</h4></td>
                 <td><h4>Locandina</h4></td>
             </tr>
-                <c:forEach items="${sessionScope.filmInProgramma}" var="film">
+            <c:forEach items="${sessionScope.filmInProgramma}" var="film">
                 <tr> 
                     <td><a href="descrizionefilm.jsp?id=${film.f.id_film}"><c:out value="${film.f.titolo}"/></a></td>
                     <td><c:out value="${film.f.genere.descrizione}"/></td>

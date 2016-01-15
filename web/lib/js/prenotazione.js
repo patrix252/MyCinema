@@ -30,19 +30,9 @@ var postiTotali = {
                     $counter_ridotto = $('#counter_ridotto'),
                     $total = $('#total'),
                     sc = $('#seat-map').seatCharts({
-                        map: [
-                                'ffffffffffff',
-                                'ffffffffffff',
-                                'ffffffffffff',
-                                'ffffffffffff',
-                                'ffffffffffff',
-                                '____________',
-                                'ffffffffffff',
-                                'ffffffffffff',
-                                'ffffffffffff',
-                                'ffffffffffff',
-                                'ffffffffffff',
-                        ],
+                        
+                        map: creaMappa(11, 12),
+                
                         seats: {
                             f: {
                                     price   : 8,
@@ -175,6 +165,22 @@ var postiTotali = {
                 });
 
                 return total;
+            }
+            
+            function creaMappa(righe, colonne){
+                var map = [];
+                for(var i=0; i<righe; i++){
+                    map[i]="";
+                }
+                for(var i=0; i<righe; i++){
+                    for(var j=0; j<colonne; j++){
+                        if(i!==5)
+                            map[i]=map[i]+'f';
+                        if(i===5)
+                            map[i]=map[i]+'_';
+                    }
+                }
+                return map;
             }
 
             

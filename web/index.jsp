@@ -45,9 +45,9 @@
                 <div id="myCarousel" class="carousel slide" data-ride="carousel">
                     <!-- Indicators -->
                     <ol class="carousel-indicators">
-                        <c:forEach var="i" begin="0" end="${sessionScope.filmCaroselloLength-1}" varStatus = "status">
+                    <%--<c:forEach var="i" begin="0" end="${sessionScope.filmCaroselloLength-1}" varStatus = "status">
                         <li data-target="#myCarousel" data-slide-to="${i}" class="${status.first ? 'active' : ''}"></li>
-                        </c:forEach>
+                        </c:forEach>--%>
                     </ol>
                     <div class="carousel-inner" role="listbox">        
                         <c:forEach items="${sessionScope.filmCarosello}" var="film" varStatus = "status">

@@ -108,7 +108,7 @@ public class Classi {
                          "posti ridotti: " + postiRidotti.size() + "\n" +
                          pr + "\n" +
                          "posti interi: " + postiInteri.size() + "\n" +
-                         pr + "\n";                     
+                         pi + "\n";                     
         Image qrcode = Image.getInstance(createQrCode(context, testoQR));
         document.add(qrcode);
         qrcode.scaleAbsolute(20,20);
