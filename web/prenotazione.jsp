@@ -10,7 +10,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
-    List<Spettacolo> temp = (ArrayList<Spettacolo>) (session.getAttribute("orariPrenotazione"));
+    List<Spettacolo> temp = (ArrayList<Spettacolo>) (session.getAttribute("spettacoli"));
     List<List<Posto>> postiOccupati = (ArrayList<List<Posto>>) (session.getAttribute("postiOccupati"));
     List<List<String>> posti = new ArrayList<List<String>>();
     for(int i=0; i<postiOccupati.size(); i++){
@@ -26,7 +26,7 @@
     //Uso un LinkedHashSet per non avere date ripetute ma per mantenere l'ordine di inserimento
     //Visto che nella mia ArrayList le ho già ordinate
     Set<Date> insieme = new LinkedHashSet<>();
-    for (int i = 0; i < (int) ((ArrayList) (session.getAttribute("orariPrenotazione"))).size(); i++) {
+    for (int i = 0; i < (int) ((ArrayList) (session.getAttribute("spettacoli"))).size(); i++) {
         if (i == 0) {
             session.setAttribute("primaData", temp.get(i).getData());
         }
@@ -37,18 +37,18 @@
 
 <%
     StringBuffer values = new StringBuffer();
-    for (int i = 0; i < (int) ((ArrayList) (session.getAttribute("orariPrenotazione"))).size(); ++i) {
+    for (int i = 0; i < (int) ((ArrayList) (session.getAttribute("spettacoli"))).size(); ++i) {
         if (values.length() > 0) {
             values.append(',');
         }
-        values.append('"').append(((Spettacolo) ((ArrayList) (session.getAttribute("orariPrenotazione"))).get(i)).getData()).append('"');
+        values.append('"').append(((Spettacolo) ((ArrayList) (session.getAttribute("spettacoli"))).get(i)).getData()).append('"');
     }
     StringBuffer values1 = new StringBuffer();
-    for (int i = 0; i < (int) ((ArrayList) (session.getAttribute("orariPrenotazione"))).size(); ++i) {
+    for (int i = 0; i < (int) ((ArrayList) (session.getAttribute("spettacoli"))).size(); ++i) {
         if (values1.length() > 0) {
             values1.append(',');
         }
-        values1.append('"').append(((Spettacolo) ((ArrayList) (session.getAttribute("orariPrenotazione"))).get(i)).getOra()).append('"');
+        values1.append('"').append(((Spettacolo) ((ArrayList) (session.getAttribute("spettacoli"))).get(i)).getOra()).append('"');
     }
 %>
 <!DOCTYPE html>
@@ -152,7 +152,7 @@
                     <p><b>Prezzo totale: </b>€ <span id="total">0</span></p>
                     </div>
                     <div class="row">
-                    <a href="pagamento.jsp" id="link"><button class="btn center-block btn-success">Acquista!</button></a>
+                    <a href="PagamentoServlet" id="link"><button class="btn center-block btn-success">Acquista!</button></a>
                     </div>
                 </div>
                 <br>
@@ -163,8 +163,7 @@
        
         
         <script>
-            var posti = <%= posti.toString() %>;         
-                      
+            var posti = <%= posti.toString() %>; 
             var date = [<%= values.toString()%>];
             var orari = [<%= values1.toString()%>];
             var i = 0;

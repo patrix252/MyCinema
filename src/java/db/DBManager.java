@@ -389,10 +389,33 @@ public class DBManager implements Serializable {
         return films;
          
     }
-    /*
     
     
-    */
+    
+    public List<Posto> getPosti (int id_sala) throws SQLException{
+        List<Posto> posti = new ArrayList<Posto>();
+        PreparedStatement stm = con.prepareStatement("SELECT Posto.id_posto, id_sala, riga, colonna, esiste FROM myCinema.Posto WHERE Posto.id_sala=?;");
+        stm.setInt(1,id_sala);    
+        try {
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    Posto p = new Posto();
+                    p.setId_posto(rs.getInt(Util.Posto.COLUMN_ID_POSTO));
+                    p.setId_sala(rs.getInt(Util.Posto.COLUMN_ID_SALA));
+                    p.setEsiste(rs.getInt(Util.Posto.COLUMN_ESISTE));
+                    p.setRiga(rs.getInt(Util.Posto.COLUMN_RIGA));
+                    p.setColonna(rs.getInt(Util.Posto.COLUMN_COLONNA));
+                    posti.add(p);
+                }
+            }
+        } finally {
+            stm.close();
+        }
+       return posti;
+    }
+    
+    
+    
     /**
      * 
      * @param s Spettacolo

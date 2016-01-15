@@ -63,27 +63,6 @@ public class RequestQueryFilter implements Filter {
         if (debug) {
             log("RequestQueryFilter:DoBeforeProcessing");
         }
-
-	// Write code here to process the request and/or response before
-        // the rest of the filter chain is invoked.
-        // For example, a logging filter might log items on the request object,
-        // such as the parameters.
-	/*
-         for (Enumeration en = request.getParameterNames(); en.hasMoreElements(); ) {
-         String name = (String)en.nextElement();
-         String values[] = request.getParameterValues(name);
-         int n = values.length;
-         StringBuffer buf = new StringBuffer();
-         buf.append(name);
-         buf.append("=");
-         for(int i=0; i < n; i++) {
-         buf.append(values[i]);
-         if (i < n-1)
-         buf.append(",");
-         }
-         log(buf.toString());
-         }
-         */
     }
 
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
@@ -92,23 +71,6 @@ public class RequestQueryFilter implements Filter {
             log("RequestQueryFilter:DoAfterProcessing");
         }
 
-	// Write code here to process the request and/or response after
-        // the rest of the filter chain is invoked.
-        // For example, a logging filter might log the attributes on the
-        // request object after the request has been processed. 
-	/*
-         for (Enumeration en = request.getAttributeNames(); en.hasMoreElements(); ) {
-         String name = (String)en.nextElement();
-         Object value = request.getAttribute(name);
-         log("attribute: " + name + "=" + value.toString());
-
-         }
-         */
-        // For example, a filter might append something to the response.
-	/*
-         PrintWriter respOut = new PrintWriter(response.getWriter());
-         respOut.println("<P><B>This has been appended by an intrusive filter.</B>");
-         */
     }
 
     /**
@@ -151,8 +113,7 @@ public class RequestQueryFilter implements Filter {
                     ((HttpServletResponse) response).sendRedirect(referer);
                 }
             }
-        
-        
+     
         if ("/MyCinema/oggialcinema.jsp".equals(url)) {
             //CHIAMARE QUERY PER PRENDERE FILM DI OGGI
             List<FilmSpettacolo> films = null;
@@ -163,6 +124,13 @@ public class RequestQueryFilter implements Filter {
             }
             session.setAttribute("filmsOggi", films);
 
+        } else if ("/MyCinema/logout.jsp".equals(url)){
+            session.setAttribute("utente", null);
+            Cookie[] cookies1 = ((HttpServletRequest) request).getCookies();
+            for (Cookie cookie : cookies1) {
+                cookie.setMaxAge(0);
+                ((HttpServletResponse) response).addCookie(cookie);
+            }
         } else if("/MyCinema/filminprogramma.jsp".equals(url)) {
             List<FilmSpettacolo> films = null;
             try {
@@ -194,116 +162,6 @@ public class RequestQueryFilter implements Filter {
             session.setAttribute("filmInProgrammaLength", filmsLength);
             session.setAttribute("loginAction", null);
             
-        } else if ("/MyCinema/prenotazione.jsp".equals(url)) {
-            
-            List <Spettacolo> spett = null;
-            int i = Integer.parseInt (request.getParameter("id"));
-            try {
-                spett = manager.getSpettacoli(i);
-            } catch (SQLException ex) {
-                Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            session.setAttribute("orariPrenotazione", spett);
-            List <List<Posto>> posti = new ArrayList<>();
-            for(int j=0; j<spett.size(); j++){
-                try {
-                    posti.add(manager.getPostiOccupati(spett.get(j)));
-                } catch (SQLException ex) {
-                    Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            session.setAttribute("postiOccupati", posti);
-        
-        } else if ("/MyCinema/logout.jsp".equals(url)){
-            session.setAttribute("utente", null);
-            Cookie[] cookies1 = ((HttpServletRequest) request).getCookies();
-            for (Cookie cookie : cookies1) {
-                cookie.setMaxAge(0);
-                ((HttpServletResponse) response).addCookie(cookie);
-            }
-        } else if ("/MyCinema/pagamento.jsp".equals(url)){
-   
-            session.setAttribute("controlloreCodice",false);
-            String str = null;
-            StringBuffer jb = new StringBuffer();
-            BufferedReader reader = ((HttpServletRequest) request).getReader();
-            while ((str = reader.readLine()) != null){
-                jb.append(str);
-            }
-            
-            JSONObject jason = null;
-            try {
-                jason = new JSONObject(jb.toString());
-            } catch (JSONException ex) {
-                Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            JSONArray pi = null;
-            JSONArray pr = null;
-            String ns = null;
-            String totale = null;
-            if(jason!=null){
-                try {
-                    pi = jason.getJSONArray("postiInteri");
-                    pr = jason.getJSONArray("postiRidotti");
-                    ns = jason.getString("ns");
-                    totale = jason.getString("totale");
-                } catch (JSONException ex) {
-                    Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            List<Posto> postiInteri = new ArrayList();
-            if(pi!=null){
-                for(int z=0; z<pi.length(); z++){
-                    String temp;
-                    Posto pt = new Posto();
-                    try {
-                        temp = pi.getString(z);
-                        pt.setRiga(Character.getNumericValue(temp.charAt(0)));
-                        pt.setColonna(Character.getNumericValue(temp.charAt(2)));
-                        postiInteri.add(pt);
-                    } catch (JSONException ex) {
-                        Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-            List<Posto> postiRidotti = new ArrayList();
-            if(pr!=null){
-                for(int z=0; z<pr.length(); z++){
-                    String temp;
-                    Posto pt = new Posto();
-                    try {
-                        temp = pr.getString(z);
-                        pt.setRiga(Character.getNumericValue(temp.charAt(0)));
-                        pt.setColonna(Character.getNumericValue(temp.charAt(2)));
-                        postiRidotti.add(pt);
-                    } catch (JSONException ex) {
-                        Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-            if(ns!=null){
-                Spettacolo spett = ((List<Spettacolo>)session.getAttribute("orariPrenotazione")).get(Integer.parseInt(ns));
-                session.setAttribute("totale", totale);
-                session.setAttribute("spettacoloPrenotazione", spett);
-                session.setAttribute("postiInteri", postiInteri);
-                session.setAttribute("postiRidotti", postiRidotti);
-            }
-            
-            
-            String mail = null;
-            //Provo a prendere la mail di chi sta facendo la prenotazione, se fallisco vuol dire che non è loggato
-            //e lo reindirizzo alla pagina di login
-            try{
-                mail = ((Utente)session.getAttribute("utente")).getEmail();
-            } catch(Exception e){    
-               
-                view = request.getRequestDispatcher("login.jsp");
-                view.forward(request, response);
-
-            }
-            session.setAttribute("mail", mail);
-                
-                
         } else if("/MyCinema/pagamentoEffettuato.jsp".equals(url)) {
             
                 
