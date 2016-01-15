@@ -20,13 +20,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import util.Classi;
 import util.Classi.FilmSpettacolo;
@@ -39,7 +37,7 @@ public class DBManager implements Serializable {
         
         try{
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-        } catch(Exception ex){}
+        } catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){}
         
         
         // dburl = jdbc:mysql://localhost/test?user=minty&password=greatsqldb
@@ -80,13 +78,12 @@ public class DBManager implements Serializable {
 
         PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Utente WHERE email= ?;");
         stm.setString(1, email);
-        Logger.getLogger(DBManager.class.getName()).info("Query: " + stm.toString());
+        Logger.getLogger(DBManager.class.getName()).log(Level.INFO, "Query: {0}", stm.toString());
          Utente user = new Utente();
        
 
         try {
-            ResultSet rs = stm.executeQuery();
-            try {
+            try (ResultSet rs = stm.executeQuery()) {
 
                 while (rs.next()) {
                     user.setNome(rs.getString(Util.Utente.COLUMN_NOME));
@@ -97,8 +94,6 @@ public class DBManager implements Serializable {
                     user.setCredito(rs.getDouble(Util.Utente.COLUMN_CREDITO));
                     user.setRuolo(rs.getInt(Util.Utente.COLUMN_ID_RUOLO));
                 }
-            } finally {
-                rs.close();
             }
         } finally {
             stm.close();
@@ -121,8 +116,7 @@ public class DBManager implements Serializable {
        
 
         try {
-            ResultSet rs = stm.executeQuery();
-            try {
+            try (ResultSet rs = stm.executeQuery()) {
 
                 while (rs.next()) {
                     user = new Utente();
@@ -134,8 +128,6 @@ public class DBManager implements Serializable {
                     user.setCredito(rs.getDouble(Util.Utente.COLUMN_CREDITO));
                     user.setRuolo(rs.getInt(Util.Utente.COLUMN_ID_RUOLO));
                 }
-            } finally {
-                rs.close();
             }
         } finally {
             stm.close();
@@ -170,48 +162,37 @@ public class DBManager implements Serializable {
     public List<FilmSpettacolo> getFilmsAll() throws SQLException {
         //query che riporta tutti i dati 
         List<FilmSpettacolo> films = new ArrayList<>();
-        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Spettacolo, myCinema.Film, myCinema.Genere WHERE Film.id_film = Spettacolo.id_film AND Film.id_genere = Genere.id_genere;");
-
-        
-
-        try {
-            ResultSet rs = stm.executeQuery();
-            try {
-
-                while (rs.next()) {
-                    Classi.FilmSpettacolo h = new Classi.FilmSpettacolo();
-                    Film f = new Film();
-                    Spettacolo s = new Spettacolo();
-                    Genere g = new Genere();
-                    g.setId_genere(rs.getInt(Util.Genere.COLUMN_ID_GENERE));
-                    g.setDescrizione(rs.getString(Util.Genere.COLUMN_DESCRIZIONE));
-
-                    f.setId_film(rs.getInt(Util.Film.COLUMN_ID_FILM));
-                    f.setDurata(rs.getInt(Util.Film.COLUMN_DURATA));
-                    f.setGenere(g);
-                    f.setIs3D(rs.getInt(Util.Film.COLUMN_IS3D));
-                    f.setRegista(rs.getString(Util.Film.COLUMN_REGISTA));
-                    f.setTitolo(rs.getString(Util.Film.COLUMN_TITOLO));
-                    f.setTrama(rs.getString(Util.Film.COLUMN_TRAMA));
-                    f.setUri_locandina(rs.getString(Util.Film.COLUMN_URI_LOCANDINA));
-                    f.setUrl_trailer(rs.getString(Util.Film.COLUMN_URL_TRAILER));
-
-                    s.setId_film(rs.getInt(Util.Spettacolo.COLUMN_ID_FILM));
-                    s.setId_sala(rs.getInt(Util.Spettacolo.COLUMN_ID_SALA));
-                    s.setId_spettacolo(rs.getInt(Util.Spettacolo.COLUMN_ID_SPETTACOLO));
-                    //data
-                    s.setData(rs.getDate(Util.Spettacolo.COLUMN_DATA));
-                    s.setOra(rs.getTime(Util.Spettacolo.COLUMN_ORA));
-                    h.setF(f);
-                    h.setS(s);
-                    films.add(h);
-
-                }
-            } finally {
-                rs.close();
+        try (PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Spettacolo, myCinema.Film, myCinema.Genere WHERE Film.id_film = Spettacolo.id_film AND Film.id_genere = Genere.id_genere;"); ResultSet rs = stm.executeQuery()) {
+            
+            while (rs.next()) {
+                Classi.FilmSpettacolo h = new Classi.FilmSpettacolo();
+                Film f = new Film();
+                Spettacolo s = new Spettacolo();
+                Genere g = new Genere();
+                g.setId_genere(rs.getInt(Util.Genere.COLUMN_ID_GENERE));
+                g.setDescrizione(rs.getString(Util.Genere.COLUMN_DESCRIZIONE));
+                
+                f.setId_film(rs.getInt(Util.Film.COLUMN_ID_FILM));
+                f.setDurata(rs.getInt(Util.Film.COLUMN_DURATA));
+                f.setGenere(g);
+                f.setIs3D(rs.getInt(Util.Film.COLUMN_IS3D));
+                f.setRegista(rs.getString(Util.Film.COLUMN_REGISTA));
+                f.setTitolo(rs.getString(Util.Film.COLUMN_TITOLO));
+                f.setTrama(rs.getString(Util.Film.COLUMN_TRAMA));
+                f.setUri_locandina(rs.getString(Util.Film.COLUMN_URI_LOCANDINA));
+                f.setUrl_trailer(rs.getString(Util.Film.COLUMN_URL_TRAILER));
+                
+                s.setId_film(rs.getInt(Util.Spettacolo.COLUMN_ID_FILM));
+                s.setId_sala(rs.getInt(Util.Spettacolo.COLUMN_ID_SALA));
+                s.setId_spettacolo(rs.getInt(Util.Spettacolo.COLUMN_ID_SPETTACOLO));
+                //data
+                s.setData(rs.getDate(Util.Spettacolo.COLUMN_DATA));
+                s.setOra(rs.getTime(Util.Spettacolo.COLUMN_ORA));
+                h.setF(f);
+                h.setS(s);
+                films.add(h);
+                
             }
-        } finally {
-            stm.close();
         }
 
         return films;
@@ -226,48 +207,37 @@ public class DBManager implements Serializable {
     public List<FilmSpettacolo> getFilmstoday() throws SQLException {
         //query che riporta tutti i dati 
         List<FilmSpettacolo> films = new ArrayList<>();
-        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Spettacolo, myCinema.Film, myCinema.Genere WHERE data = CURDATE() AND Film.id_film = Spettacolo.id_film AND Film.id_genere = Genere.id_genere;");
-
-        
-
-        try {
-            ResultSet rs = stm.executeQuery();
-            try {
-
-                while (rs.next()) {
-                    Classi.FilmSpettacolo h = new Classi.FilmSpettacolo();
-                    Film f = new Film();
-                    Spettacolo s = new Spettacolo();
-                    Genere g = new Genere();
-                    g.setId_genere(rs.getInt(Util.Genere.COLUMN_ID_GENERE));
-                    g.setDescrizione(rs.getString(Util.Genere.COLUMN_DESCRIZIONE));
-
-                    f.setId_film(rs.getInt(Util.Film.COLUMN_ID_FILM));
-                    f.setDurata(rs.getInt(Util.Film.COLUMN_DURATA));
-                    f.setGenere(g);
-                    f.setIs3D(rs.getInt(Util.Film.COLUMN_IS3D));
-                    f.setRegista(rs.getString(Util.Film.COLUMN_REGISTA));
-                    f.setTitolo(rs.getString(Util.Film.COLUMN_TITOLO));
-                    f.setTrama(rs.getString(Util.Film.COLUMN_TRAMA));
-                    f.setUri_locandina(rs.getString(Util.Film.COLUMN_URI_LOCANDINA));
-                    f.setUrl_trailer(rs.getString(Util.Film.COLUMN_URL_TRAILER));
-
-                    s.setId_film(rs.getInt(Util.Spettacolo.COLUMN_ID_FILM));
-                    s.setId_sala(rs.getInt(Util.Spettacolo.COLUMN_ID_SALA));
-                    s.setId_spettacolo(rs.getInt(Util.Spettacolo.COLUMN_ID_SPETTACOLO));
-                    //data
-                    s.setData(rs.getDate(Util.Spettacolo.COLUMN_DATA));
-                    s.setOra(rs.getTime(Util.Spettacolo.COLUMN_ORA));
-                    h.setF(f);
-                    h.setS(s);
-                    films.add(h);
-
-                }
-            } finally {
-                rs.close();
+        try (PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Spettacolo, myCinema.Film, myCinema.Genere WHERE data = CURDATE() AND Film.id_film = Spettacolo.id_film AND Film.id_genere = Genere.id_genere;"); ResultSet rs = stm.executeQuery()) {
+            
+            while (rs.next()) {
+                Classi.FilmSpettacolo h = new Classi.FilmSpettacolo();
+                Film f = new Film();
+                Spettacolo s = new Spettacolo();
+                Genere g = new Genere();
+                g.setId_genere(rs.getInt(Util.Genere.COLUMN_ID_GENERE));
+                g.setDescrizione(rs.getString(Util.Genere.COLUMN_DESCRIZIONE));
+                
+                f.setId_film(rs.getInt(Util.Film.COLUMN_ID_FILM));
+                f.setDurata(rs.getInt(Util.Film.COLUMN_DURATA));
+                f.setGenere(g);
+                f.setIs3D(rs.getInt(Util.Film.COLUMN_IS3D));
+                f.setRegista(rs.getString(Util.Film.COLUMN_REGISTA));
+                f.setTitolo(rs.getString(Util.Film.COLUMN_TITOLO));
+                f.setTrama(rs.getString(Util.Film.COLUMN_TRAMA));
+                f.setUri_locandina(rs.getString(Util.Film.COLUMN_URI_LOCANDINA));
+                f.setUrl_trailer(rs.getString(Util.Film.COLUMN_URL_TRAILER));
+                
+                s.setId_film(rs.getInt(Util.Spettacolo.COLUMN_ID_FILM));
+                s.setId_sala(rs.getInt(Util.Spettacolo.COLUMN_ID_SALA));
+                s.setId_spettacolo(rs.getInt(Util.Spettacolo.COLUMN_ID_SPETTACOLO));
+                //data
+                s.setData(rs.getDate(Util.Spettacolo.COLUMN_DATA));
+                s.setOra(rs.getTime(Util.Spettacolo.COLUMN_ORA));
+                h.setF(f);
+                h.setS(s);
+                films.add(h);
+                
             }
-        } finally {
-            stm.close();
         }
 
         return films;
@@ -284,8 +254,7 @@ public class DBManager implements Serializable {
         stm.setInt(1, id_film);
 
         try {
-            ResultSet rs = stm.executeQuery();
-            try {
+            try (ResultSet rs = stm.executeQuery()) {
 
                 while (rs.next()) {
                     Spettacolo s = new Spettacolo();
@@ -296,8 +265,6 @@ public class DBManager implements Serializable {
                     s.setOra(rs.getTime(Util.Spettacolo.COLUMN_ORA));
                     list.add(s);
                 }
-            } finally {
-                rs.close();
             }
 
         } finally {
@@ -313,19 +280,18 @@ public class DBManager implements Serializable {
    
     //solo per vedere come funziona il ? nelle query
     public List<Film> getFilms(String regista) throws SQLException {
-        List<Film> films = new ArrayList<Film>();
+        List<Film> films = new ArrayList<>();
         
         //RICORDARSI IL ';' ALLA FINE DELLA QUERY
         PreparedStatement stm = con.prepareStatement("SELECT * FROM Film WHERE regista = ?;");
         //primo punto di domanda uguale regista
         stm.setString(1, regista);
         
-        Logger.getLogger(DBManager.class.getName()).info("Query: " + stm.toString());
+        Logger.getLogger(DBManager.class.getName()).log(Level.INFO, "Query: {0}", stm.toString());
                 
         
         try {
-            ResultSet rs = stm.executeQuery();
-            try {
+            try (ResultSet rs = stm.executeQuery()) {
                 
                 while(rs.next()) {
                     Film f = new Film();
@@ -341,8 +307,6 @@ public class DBManager implements Serializable {
                     
                     films.add(f);
                 }
-            } finally {
-                rs.close();
             }
         } finally {
             stm.close();
@@ -354,37 +318,28 @@ public class DBManager implements Serializable {
     
     //ritorna i num_recenti  fimls piu recenti TESTATA E FUNZIONANTE
     public List<Film> getFilmsCarosello() throws SQLException{
-        List<Film> films = new ArrayList<Film>();
+        List<Film> films = new ArrayList<>();
         
-        //INSERITI FILM CON DATA MAGGIORE DI OGGI AL MASSIMO 5 
-        PreparedStatement stm = con.prepareStatement("SELECT DISTINCT myCinema.Genere.id_genere, myCinema.Genere.descrizione, myCinema.Film.url_trailer,  myCinema.Film.id_film, myCinema.Film.trama, myCinema.Film.durata, myCinema.Film.regista, myCinema.Film.titolo, myCinema.Film.uri_locandina  FROM myCinema.Film, myCinema.Genere, myCinema.Spettacolo WHERE Film.id_genere = Genere.id_genere AND Film.id_film = Spettacolo.id_film AND data > CURDATE() LIMIT 5;");
-        
-        try {
-            ResultSet rs = stm.executeQuery();
-            try {
-                
-                while(rs.next()) {
-                    Genere g = new Genere();
-                    g.setId_genere(rs.getInt(Util.Genere.COLUMN_ID_GENERE));
-                    g.setDescrizione(rs.getString(Util.Genere.COLUMN_DESCRIZIONE));
-                    Film f = new Film();
+        try ( //INSERITI FILM CON DATA MAGGIORE DI OGGI AL MASSIMO 5
+                PreparedStatement stm = con.prepareStatement("SELECT DISTINCT myCinema.Genere.id_genere, myCinema.Genere.descrizione, myCinema.Film.url_trailer,  myCinema.Film.id_film, myCinema.Film.trama, myCinema.Film.durata, myCinema.Film.regista, myCinema.Film.titolo, myCinema.Film.uri_locandina  FROM myCinema.Film, myCinema.Genere, myCinema.Spettacolo WHERE Film.id_genere = Genere.id_genere AND Film.id_film = Spettacolo.id_film AND data > CURDATE() LIMIT 5;"); 
+                ResultSet rs = stm.executeQuery()) {
+            while(rs.next()) {
+                Genere g = new Genere();
+                g.setId_genere(rs.getInt(Util.Genere.COLUMN_ID_GENERE));
+                g.setDescrizione(rs.getString(Util.Genere.COLUMN_DESCRIZIONE));
+                Film f = new Film();
 //                     id_film, titolo, id_genere, url_trailer, durata, trama, uri_locandina, regista
-                    f.setId_film(rs.getInt(Util.Film.COLUMN_ID_FILM));
-                    f.setTitolo(rs.getString(Util.Film.COLUMN_TITOLO));
-                    f.setGenere(g);
-                    f.setUrl_trailer(rs.getString(Util.Film.COLUMN_URL_TRAILER));
-                    f.setDurata(rs.getInt(Util.Film.COLUMN_DURATA));
-                    f.setTrama(rs.getString(Util.Film.COLUMN_TRAMA));
-                    f.setUri_locandina(rs.getString(Util.Film.COLUMN_URI_LOCANDINA));
-                    f.setRegista(rs.getString(Util.Film.COLUMN_REGISTA));
-                    
-                    films.add(f);
-                }
-            } finally {
-                rs.close();
+                f.setId_film(rs.getInt(Util.Film.COLUMN_ID_FILM));
+                f.setTitolo(rs.getString(Util.Film.COLUMN_TITOLO));
+                f.setGenere(g);
+                f.setUrl_trailer(rs.getString(Util.Film.COLUMN_URL_TRAILER));
+                f.setDurata(rs.getInt(Util.Film.COLUMN_DURATA));
+                f.setTrama(rs.getString(Util.Film.COLUMN_TRAMA));
+                f.setUri_locandina(rs.getString(Util.Film.COLUMN_URI_LOCANDINA));
+                f.setRegista(rs.getString(Util.Film.COLUMN_REGISTA));
+                
+                films.add(f);
             }
-        } finally {
-            stm.close();
         }
        
         return films;
@@ -394,7 +349,7 @@ public class DBManager implements Serializable {
     
     
     public List<Posto> getPosti (int id_sala) throws SQLException{
-        List<Posto> posti = new ArrayList<Posto>();
+        List<Posto> posti = new ArrayList<>();
         PreparedStatement stm = con.prepareStatement("SELECT Posto.id_posto, id_sala, riga, colonna, esiste FROM myCinema.Posto WHERE Posto.id_sala=?;");
         stm.setInt(1,id_sala);    
         try {
@@ -426,14 +381,13 @@ public class DBManager implements Serializable {
      */
    
     public List<Posto> getPostiOccupati (Spettacolo s) throws SQLException{
-        List<Posto> posti = new ArrayList<Posto>();
+        List<Posto> posti = new ArrayList<>();
         PreparedStatement stm = con.prepareStatement("SELECT Posto.id_posto, id_sala, riga, colonna, esiste FROM myCinema.Posto INNER JOIN myCinema.Prenotazione WHERE Posto.id_posto=Prenotazione.id_posto AND Prenotazione.id_spettacolo=?;");
         
         stm.setInt(1,s.getId_spettacolo());
         
         try {
-            ResultSet rs = stm.executeQuery();
-            try {
+            try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     Posto p = new Posto();
                     p.setId_posto(rs.getInt(Util.Posto.COLUMN_ID_POSTO));
@@ -443,8 +397,6 @@ public class DBManager implements Serializable {
                     p.setColonna(rs.getInt(Util.Posto.COLUMN_COLONNA));
                     posti.add(p);
                 }
-            } finally {
-                rs.close();
             }
 
         } finally {
@@ -481,23 +433,19 @@ public class DBManager implements Serializable {
             stm.setInt(2,posti.iterator().next().getRiga());
             stm.setInt(3,posti.iterator().next().getColonna());
         try {
-            ResultSet rs = stm.executeQuery();
-            try{
+            try(ResultSet rs = stm.executeQuery()) {
                 while (rs.next()){
                     int id_posto = rs.getInt(Util.Posto.COLUMN_ID_POSTO);
                     //controllo che non ci sia gia una prenotazione con questo posto 
                     PreparedStatement stm2 = con.prepareStatement("SELECT id_posto FROM myCinema.Prenotazione WHERE id_spettacolo=?;");
                     stm2.setInt(1,s.getId_spettacolo());
                     try{
-                        ResultSet prenotazioni = stm2.executeQuery();
-                        try{
+                        try(ResultSet prenotazioni = stm2.executeQuery()) {
                         while(prenotazioni.next()){
                             if ((prenotazioni.getInt(Util.Prenotazione.COLUMN_ID_POSTO)) == id_posto){
                                 return false;
                             }
                         }
-                        } finally {
-                            prenotazioni.close();
                         }
                     } finally {
                         stm2.close();
@@ -527,12 +475,9 @@ public class DBManager implements Serializable {
                         String timestring = dateformatime.format(data);
                         insert.setString(6,timestring);
                         //la salta
-                        String porcodio="porcodio";
                         insert.executeUpdate();
                 
                 }
-            } finally{
-                rs.close();
             }
         } finally{
             stm.close();
@@ -649,8 +594,7 @@ public class DBManager implements Serializable {
         PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Film, myCinema.Genere WHERE Film.id_genere = Genere.id_genere AND Film.id_film = ?;");
         stm.setInt(1, n);        
         try {
-            ResultSet rs = stm.executeQuery();
-            try {
+            try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     Genere g = new Genere();
                     g.setId_genere(rs.getInt(Util.Genere.COLUMN_ID_GENERE));
@@ -665,8 +609,6 @@ public class DBManager implements Serializable {
                     f.setRegista(rs.getString(Util.Film.COLUMN_REGISTA));
                 }
                 
-            } finally {
-                rs.close();
             }
         } finally {
             stm.close();
