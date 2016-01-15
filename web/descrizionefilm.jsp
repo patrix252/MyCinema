@@ -16,13 +16,8 @@
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         
-        <!-- carousel -->
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <link href="./lib/css/carousel.css" rel="stylesheet">
-
-        <generalcode:navbar_header/>
-        <link href="./lib/css/carousel.css" rel="stylesheet">
+        <link rel="stylesheet" type="css/my.css" href="./lib/css/mycss.css">    
+        
     </head>
     <body>    
 	<div class="container">	
@@ -47,7 +42,7 @@
                     <p class="text-left"><b>3D: </b><c:choose><c:when test="${film.is3D==0}">No</c:when><c:otherwise>Sì</c:otherwise></c:choose></p>
 
                     <p class="text-left"><b>Trama: </b>${film.trama}</p>
-                    <p><a class="btn btn-success" role="button" href="prenotazione.jsp?id=${param.id}&titolo=${film.titolo}" style="margin-top: 20px">Prenota subito!</a></p>
+                    <p><a class="btn btn-success" role="button" href="PrenotationServlet?id=${param.id}&titolo=${film.titolo}" style="margin-top: 20px">Prenota subito!</a></p>
                 </div>
             </div>
             

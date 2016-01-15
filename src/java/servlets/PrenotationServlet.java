@@ -5,24 +5,30 @@
  */
 package servlets;
 
+import beans.Posto;
+import beans.Spettacolo;
+import db.DBManager;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Paolo
  */
-@WebServlet(name = "EmailQrCode", urlPatterns = {"/EmailQrCode"})
-public class EmailQrCode extends HttpServlet {
-
+public class PrenotationServlet extends HttpServlet {
+    private DBManager manager;
+    private static int numeroSale = 4;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -31,24 +37,29 @@ public class EmailQrCode extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * @throws java.sql.SQLException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
+        RequestDispatcher view;
         response.setContentType("text/html;charset=UTF-8");
-            RequestDispatcher view = new RequestDispatcher() {
-
-            @Override
-            public void forward(ServletRequest request, ServletResponse response) throws ServletException, IOException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public void include(ServletRequest request, ServletResponse response) throws ServletException, IOException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        };
-            
-        view = request.getRequestDispatcher("pagamentoEffettuato.jsp");
+        HttpSession session = ((HttpServletRequest) request).getSession();
+        manager = (DBManager)getServletContext().getAttribute("dbmanager");
+        List <Spettacolo> spett = null;
+        int i = Integer.parseInt (request.getParameter("id"));
+        spett = manager.getSpettacoli(i);
+        session.setAttribute("spettacoli", spett);
+        List <List<Posto>> postiOccupati = new ArrayList<>();
+        for(int j=0; j<spett.size(); j++){
+            postiOccupati.add(manager.getPostiOccupati(spett.get(j)));
+        }
+        List <List<Posto>> postiTotali = new ArrayList<>();
+        for(int j=1; j<(numeroSale+1); j++){
+            postiTotali.add(manager.getPosti(j));
+        }
+        session.setAttribute("postiTotali", postiTotali);
+        session.setAttribute("postiOccupati", postiOccupati);
+        view = request.getRequestDispatcher("prenotazione.jsp");
         view.forward(request, response);
     }
 
@@ -64,7 +75,11 @@ public class EmailQrCode extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(PrenotationServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -78,7 +93,11 @@ public class EmailQrCode extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(PrenotationServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

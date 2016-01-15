@@ -24,6 +24,22 @@
         <description>ServletContextListener</description>
         <listener-class>listeners.ServletContextListener</listener-class>
     </listener>
+    <servlet>
+        <servlet-name>PrenotationServlet</servlet-name>
+        <servlet-class>servlets.PrenotationServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PagamentoServlet</servlet-name>
+        <servlet-class>servlets.PagamentoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PrenotationServlet</servlet-name>
+        <url-pattern>/PrenotationServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PagamentoServlet</servlet-name>
+        <url-pattern>/PagamentoServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

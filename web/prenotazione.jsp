@@ -10,7 +10,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
-    List<Spettacolo> temp = (ArrayList<Spettacolo>) (session.getAttribute("orariPrenotazione"));
+    List<Spettacolo> temp = (ArrayList<Spettacolo>) (session.getAttribute("spettacoli"));
     List<List<Posto>> postiOccupati = (ArrayList<List<Posto>>) (session.getAttribute("postiOccupati"));
     List<List<String>> posti = new ArrayList<List<String>>();
     for(int i=0; i<postiOccupati.size(); i++){
@@ -26,7 +26,7 @@
     //Uso un LinkedHashSet per non avere date ripetute ma per mantenere l'ordine di inserimento
     //Visto che nella mia ArrayList le ho già ordinate
     Set<Date> insieme = new LinkedHashSet<>();
-    for (int i = 0; i < (int) ((ArrayList) (session.getAttribute("orariPrenotazione"))).size(); i++) {
+    for (int i = 0; i < (int) ((ArrayList) (session.getAttribute("spettacoli"))).size(); i++) {
         if (i == 0) {
             session.setAttribute("primaData", temp.get(i).getData());
         }
@@ -37,18 +37,18 @@
 
 <%
     StringBuffer values = new StringBuffer();
-    for (int i = 0; i < (int) ((ArrayList) (session.getAttribute("orariPrenotazione"))).size(); ++i) {
+    for (int i = 0; i < (int) ((ArrayList) (session.getAttribute("spettacoli"))).size(); ++i) {
         if (values.length() > 0) {
             values.append(',');
         }
-        values.append('"').append(((Spettacolo) ((ArrayList) (session.getAttribute("orariPrenotazione"))).get(i)).getData()).append('"');
+        values.append('"').append(((Spettacolo) ((ArrayList) (session.getAttribute("spettacoli"))).get(i)).getData()).append('"');
     }
     StringBuffer values1 = new StringBuffer();
-    for (int i = 0; i < (int) ((ArrayList) (session.getAttribute("orariPrenotazione"))).size(); ++i) {
+    for (int i = 0; i < (int) ((ArrayList) (session.getAttribute("spettacoli"))).size(); ++i) {
         if (values1.length() > 0) {
             values1.append(',');
         }
-        values1.append('"').append(((Spettacolo) ((ArrayList) (session.getAttribute("orariPrenotazione"))).get(i)).getOra()).append('"');
+        values1.append('"').append(((Spettacolo) ((ArrayList) (session.getAttribute("spettacoli"))).get(i)).getOra()).append('"');
     }
 %>
 <!DOCTYPE html>
@@ -57,8 +57,8 @@
         <title>Prenotazione</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="./lib/seat-charts.css">
-        <link rel="stylesheet" type="text/css" href="./lib/seat-charts2.css">
+     
+        <link rel="stylesheet" type="text/css" href="./lib/css/seat-charts2.css">
         <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
 
         
@@ -69,15 +69,14 @@
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         
         
-        <script src="./lib/seat-charts.min.js"></script> 
-        <script src="js/prenotazione.js"></script>
+        <script src="./lib/js/seat-charts.min.js"></script> 
+        <script src="./lib/js/prenotazione.js"></script>
 
-        <generalcode:navbar_header/>
-        <link href="./lib/css/carousel.css" rel="stylesheet">
+
+        <link rel="stylesheet" href="./lib/css/mycss.css">
         
     </head>
     <body>
-       
         <!-- INSERIRE NAVBAR -->
         
         <div class="container">
@@ -123,23 +122,38 @@
                     </dl>
                 </div>
             </div>
-                        
             
             <div class="row" style="padding-top: 5%;" id="acquista" hidden>
-                <div class="col-sm-6 col-lg-6 col-md-6">
-                    <div id="seat-map" class="noselect">
-                        <div class="front-indicator">Front</div>
+                <h4 align="center">Per selezionare un posto ridotto (bambini fino a 14 anni, disabili, studenti o militari) cliccare due volte su un posto</h4>                       
+                <div class="col-md-1"></div>
+                <div class="col-md-5">
+                    <div class="row">
+                        <div id="seat-map" class="noselect">
+                            <div class="front-indicator">Front</div>
+                        </div>
                     </div>
-                    
-                    <div id="legend"></div>
+                    <div class="row">
+                        <div id="legend"></div>
+                    </div>
                 </div>
-
-                <div class="col-sm-3 col-lg-3 col-md-3" style="padding-top: 10%;">    
-                    <p><b>Riepilogo:</b></p>
+                
+                
+                <div class="col-md-5" style="padding-top: 5%;">    
+                    <div class="row" style="margin-bottom: 20px">
+                        <p style="font-size: 30px"><b>Riepilogo:</b> </p>
+                    </div>
+                    <div class="row">
                     <p><b>n° posti interi: </b><span id="counter_intero">0</span></p>
+                    </div>
+                    <div class="row">
                     <p><b>n° posti ridotti: </b><span id="counter_ridotto">0</span></p>
+                    </div>
+                    <div class="row" style="margin-bottom: 20px">
                     <p><b>Prezzo totale: </b>€ <span id="total">0</span></p>
-                    <a href="pagamento.jsp" id="link"><button class="btn center-block btn-success">Acquista!</button></a>        
+                    </div>
+                    <div class="row">
+                    <a href="PagamentoServlet" id="link"><button class="btn center-block btn-success">Acquista!</button></a>
+                    </div>
                 </div>
                 <br>
             </div>    
@@ -149,12 +163,7 @@
        
         
         <script>
-            var posti = <%= posti.toString() %>;
-            $("#ora").click(function(){
-                $("#link").attr("href", "pagamento.jsp?ns="+$("#ora").val());
-            });
-           
-                      
+            var posti = <%= posti.toString() %>; 
             var date = [<%= values.toString()%>];
             var orari = [<%= values1.toString()%>];
             var i = 0;

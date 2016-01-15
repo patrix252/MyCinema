@@ -133,11 +133,7 @@ public class RegisterFilter implements Filter {
 
         if ("POST".equalsIgnoreCase(((HttpServletRequest) request).getMethod())) {
 
-            try {
-                manager = new DBManager("jdbc:mysql://46.101.19.71/myCinema", "user", "asdd");
-            } catch (SQLException ex) {
-                Logger.getLogger(RegisterFilter.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            manager = (DBManager)getFilterConfig().getServletContext().getAttribute("dbmanager");
 
             HttpSession session = ((HttpServletRequest) request).getSession();
 
@@ -152,12 +148,7 @@ public class RegisterFilter implements Filter {
             int anno1 = Integer.parseInt(anno)-1900;
             int mese1 = Integer.parseInt(mese)-1;
             int giorno1 = Integer.parseInt(giorno);
-            Date data = new Date(anno1, mese1, giorno1);
-            
-            
-          
-           
-            
+            Date data = new Date(anno1, mese1, giorno1);    
             
             //CREO L'HASH DELLA PASSWORD E L'HASH PER L'ID UTENTE
             String hashPassword;
@@ -178,17 +169,26 @@ public class RegisterFilter implements Filter {
             try {
                 manager.inserisciUtente(user);
             } catch (SQLException ex) {
+                session.setAttribute("utente", null);
+                Cookie[] cookies1 = ((HttpServletRequest) request).getCookies();
+                for (Cookie cookie : cookies1) {
+                    cookie.setMaxAge(0);
+                    ((HttpServletResponse) response).addCookie(cookie);
+                }
                 session.setAttribute("EmailErrata", true);
                 controllore = true;
             }
         
             if (controllore == false) {
-
-                //AGGIUNGERE IL TEMPO DI VITA DEL COOKIE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                Cookie[] cookies1 = ((HttpServletRequest) request).getCookies();
+                for (Cookie cookie : cookies1) {
+                    cookie.setMaxAge(0);
+                    ((HttpServletResponse) response).addCookie(cookie);
+                }
                 Cookie cookie = new Cookie("idUtente", mail);
+                cookie.setMaxAge(60);
                 ((HttpServletResponse) response).addCookie(cookie);
-
-                view = request.getRequestDispatcher("loggato.jsp");
+                view = request.getRequestDispatcher("index.jsp");
                 view.forward(request, response);
             }
         }

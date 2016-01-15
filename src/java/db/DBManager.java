@@ -357,7 +357,7 @@ public class DBManager implements Serializable {
         List<Film> films = new ArrayList<Film>();
         
         //INSERITI FILM CON DATA MAGGIORE DI OGGI AL MASSIMO 5 
-        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Film, myCinema.Genere, myCinema.Spettacolo WHERE Film.id_genere = Genere.id_genere AND Film.id_film = Spettacolo.id_film AND data > CURDATE() LIMIT 5;");
+        PreparedStatement stm = con.prepareStatement("SELECT DISTINCT myCinema.Genere.id_genere, myCinema.Genere.descrizione, myCinema.Film.url_trailer,  myCinema.Film.id_film, myCinema.Film.trama, myCinema.Film.durata, myCinema.Film.regista, myCinema.Film.titolo, myCinema.Film.uri_locandina  FROM myCinema.Film, myCinema.Genere, myCinema.Spettacolo WHERE Film.id_genere = Genere.id_genere AND Film.id_film = Spettacolo.id_film AND data > CURDATE() LIMIT 5;");
         
         try {
             ResultSet rs = stm.executeQuery();
@@ -390,10 +390,33 @@ public class DBManager implements Serializable {
         return films;
          
     }
-    /*
     
     
-    */
+    
+    public List<Posto> getPosti (int id_sala) throws SQLException{
+        List<Posto> posti = new ArrayList<Posto>();
+        PreparedStatement stm = con.prepareStatement("SELECT Posto.id_posto, id_sala, riga, colonna, esiste FROM myCinema.Posto WHERE Posto.id_sala=?;");
+        stm.setInt(1,id_sala);    
+        try {
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    Posto p = new Posto();
+                    p.setId_posto(rs.getInt(Util.Posto.COLUMN_ID_POSTO));
+                    p.setId_sala(rs.getInt(Util.Posto.COLUMN_ID_SALA));
+                    p.setEsiste(rs.getInt(Util.Posto.COLUMN_ESISTE));
+                    p.setRiga(rs.getInt(Util.Posto.COLUMN_RIGA));
+                    p.setColonna(rs.getInt(Util.Posto.COLUMN_COLONNA));
+                    posti.add(p);
+                }
+            }
+        } finally {
+            stm.close();
+        }
+       return posti;
+    }
+    
+    
+    
     /**
      * 
      * @param s Spettacolo
@@ -452,7 +475,7 @@ public class DBManager implements Serializable {
                
             //inserisco le prenotazioni
             
-            while (posti.iterator().hasNext()) {
+        while (posti.iterator().hasNext()) {
             PreparedStatement stm = con.prepareStatement("SELECT id_posto FROM myCinema.Posto WHERE id_sala=? AND riga=? AND colonna=?;");
             stm.setInt(1, s.getId_sala());
             stm.setInt(2,posti.iterator().next().getRiga());

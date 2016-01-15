@@ -7,7 +7,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
-        
+        <link rel="stylesheet" href="./lib/css/mycss.css">
     </head>
     <body>
         <form action="LoginServlet" method="POST">
@@ -18,6 +18,10 @@
         <c:if test="${sessionScope.loginError}">
             <p style="color: red;">Email o password non valide, reinserisci i dati!</p>
             <c:set var="loginError" value="false" scope="session"/>
+        </c:if><br>
+        <c:if test="${sessionScope.problemaConnessione}">
+            <p style="color: red;">Problema a contattare il server, riprova tra qualche minuto!</p>
+            <c:set var="problemaConnessione" value="false" scope="session"/>
         </c:if><br>
         <div>Nuovo utente? Registrati <a href="registrazione.jsp">qui</a></div>
     </body>

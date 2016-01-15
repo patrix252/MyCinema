@@ -6,7 +6,9 @@
 var firstSeatLabel = 1;
 var postiTotali = {
     postiInteri : [],
-    postiRidotti : []
+    postiRidotti : [],
+    ns : "",
+    totale : ""
 };
 
             $(document).ready(function () {
@@ -28,25 +30,17 @@ var postiTotali = {
                     $counter_ridotto = $('#counter_ridotto'),
                     $total = $('#total'),
                     sc = $('#seat-map').seatCharts({
-                        map: [
-                                'ffffffffff',
-                                'ffffffffff',
-                                'ffffffffff',
-                                'ffeffffeff',
-                                '__________',
-                                'ffffffffff',
-                                'ffffffffff',
-                                'ffffffffff',
-                                'ffffffffff',
-                        ],
+                        
+                        map: creaMappa(11, 12),
+                
                         seats: {
                             f: {
-                                    price   : 100,
+                                    price   : 8,
                                     classes : 'first-class', //your custom CSS class
                                     category: 'First Class'
                             },
                             e: {
-                                    price   : 40,
+                                    price   : 5,
                                     classes : 'first-class economy-class', //your custom CSS class
                                     category: 'Economy Class'
                             }					
@@ -61,9 +55,8 @@ var postiTotali = {
                         legend : {
                             node : $('#legend'),
                             items : [
-                                        [ 'f', 'available',   'First Class' ],
-                                        [ 'e', 'available',   'Economy Class'],
-                                        [ 'f', 'unavailable', 'Already Booked']
+                                        [ 'f', 'selected',   'Normale' ],
+                                        [ 'e', 'selected_ridotto',   'Ridotto']
                             ]					
                         },
                         click: function () {
@@ -94,8 +87,8 @@ var postiTotali = {
                                     //and total
                                     $total.text(recalculateTotal(sc)-this.data().price);
                                     $total.text(recalculateTotal(sc)+this.data().price);
-
-
+                                    
+                                    
                                     //seat has been vacated
                                     return 'selected_ridotto';
                             } else if (this.status() == 'selected_ridotto') {
@@ -123,18 +116,31 @@ var postiTotali = {
                     
                     sc.find('unavailable').each(function () {
                         this.status('available');
+                    });     
+                    sc.find('selected').each(function () {
+                        this.status('available');
+                    });                 
+                    sc.find('selected_ridotto').each(function () {
+                        this.status('available');
                     });
+                    
+                
+                
                     sc.get(postiPerSpettacolo).status('unavailable');
                    
+                    $("#ora").click(function(){
+                        postiTotali.ns = $("#ora").val();
+                    });
 
                     //INVIARE JSON AL SERVER
-                    $("#link").click(function(){
+                    $("#link").unbind().click(function(){
                         sc.find('selected').each(function () {
                             postiTotali.postiInteri.push(this.settings.id);
                         });
                         sc.find('selected_ridotto').each(function () {
                             postiTotali.postiRidotti.push(this.settings.id);
                         }); 
+                        postiTotali.totale = $total.text();
                         $.ajax({
                             url: $("#link").attr("href"),
                             method: "POST",
@@ -159,6 +165,22 @@ var postiTotali = {
                 });
 
                 return total;
+            }
+            
+            function creaMappa(righe, colonne){
+                var map = [];
+                for(var i=0; i<righe; i++){
+                    map[i]="";
+                }
+                for(var i=0; i<righe; i++){
+                    for(var j=0; j<colonne; j++){
+                        if(i!==5)
+                            map[i]=map[i]+'f';
+                        if(i===5)
+                            map[i]=map[i]+'_';
+                    }
+                }
+                return map;
             }
 
             

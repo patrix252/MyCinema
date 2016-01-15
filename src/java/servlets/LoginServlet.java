@@ -7,6 +7,7 @@ package servlets;
 
 import beans.Utente;
 import db.DBManager;
+import filters.RequestQueryFilter;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,7 +35,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
 public class LoginServlet extends HttpServlet {
 
-            private DBManager manager;
+    private DBManager manager;
     
     @Override
     public void init() throws ServletException {
@@ -53,92 +54,6 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
-        HttpSession session = ((HttpServletRequest) request).getSession();
-
-        RequestDispatcher view = new RequestDispatcher() {
-
-            @Override
-            public void forward(ServletRequest request, ServletResponse response) throws ServletException, IOException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public void include(ServletRequest request, ServletResponse response) throws ServletException, IOException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        };
-//SE C'è UN COOKIE CONTROLLO CHE L'IDUTENTE SIA GIUSTO E IN CASO POI FACCIO LOGGARE L'UTENTE
-        String idUtente = null;
-        Cookie[] cookies = ((HttpServletRequest) request).getCookies();
-        Cookie cookie;
-        if (cookies != null) {
-            for (int i = 0; i < cookies.length; i++) {
-                cookie = cookies[i];
-                if (cookie.getName().equals("idUtente")) {
-                    idUtente = cookie.getValue();
-                }
-            }
-            if (idUtente != null) {
-                boolean controllo = false;
-                Utente user = null;
-                try {
-                    user = manager.trovanome(idUtente);
-                } catch (SQLException ex) {
-                    controllo=true;
-                }
-                if(controllo==false){
-                    session.setAttribute("utente", user);
-                    view = request.getRequestDispatcher("loggato.jsp");
-                    view.forward(request, response);
-                }
-            }
-        }
-//SE NON CI SONO COOKIE ARRIVA QUI, E O ARRIVA DALLA FORM E I VALORI MAIL E PASSWORD NON SONO NULLI
-//ALTRIMENTI I VALORI CI SONO E LI CONTROLLO
-        String mail = request.getParameter("Mail");
-        String password = request.getParameter("Password");
-        String metodo = request.getMethod();
-        if ("POST".equals(metodo)) {
-            InputStream is = new ByteArrayInputStream(password.getBytes());
-            String hashPassword = calcolaHash(is);
-            Utente user= new Utente();
-            try {
-                user=manager.chekpassword(mail,hashPassword);
-            } catch (SQLException ex) {
-                Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            if (user==null){
-                session.setAttribute("loginError", true);
-                view = request.getRequestDispatcher("login.jsp");
-                view.forward(request, response);
-            } else {
-                if(user.getRuolo()==1){
-                    
-
-                    //sei un admin del cazzo
-                    session.setAttribute("admin", true);
-                   
-                }
-                session.setAttribute("utente", user);
-                //AGGIUNGERE IL TEMPO DI VITA DEL COOKIE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                Cookie biscotto = new Cookie("idUtente", user.getEmail());
-                ((HttpServletResponse) response).addCookie(biscotto);
-                if(session.getAttribute("loginAction")==null){
-                    view = request.getRequestDispatcher("loggato.jsp");
-                    view.forward(request, response);
-                } else {
-                    String temp = ((StringBuffer)session.getAttribute("loginAction")).toString();
-                    //view = request.getRequestDispatcher(temp);
-                    session.setAttribute("loginAction", null);
-                    ((HttpServletResponse)response).sendRedirect(temp);
-                }
-                //view.forward(request, response);
-            }
-        } else {
-            view = request.getRequestDispatcher("login.jsp");
-            view.forward(request, response);
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -167,7 +82,41 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        HttpSession session = ((HttpServletRequest) request).getSession();
+        RequestDispatcher view;
+        // get request parameters for mail and password
+        String mail = request.getParameter("Mail");
+        String password = request.getParameter("Password");
+        InputStream is = new ByteArrayInputStream(password.getBytes());
+        String hashPassword = calcolaHash(is);
+        Utente user= new Utente();
+        try {
+            user=manager.chekpassword(mail,hashPassword);
+        } catch (SQLException ex) {
+            session.setAttribute("problemaConnessione", true);
+            String referer = request.getHeader("Referer");
+            response.sendRedirect(referer);
+        }
+        if (user==null){
+            session.setAttribute("loginError", true);
+            String referer = request.getHeader("Referer");
+            response.sendRedirect(referer);
+        } else {
+            //controllo se le credenziali sono quelle dell'admin
+            if(user.getRuolo()==1){
+                session.setAttribute("admin", true);  
+            }
+            session.setAttribute("utente", user);
+            Cookie biscotto = new Cookie("idUtente", user.getEmail());
+            biscotto.setMaxAge(60);
+            ((HttpServletResponse) response).addCookie(biscotto);
+            //loginAction mi serve per proseguire alla pagina di pagamento
+            
+            String referer = request.getHeader("Referer");
+            response.sendRedirect(referer);
+            
+        }        
     }
 
     /**

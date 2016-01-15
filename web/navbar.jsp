@@ -17,62 +17,131 @@
                 </a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-left">
-                    <li>
-                        <a href="oggialcinema.jsp">Oggi al cinema</a>
-                    </li>
-                    <li>
-                        <a href="prezzi.jsp">Prezzi</a>
-                    </li>
-                    <li>
-                        <a href="contatti.jsp">Contatti</a>
-                    </li>
-                    
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    
-                    <c:if test="${sessionScope.utente.getEmail()!=null}">
-                        <!-- Loggato -->
+                <c:if test="${!sessionScope.admin}">
+                    <ul class="nav navbar-nav navbar-left">
                         <li>
-                            <a href="logout.jsp">Log Out</a>
+                            <a href="oggialcinema.jsp">Oggi al cinema</a>
                         </li>
-                    </c:if>
-                    <c:if test="${sessionScope.utente.getEmail()==null}">
-                        <!-- Non loggato -->
-                        <li> 
-                            <a href="registrazione.jsp">Registrati!</a>
+                        <li>
+                            <a href="prezzi.jsp">Prezzi</a>
                         </li>
-                        
-                        
-                        
-                        <li class="dropdown"> 
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Effettua l'accesso<span class="caret"></span></a>
-                            <ul class="dropdown-menu" style="width: 200px">
-                                <div class="">
-                                    
-                                    <form class="form-inline" action="LoginServlet" method="POST">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" id="mail" name="Mail" size="10" placeholder="yourmail@sample.com" style="width: 100%">
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="password" class="form-control" id="password" name="Password" size="10" placeholder="Password" >
-                                        </div>
-                                        <c:if test="${sessionScope.loginError}">
-                                            <p style="color: red;">Email o password non valide, reinserisci i dati!</p>
-                                            <c:set var="loginError" value="false" scope="session"/>
-                                        </c:if>
-                                        <div>
-                                            <a href="passwordimenticata.html">Password dimenticata?</a>
-                                            <button type="submit"  class="btn btn-success pull-right">Accedi!</button>
-                                        </div>
-                                    </form>
-                                  
-                                </div>
-                            </ul>
+                        <li>
+                            <a href="contatti.jsp">Contatti</a>
                         </li>
-                        
-                    </c:if>
-                </ul>
+
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+
+                        <c:if test="${sessionScope.utente.getEmail()!=null}">
+                            <!-- Loggato -->
+                            <li>
+                                <a href="logout.jsp">Log Out</a>
+                            </li>
+                        </c:if>
+                        <c:if test="${sessionScope.utente.getEmail()==null}">
+                            <!-- Non loggato -->
+                            <li> 
+                                <a href="registrazione.jsp">Registrati!</a>
+                            </li>
+
+
+
+                            <li class="dropdown"> 
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Effettua l'accesso<span class="caret"></span></a>
+                                <ul class="dropdown-menu" style="width: 250px">
+                                    <div class="col-sm-12">
+
+                                        <form class="form-inline" action="LoginServlet" method="POST">
+                                            <div class="form-group" style="width: 100%">
+                                                <input type="text" class="form-control" id="mail" name="Mail" size="10" placeholder="yourmail@sample.com" style="width: 100%">
+                                            </div>
+                                            <div class="form-group" style="width: 100%">
+                                                <input type="password" class="form-control" id="password" name="Password" size="10" placeholder="Password" style="width: 100%">
+                                            </div>
+                                            <c:if test="${sessionScope.loginError}">
+                                                <script src="./lib/js/openDropdown.js"></script>
+                                                <p style="color: red;">Email o password non valide, reinserisci i dati!</p>
+                                                <c:set var="loginError" value="false" scope="session"/>
+                                            </c:if>
+                                            <c:if test="${sessionScope.problemaConnessione}">
+                                                <script src="./lib/js/openDropdown.js"></script>
+                                                <p style="color: red;">Problema con la connessione, riprovare più tardi!</p>
+                                                <c:set var="problemaConnessione" value="false" scope="session"/>
+                                            </c:if>
+                                            <div>
+                                                <a href="passwordimenticata.html">Password dimenticata?</a>
+                                                <button type="submit"  class="btn btn-success pull-right">Accedi!</button>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </ul>
+                            </li>
+
+                        </c:if>
+                    </ul>
+                </c:if>
+                
+                <c:if test="${sessionScope.admin}">
+                    <ul class="nav navbar-nav navbar-left">
+                        <li>
+                            <a href="listafilm.jsp">Gestisci film</a>
+                        </li>
+                        <li>
+                            <a href="incassiclientitop.jsp">Statistiche film & clienti</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+
+                        <c:if test="${sessionScope.utente.getEmail()!=null}">
+                            <!-- Loggato -->
+                            <li>
+                                <a href="logout.jsp">Log Out</a>
+                            </li>
+                        </c:if>
+                        <c:if test="${sessionScope.utente.getEmail()==null}">
+                            <!-- Non loggato -->
+                            <li> 
+                                <a href="registrazione.jsp">Registrati!</a>
+                            </li>
+
+
+
+                            <li class="dropdown"> 
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Effettua l'accesso<span class="caret"></span></a>
+                                <ul class="dropdown-menu" style="width: 250px">
+                                    <div class="col-sm-12">
+
+                                        <form class="form-inline" action="LoginServlet" method="POST">
+                                            <div class="form-group" style="width: 100%">
+                                                <input type="text" class="form-control" id="mail" name="Mail" size="10" placeholder="yourmail@sample.com" style="width: 100%">
+                                            </div>
+                                            <div class="form-group" style="width: 100%">
+                                                <input type="password" class="form-control" id="password" name="Password" size="10" placeholder="Password" style="width: 100%">
+                                            </div>
+                                            <c:if test="${sessionScope.loginError}">
+                                                <script src="./lib/js/openDropdown.js"></script>
+                                                <p style="color: red;">Email o password non valide, reinserisci i dati!</p>
+                                                <c:set var="loginError" value="false" scope="session"/>
+                                            </c:if>
+                                            <c:if test="${sessionScope.problemaConnessione}">
+                                                <script src="./lib/js/openDropdown.js"></script>
+                                                <p style="color: red;">Problema con la connessione, riprovare più tardi!</p>
+                                                <c:set var="problemaConnessione" value="false" scope="session"/>
+                                            </c:if>
+                                            <div>
+                                                <a href="passwordimenticata.html">Password dimenticata?</a>
+                                                <button type="submit"  class="btn btn-success pull-right">Accedi!</button>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </ul>
+                            </li>
+
+                        </c:if>
+                    </ul>
+                </c:if>
             </div>
         </div>
     </nav>

@@ -19,8 +19,8 @@
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
         
-        <generalcode:navbar_header/>
-        <link rel="stylesheet" type="css/my.css" href="./lib/mycss.css">
+     
+        <link rel="stylesheet" type="css/my.css" href="./lib/css/mycss.css">
     </head>
     <body>
         
@@ -38,24 +38,12 @@
                     </tr>
                     <tr class="active">
                         <td>INTERO - DOMENICA E FESTIVI</td>
-                        <td>€ 5,50</td>
-                        <td>€ 8,50</td>
-                    </tr> 
-                    <tr class="active">
-                        <td>INTERO - DA LUNEDÌ A SABATO</td> 
-                        <td>€ 4,50</td>
-                        <td>€ 7,50</td>
+                        <td>€ 8</td>
                     </tr> 
                     <tr class="danger">
-                        <td>RIDOTTO (fino a 14 anni) - TUTTI I GIORNI</td>
-                        <td>€ 4,00</td>
-                        <td>€ 7,00</td>
-                    </tr> 
-                    <tr class="danger">
-                        <td>DISABILI - TUTTI I GIORNI</td>
-                        <td>€ 4,00</td>
-                        <td>€ 7,00</td>
-                    </tr> 
+                        <td>RIDOTTO (fino a 14 anni) - DISABILI - SOLDATI - STUDENTI</td>
+                        <td>€ 5,00</td>
+                    </tr>
                   </table>
                 </div>
             </div>
