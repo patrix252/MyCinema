@@ -11,6 +11,7 @@ import beans.Genere;
 import beans.Spettacolo;
 import beans.Utente;
 import beans.Posto;
+import beans.UtenteSpesa;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.Date;
@@ -351,7 +352,7 @@ public class DBManager implements Serializable {
     }
     
     
-    //ritorna i num_recenti  fimls piu recenti
+    //ritorna i num_recenti  fimls piu recenti TESTATA E FUNZIONANTE
     public List<Film> getFilmsCarosello() throws SQLException{
         List<Film> films = new ArrayList<Film>();
         
@@ -533,14 +534,92 @@ public class DBManager implements Serializable {
     
     
     
-    
-    public List<Utente> getTopUser (int n) throws SQLException{
-       
+    //TESTATA E FUNZIONANTE
+    public List<UtenteSpesa> getTopUser() throws SQLException {
         
+        List <UtenteSpesa> utentespese = new ArrayList<>();
         
-    
-    return null;
+        PreparedStatement stm = con.prepareStatement("SELECT \n"
+                + "    Utente.email,\n"
+                + "    Utente.password,\n"
+                + "    Utente.credito,\n"
+                + "    Utente.id_ruolo,\n"
+                + "    Utente.nome,\n"
+                + "    Utente.cognome,\n"
+                + "    Utente.dataNascita,\n"
+                + "    SUM(prezzo) AS incasso\n"
+                + "FROM\n"
+                + "    myCinema.Prenotazione\n"
+                + "        LEFT JOIN\n"
+                + "    myCinema.TipoBiglietto ON TipoBiglietto.id_prezzo = Prenotazione.id_prezzo\n"
+                + "        INNER JOIN\n"
+                + "    myCinema.Utente ON Prenotazione.email = Utente.email\n"
+                + "GROUP BY email\n"
+                + "ORDER BY prezzo;");
+        
+        try {
+            ResultSet rs = stm.executeQuery();
+
+            try {
+                while (rs.next()) {
+                    UtenteSpesa utentespesa = new UtenteSpesa();
+                    Utente utente = new Utente();
+                    utente.setEmail(rs.getString(Util.Utente.COLUMN_EMAIL));
+                    utente.setPassword(rs.getString(Util.Utente.COLUMN_PASSWORD));
+                    utente.setNome(rs.getString(Util.Utente.COLUMN_NOME));
+                    utente.setCognome(rs.getString(Util.Utente.COLUMN_COGNOME));
+                    utente.setDataNascita(rs.getDate(Util.Utente.COLUMN_DATA_NASCITA));
+                    utente.setCredito(rs.getDouble(Util.Utente.COLUMN_CREDITO));
+                    utente.setRuolo(rs.getInt(Util.Utente.COLUMN_ID_RUOLO));
+
+                    utentespesa.setUtente(utente);
+                    utentespesa.setSpesa(rs.getDouble("incasso"));
+
+                    utentespese.add(utentespesa);
+
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+
+        return utentespese;
     }
+    
+    //incasso di uno spettacolo
+    public Double incassospettacolo(int id_spettacolo) throws SQLException{
+        PreparedStatement stm = con.prepareStatement("SELECT \n"
+                + "    SUM(prezzo) AS incasso\n"
+                + "FROM\n"
+                + "    myCinema.Prenotazione\n"
+                + "        LEFT JOIN\n"
+                + "    myCinema.TipoBiglietto ON TipoBiglietto.id_prezzo = Prenotazione.id_prezzo\n"
+                + "WHERE\n"
+                + "    Prenotazione.id_spettacolo = ?;");
+
+        
+        stm.setInt(1, id_spettacolo);
+       Double x = null;
+        try {
+            ResultSet rs = stm.executeQuery();
+            try {
+                while (rs.next()) {
+                   x = rs.getDouble("incasso");
+                }
+            } finally {
+                rs.close();
+            }
+        } finally {
+            stm.close();
+        }
+
+        return x;
+    
+    
+    }
+    
     
     public Film getFilm (int n) throws SQLException{
         Film f = new Film();

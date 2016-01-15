@@ -7,6 +7,7 @@
 import beans.Film;
 import beans.Posto;
 import beans.Spettacolo;
+import beans.UtenteSpesa;
 import db.DBManager;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -101,6 +102,17 @@ public class DatabaseTest extends HttpServlet {
                 Logger.getLogger(DatabaseTest.class.getName()).log(Level.SEVERE, null, ex);
                
                 
+            }
+            
+            //TESTING TOPUSER
+            
+            List<UtenteSpesa> ioio;
+            try {
+                
+
+                ioio=manager.getTopUser();
+            } catch (SQLException ex) {
+                Logger.getLogger(DatabaseTest.class.getName()).log(Level.SEVERE, null, ex);
             }
         
        
