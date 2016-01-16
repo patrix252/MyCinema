@@ -15,7 +15,7 @@ var postiTotali = {
                 $("#data option[value='InfoData']").prop('selected', true);
             });
 		
-            function mappa(posti) {
+            function mappa(posti, mappaPosti) {
                 var postiPerSpettacolo = new Array();
                 for(var i=0; i<posti.length; i++){
                     if(posti[i][0]==$("#ora").val()){
@@ -31,7 +31,7 @@ var postiTotali = {
                     $total = $('#total'),
                     sc = $('#seat-map').seatCharts({
                         
-                        map: creaMappa(11, 12),
+                        map: mappaPosti[$("#ora").val()],
                 
                         seats: {
                             f: {
@@ -124,8 +124,6 @@ var postiTotali = {
                         this.status('available');
                     });
                     
-                
-                
                     sc.get(postiPerSpettacolo).status('unavailable');
 
                     //INVIARE JSON AL SERVER
