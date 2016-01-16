@@ -72,7 +72,7 @@
                         <dt><h4>Ora spettacolo:</h4></dt>
                         <dd>
                             <div class="form-group">
-                                <select class="form-control" name="ora" id="ora" onchange="mappa(posti)" hidden>
+                                <select class="form-control" name="ora" id="ora" onchange="mappa(posti, mappe)" hidden>
                                     
                                 </select>
                             </div>
@@ -124,7 +124,7 @@
             var posti = <%= ((ArrayList<List<String>>)(session.getAttribute("postiOccupati"))).toString() %>; 
             var date = [<%= ((StringBuffer)session.getAttribute("dateSpettacoli")).toString() %>];
             var orari = [<%= ((StringBuffer)session.getAttribute("orariSpettacoli")).toString() %>];
-            var mappe = [<%= ((String[][])(session.getAttribute("mappePosti")))[0][0] %>];
+            var mappe = [<%= ((StringBuffer)session.getAttribute("mappePosti")).toString() %>];
             var i = 0;
             function cambia(sel) {
                 document.getElementById("ora").removeAttribute("hidden");

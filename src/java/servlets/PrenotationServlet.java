@@ -59,20 +59,26 @@ public class PrenotationServlet extends HttpServlet {
             postiOccupati.add(manager.getPostiOccupati(spett.get(j)));
         }
         List <Posto> postiSala = new ArrayList<>();
-        String[][] mappePosti = new String[NUMEROSALE][RIGHECINEMA];
+        StringBuffer mappePosti = new StringBuffer();
         for(int j=1; j<(NUMEROSALE+1); j++){
+            mappePosti.append("[");
             postiSala = manager.getPosti(j);
             int x = -1;
             for(int z=0; z<postiSala.size(); z++){
-                if(z % COLONNECINEMA == 0)
+                if(z % COLONNECINEMA == 0){
                     x++;
-                if(mappePosti[j-1][x]==null)
-                    mappePosti[j-1][x]="";
+                    mappePosti.append("'");
+                    if(z!=0)
+                        mappePosti.append(",'");
+                }
                 if(postiSala.get(z).getEsiste()==1)
-                    mappePosti[j-1][x]=(String)mappePosti[j-1][x].concat("f");
+                    mappePosti.append("f");
                 if(postiSala.get(z).getEsiste()==0)
-                    mappePosti[j-1][x]=(String)mappePosti[j-1][x].concat("_");
+                    mappePosti.append("_");
             }
+            mappePosti.append("']");
+            if(j!=NUMEROSALE)
+                mappePosti.append(",");
         }
         List<List<String>> posti = new ArrayList<>();
         for(int i=0; i<postiOccupati.size(); i++){
