@@ -92,7 +92,7 @@ public class RequestQueryFilter implements Filter {
         //Setto i parametri in modo da non salvare la cache
         ((HttpServletResponse) response).setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
         ((HttpServletResponse) response).setHeader("Pragma", "no-cache"); // HTTP 1.0.
-        ((HttpServletResponse) response).setDateHeader("Expires", 0); // Proxies.   
+        ((HttpServletResponse) response).setDateHeader("Expires", -1); // Proxies.   
         HttpSession session = ((HttpServletRequest) request).getSession();
         String userName = null;
             Cookie[] cookies = ((HttpServletRequest)request).getCookies();
@@ -170,8 +170,10 @@ public class RequestQueryFilter implements Filter {
                 (String)session.getAttribute("mail"),
                 (Spettacolo)session.getAttribute("spettacoloPrenotazione"),
                 false)){
+                    String a= "true";
                 //I POSTI ERANO LIBERI E CONTINUA LA TRANSAZIONE
                 } else {
+                    String a= "false";
                 //I POSTI ERANO OCCUPATI O C'ERA QUALCHE PROBLEMA NELL'URL, QUINDI REINDIRIZZARE VERSO PAGINA DI ERRORE
                 }
                 if(manager.addPrenotations((List<Posto>)session.getAttribute("postiRidotti"),
