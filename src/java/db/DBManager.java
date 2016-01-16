@@ -588,7 +588,7 @@ public class DBManager implements Serializable {
         
         List <UtenteSpesa> utentespese = new ArrayList<>();
         
-        PreparedStatement stm = con.prepareStatement("SELECT \n"
+        try (PreparedStatement stm = con.prepareStatement("SELECT \n"
                 + "    Utente.email,\n"
                 + "    Utente.password,\n"
                 + "    Utente.credito,\n"
@@ -604,34 +604,25 @@ public class DBManager implements Serializable {
                 + "        INNER JOIN\n"
                 + "    myCinema.Utente ON Prenotazione.email = Utente.email\n"
                 + "GROUP BY email\n"
-                + "ORDER BY prezzo;");
-        
-        try {
-            ResultSet rs = stm.executeQuery();
-
-            try {
-                while (rs.next()) {
-                    UtenteSpesa utentespesa = new UtenteSpesa();
-                    Utente utente = new Utente();
-                    utente.setEmail(rs.getString(Util.Utente.COLUMN_EMAIL));
-                    utente.setPassword(rs.getString(Util.Utente.COLUMN_PASSWORD));
-                    utente.setNome(rs.getString(Util.Utente.COLUMN_NOME));
-                    utente.setCognome(rs.getString(Util.Utente.COLUMN_COGNOME));
-                    utente.setDataNascita(rs.getDate(Util.Utente.COLUMN_DATA_NASCITA));
-                    utente.setCredito(rs.getDouble(Util.Utente.COLUMN_CREDITO));
-                    utente.setRuolo(rs.getInt(Util.Utente.COLUMN_ID_RUOLO));
-
-                    utentespesa.setUtente(utente);
-                    utentespesa.setSpesa(rs.getDouble("incasso"));
-
-                    utentespese.add(utentespesa);
-
-                }
-            } finally {
-                rs.close();
+                + "ORDER BY prezzo;"); 
+            ResultSet rs = stm.executeQuery()) {
+            while (rs.next()) {
+                UtenteSpesa utentespesa = new UtenteSpesa();
+                Utente utente = new Utente();
+                utente.setEmail(rs.getString(Util.Utente.COLUMN_EMAIL));
+                utente.setPassword(rs.getString(Util.Utente.COLUMN_PASSWORD));
+                utente.setNome(rs.getString(Util.Utente.COLUMN_NOME));
+                utente.setCognome(rs.getString(Util.Utente.COLUMN_COGNOME));
+                utente.setDataNascita(rs.getDate(Util.Utente.COLUMN_DATA_NASCITA));
+                utente.setCredito(rs.getDouble(Util.Utente.COLUMN_CREDITO));
+                utente.setRuolo(rs.getInt(Util.Utente.COLUMN_ID_RUOLO));
+                
+                utentespesa.setUtente(utente);
+                utentespesa.setSpesa(rs.getDouble("incasso"));
+                
+                utentespese.add(utentespesa);
+                
             }
-        } finally {
-            stm.close();
         }
 
         return utentespese;
@@ -652,13 +643,10 @@ public class DBManager implements Serializable {
         stm.setInt(1, id_spettacolo);
        Double x = null;
         try {
-            ResultSet rs = stm.executeQuery();
-            try {
+            try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                    x = rs.getDouble("incasso");
                 }
-            } finally {
-                rs.close();
             }
         } finally {
             stm.close();

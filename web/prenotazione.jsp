@@ -9,48 +9,6 @@
 <%@taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<%
-    List<Spettacolo> temp = (ArrayList<Spettacolo>) (session.getAttribute("spettacoli"));
-    List<List<Posto>> postiOccupati = (ArrayList<List<Posto>>) (session.getAttribute("postiOccupati"));
-    List<List<String>> posti = new ArrayList<List<String>>();
-    for(int i=0; i<postiOccupati.size(); i++){
-            for(int j=0; j<postiOccupati.get(i).size(); j++){
-                int x = postiOccupati.get(i).get(j).getRiga();
-                int y = postiOccupati.get(i).get(j).getColonna();
-                List<String> t = new ArrayList<>();
-                t.add("\""+Integer.toString(i)+"\"");
-                t.add("\""+Integer.toString(x)+"_"+Integer.toString(y)+"\"");
-                posti.add(t);
-            }
-    }
-    //Uso un LinkedHashSet per non avere date ripetute ma per mantenere l'ordine di inserimento
-    //Visto che nella mia ArrayList le ho già ordinate
-    Set<Date> insieme = new LinkedHashSet<>();
-    for (int i = 0; i < (int) ((ArrayList) (session.getAttribute("spettacoli"))).size(); i++) {
-        if (i == 0) {
-            session.setAttribute("primaData", temp.get(i).getData());
-        }
-        insieme.add(temp.get(i).getData());
-    }
-    session.setAttribute("orari", insieme);
-%>
-
-<%
-    StringBuffer values = new StringBuffer();
-    for (int i = 0; i < (int) ((ArrayList) (session.getAttribute("spettacoli"))).size(); ++i) {
-        if (values.length() > 0) {
-            values.append(',');
-        }
-        values.append('"').append(((Spettacolo) ((ArrayList) (session.getAttribute("spettacoli"))).get(i)).getData()).append('"');
-    }
-    StringBuffer values1 = new StringBuffer();
-    for (int i = 0; i < (int) ((ArrayList) (session.getAttribute("spettacoli"))).size(); ++i) {
-        if (values1.length() > 0) {
-            values1.append(',');
-        }
-        values1.append('"').append(((Spettacolo) ((ArrayList) (session.getAttribute("spettacoli"))).get(i)).getOra()).append('"');
-    }
-%>
 <!DOCTYPE html>
 <html lang="it">
     <head>
@@ -114,7 +72,7 @@
                         <dt><h4>Ora spettacolo:</h4></dt>
                         <dd>
                             <div class="form-group">
-                                <select class="form-control" name="ora" id="ora" onchange="mappa(posti)" hidden>
+                                <select class="form-control" name="ora" id="ora" onchange="mappa(posti, mappe)" hidden>
                                     
                                 </select>
                             </div>
@@ -163,9 +121,10 @@
        
         
         <script>
-            var posti = <%= posti.toString() %>; 
-            var date = [<%= values.toString()%>];
-            var orari = [<%= values1.toString()%>];
+            var posti = <%= ((ArrayList<List<String>>)(session.getAttribute("postiOccupati"))).toString() %>; 
+            var date = [<%= ((StringBuffer)session.getAttribute("dateSpettacoli")).toString() %>];
+            var orari = [<%= ((StringBuffer)session.getAttribute("orariSpettacoli")).toString() %>];
+            var mappe = [<%= ((StringBuffer)session.getAttribute("mappePosti")).toString() %>];
             var i = 0;
             function cambia(sel) {
                 document.getElementById("ora").removeAttribute("hidden");

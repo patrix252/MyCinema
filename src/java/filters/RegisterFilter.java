@@ -115,27 +115,19 @@ public class RegisterFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-
+        
+        HttpSession session = ((HttpServletRequest) request).getSession();
         boolean controllore = false;
-
-        RequestDispatcher view = new RequestDispatcher() {
-
-            @Override
-            public void forward(ServletRequest request, ServletResponse response) throws ServletException, IOException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public void include(ServletRequest request, ServletResponse response) throws ServletException, IOException {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        };
+        RequestDispatcher view;
+        
+        if(session.getAttribute("utente")!=null){
+            view = request.getRequestDispatcher("index.jsp");
+            view.forward(request, response);
+        }
 
         if ("POST".equalsIgnoreCase(((HttpServletRequest) request).getMethod())) {
 
             manager = (DBManager)getFilterConfig().getServletContext().getAttribute("dbmanager");
-
-            HttpSession session = ((HttpServletRequest) request).getSession();
 
             String nome = request.getParameter("Nome");
             String cognome = request.getParameter("Cognome");

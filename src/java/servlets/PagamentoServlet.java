@@ -43,10 +43,25 @@ public class PagamentoServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         RequestDispatcher view;
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = ((HttpServletRequest) request).getSession();
         session.setAttribute("controlloreCodice",false);
+        String mail = null;
+        //Provo a prendere la mail di chi sta facendo la prenotazione, se fallisco vuol dire che non è loggato
+        //e lo reindirizzo alla pagina di login
+        try{
+            mail = ((Utente)session.getAttribute("utente")).getEmail();
+        } catch(Exception e){       
+            view = request.getRequestDispatcher("login.jsp");
+            view.forward(request, response);
+        }
+        if(mail==null){
+            view = request.getRequestDispatcher("login.jsp");
+            view.forward(request, response);
+        }
+            session.setAttribute("mail", mail);
             String str = null;
             StringBuffer jb = new StringBuffer();
             BufferedReader reader = ((HttpServletRequest) request).getReader();
@@ -111,20 +126,7 @@ public class PagamentoServlet extends HttpServlet {
                 session.setAttribute("postiInteri", postiInteri);
                 session.setAttribute("postiRidotti", postiRidotti);
             }
-            
-            
-            String mail = null;
-            //Provo a prendere la mail di chi sta facendo la prenotazione, se fallisco vuol dire che non è loggato
-            //e lo reindirizzo alla pagina di login
-            try{
-                mail = ((Utente)session.getAttribute("utente")).getEmail();
-            } catch(Exception e){    
-               
-                view = request.getRequestDispatcher("login.jsp");
-                view.forward(request, response);
 
-            }
-            session.setAttribute("mail", mail);
             view = request.getRequestDispatcher("pagamento.jsp");
             view.forward(request, response);
     }
