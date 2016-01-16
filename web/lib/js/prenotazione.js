@@ -77,16 +77,16 @@ var postiTotali = {
 
      *             */
                                     $counter_intero.text(sc.find('selected').length+1);
-                                    $total.text(recalculateTotal(sc)+this.data().price);
-
+                                    $total.text(recalculateTotal(sc));
+                                    
                                     return 'selected';
                             } else if (this.status() == 'selected') {
                                     //update the counter
                                     $counter_intero.text(sc.find('selected').length-1);
                                     $counter_ridotto.text(sc.find('selected_ridotto').length+1);
                                     //and total
-                                    $total.text(recalculateTotal(sc)-this.data().price);
-                                    $total.text(recalculateTotal(sc)+this.data().price);
+                                    $total.text(recalculateTotal(sc));
+                                    $total.text(recalculateTotal(sc));
                                     
                                     
                                     //seat has been vacated
@@ -95,12 +95,13 @@ var postiTotali = {
                                     //update the counter
                                     $counter_ridotto.text(sc.find('selected_ridotto').length-1);
                                     //and total
-                                    $total.text(recalculateTotal(sc)-this.data().price);
+                                    $total.text(recalculateTotal(sc));
 
                                     //seat has been vacated
                                     return 'available';
                             } else if (this.status() == 'unavailable') {
                                     //seat has been already booked
+                                    
                                     return 'unavailable';
                             } else {
                                     return this.style();
@@ -156,10 +157,14 @@ var postiTotali = {
                     total += this.data().price;
                 });
                 sc.find('selected_ridotto').each(function () {
+           
                     total += this.data().price;
                 });
 
-                return total;
+                var interi = $("#counter_intero").html()*8;
+                var ridotti = $("#counter_ridotto").html()*5;
+
+                return interi+ridotti;
             }
             
             function creaMappa(righe, colonne){
