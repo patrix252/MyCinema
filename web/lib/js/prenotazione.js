@@ -25,13 +25,14 @@ var postiTotali = {
                     }
                 }
                     $("#acquista").show();
+                    alert(($("#ora").val()-1));
                     var $cart = $('#selected-seats'),
                     $counter_intero = $('#counter_intero'),
                     $counter_ridotto = $('#counter_ridotto'),
                     $total = $('#total'),
                     sc = $('#seat-map').seatCharts({
                         
-                        map: mappaPosti[$("#ora").val()],
+                        map: mappaPosti[($("#ora").val()-1)],
                 
                         seats: {
                             f: {
