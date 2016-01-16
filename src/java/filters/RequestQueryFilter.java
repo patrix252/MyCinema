@@ -92,7 +92,7 @@ public class RequestQueryFilter implements Filter {
         //Setto i parametri in modo da non salvare la cache
         ((HttpServletResponse) response).setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
         ((HttpServletResponse) response).setHeader("Pragma", "no-cache"); // HTTP 1.0.
-        ((HttpServletResponse) response).setDateHeader("Expires", 0); // Proxies.   
+        ((HttpServletResponse) response).setDateHeader("Expires", -1); // Proxies.   
         HttpSession session = ((HttpServletRequest) request).getSession();
         String userName = null;
             Cookie[] cookies = ((HttpServletRequest)request).getCookies();
