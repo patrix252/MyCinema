@@ -20,10 +20,6 @@
         <dispatcher>INCLUDE</dispatcher>
         <dispatcher>ERROR</dispatcher>
     </filter-mapping>
-    <listener>
-        <description>ServletContextListener</description>
-        <listener-class>listeners.ServletContextListener</listener-class>
-    </listener>
     <servlet>
         <servlet-name>PrenotationServlet</servlet-name>
         <servlet-class>servlets.PrenotationServlet</servlet-class>
