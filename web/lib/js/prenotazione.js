@@ -15,7 +15,7 @@ var postiTotali = {
                 $("#data option[value='InfoData']").prop('selected', true);
             });
 		
-            function mappa(posti, mappaPosti) {
+            function mappa(posti, mappaPosti, id_sala) {
                 var postiPerSpettacolo = new Array();
                 for(var i=0; i<posti.length; i++){
                     if(posti[i][0]==$("#ora").val()){
@@ -24,15 +24,17 @@ var postiTotali = {
                         }
                     }
                 }
+                    
                     $("#acquista").show();
-                    alert(($("#ora").val()-1));
+                    $("#seat-map").empty();
+                    $("#legend").empty();
                     var $cart = $('#selected-seats'),
                     $counter_intero = $('#counter_intero'),
                     $counter_ridotto = $('#counter_ridotto'),
-                    $total = $('#total'),
+                    $total = $('#total');
                     sc = $('#seat-map').seatCharts({
                         
-                        map: mappaPosti[($("#ora").val()-1)],
+                        map: mappaPosti[id_sala-1],
                 
                         seats: {
                             f: {
