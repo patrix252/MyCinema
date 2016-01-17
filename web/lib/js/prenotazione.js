@@ -16,6 +16,7 @@ var postiTotali = {
             });
 		
             function mappa(posti, mappaPosti, id_sala) {
+                firstSeatLabel = 1;
                 var postiPerSpettacolo = new Array();
                 for(var i=0; i<posti.length; i++){
                     if(posti[i][0]==$("#ora").val()){
