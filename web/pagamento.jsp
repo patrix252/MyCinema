@@ -4,6 +4,7 @@
     Author     : Paolo
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -32,8 +33,17 @@
             
             <jsp:include page="navbar.jsp" />
             
-            <h1>Totale: totale preso dal valore della sessione</h1>
-            <h1>I posti sono: posti presi dalla list(Posto) presa dalla sessione</h1>
+            <h3>Totale: ${sessionScope.totale}€</h3>
+            <h3>Posti Interi:
+            <c:forEach items="${sessionScope.postiInteri}" var = "pi">
+                <c:out value="${pi.riga}-${pi.colonna} "/>
+            </c:forEach>
+            </h3>
+            <h3>Posti Ridotti: 
+            <c:forEach items="${sessionScope.postiRidotti}" var = "pr">
+                <c:out value="${pr.riga}-${pr.colonna} "/>
+            </c:forEach>
+            </h3>
             <h2 class="text-center"><b>Dati carta:</b></h2>
             
             <form id="modulo" class="form-inline" name="modulo"  onSubmit="return controllo();" action="pagamentoEffettuato.jsp" method="POST">    

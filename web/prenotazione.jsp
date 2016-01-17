@@ -111,7 +111,9 @@
                     <p><b>Prezzo totale: </b>€ <span id="total">0</span></p>
                     </div>
                     <div class="row">
-                    <a href="PagamentoServlet" id="link"><button class="btn center-block btn-success">Acquista!</button></a>
+                        <c:if test="${!sessionScope.admin}">
+                            <a href="PagamentoServlet" id="link"><button class="btn center-block btn-success">Acquista!</button></a>
+                        </c:if>
                     </div>
                 </div>
                 <br>

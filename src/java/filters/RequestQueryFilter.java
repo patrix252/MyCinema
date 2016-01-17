@@ -185,7 +185,7 @@ public class RequestQueryFilter implements Filter {
                 } catch (SQLException ex) {
                 Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
+                
                 Classi.inviaEmail(getFilterConfig().getServletContext(), session);
 
             

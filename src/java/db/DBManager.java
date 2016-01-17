@@ -416,52 +416,47 @@ public class DBManager implements Serializable {
     per la data e l'ora al momento della query prendi la data e l'ora attuali
     1.controllo che i posti non siano gia prenotati
     2.inserisco una prenotazione per ogni posto
-    
-    
-    
     */
     
     public boolean addPrenotations (List <Posto> posti, String email,Spettacolo s,boolean ridotto ) throws SQLException {
-            
-                
-               
-            //inserisco le prenotazioni
-            
-        while (posti.iterator().hasNext()) {
-            PreparedStatement stm = con.prepareStatement("SELECT id_posto FROM myCinema.Posto WHERE id_sala=? AND riga=? AND colonna=?;");
-            stm.setInt(1, s.getId_sala());
-            stm.setInt(2,posti.iterator().next().getRiga());
-            stm.setInt(3,posti.iterator().next().getColonna());
-        try {
-            try(ResultSet rs = stm.executeQuery()) {
-                while (rs.next()){
-                    int id_posto = rs.getInt(Util.Posto.COLUMN_ID_POSTO);
-                    //controllo che non ci sia gia una prenotazione con questo posto 
-                    PreparedStatement stm2 = con.prepareStatement("SELECT id_posto FROM myCinema.Prenotazione WHERE id_spettacolo=?;");
-                    stm2.setInt(1,s.getId_spettacolo());
-                    try{
-                        try(ResultSet prenotazioni = stm2.executeQuery()) {
-                        while(prenotazioni.next()){
-                            if ((prenotazioni.getInt(Util.Prenotazione.COLUMN_ID_POSTO)) == id_posto){
-                                return false;
-                            }
+         //prendo i posti occupati per fare il controllo
+         List <Posto> postioccupati = this.getPostiOccupati(s);
+         //trovo i posti nel db  perche sono senza id, senza sala 
+         for (Posto post:posti){
+             PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Posto WHERE id_sala=? AND riga=? AND colonna=?;");
+             stm.setInt(1,s.getId_sala());
+             stm.setInt(2,post.getRiga());
+             stm.setInt(3,post.getColonna());
+             String a = stm.toString();
+             try {
+                    try (ResultSet rs = stm.executeQuery()){
+                    while (rs.next()){
+                        post.setId_posto(rs.getInt(Util.Posto.COLUMN_ID_POSTO));
+                        post.setEsiste(rs.getInt(Util.Posto.COLUMN_ESISTE));
+                        post.setId_sala(s.getId_sala());
                         }
-                        }
-                    } finally {
-                        stm2.close();
-                    }
-                    
-                    
-                    
-                    
-                    PreparedStatement insert = con.prepareStatement("INSERT INTO myCinema.Prenotazione (id_spettacolo, id_prezzo, id_posto, email, data, ora) VALUES (?,?,?,?,?,?);");
-                        insert.setInt(1,s.getId_spettacolo());
+                    } 
+                 } finally {stm.close();}
+         }
+         //controllo che non ci siano già posti occupati confrontando le liste posti (riempita sopra) e postioccupati 
+         
+         for (Posto p:posti){
+             for (Posto q:postioccupati){
+                 if (p.getId_posto()==q.getId_posto())
+                     return false;
+             
+             }
+         }
+         //inserisco le prenotazioni    
+         for (Posto pos:posti){
+             PreparedStatement insert = con.prepareStatement("INSERT INTO myCinema.Prenotazione (id_spettacolo, id_prezzo, id_posto, email, data, ora) VALUES (?,?,?,?,?,?);");
+             insert.setInt(1,s.getId_spettacolo());
                         if (ridotto){
                         insert.setInt(2,1);
                         } else {
                         insert.setInt(2,0);
                         }
-                        insert.setInt(3,id_posto);
+                        insert.setInt(3,pos.getId_posto());
                         insert.setString(4,email);
                         //data odierna
                         
@@ -475,23 +470,11 @@ public class DBManager implements Serializable {
                         String timestring = dateformatime.format(data);
                         insert.setString(6,timestring);
                         //la salta
+                        String queryparametrizzata = insert.toString();
                         insert.executeUpdate();
-                
-                }
-            }
-        } finally{
-            stm.close();
-        }   
-            
-            
-            }
-      return true;     
-    }
-            
-            
-            
-            
-            
+         }  
+     return true;
+     }      
             
             
             

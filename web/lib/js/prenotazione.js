@@ -170,22 +170,7 @@ var postiTotali = {
 
                 return interi+ridotti;
             }
-            
-            function creaMappa(righe, colonne){
-                var map = [];
-                for(var i=0; i<righe; i++){
-                    map[i]="";
-                }
-                for(var i=0; i<righe; i++){
-                    for(var j=0; j<colonne; j++){
-                        if(i!==5)
-                            map[i]=map[i]+'f';
-                        if(i===5)
-                            map[i]=map[i]+'_';
-                    }
-                }
-                return map;
-            }
+
 
             
 
