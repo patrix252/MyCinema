@@ -638,6 +638,41 @@ public class DBManager implements Serializable {
 
     }
     
+    //incasso di un film
+    
+    public double incassofilm (int id_film) throws SQLException{
+        PreparedStatement stm = con.prepareStatement(   "SELECT \n" +
+                                                        "    SUM(prezzo) AS incasso\n" +
+                                                        "FROM\n" +
+                                                        "	\n" +
+                                                        "	myCinema.Spettacolo\n" +
+                                                        "		INNER JOIN \n" +
+                                                        "    myCinema.Prenotazione\n" +
+                                                        "		ON Spettacolo.id_spettacolo=Prenotazione.id_spettacolo\n" +
+                                                        "		NATURAL JOIN \n" +
+                                                        "	myCinema.Film\n" +
+                                                        "		NATURAL JOIN \n" +
+                                                        "	myCinema.TipoBiglietto\n" +
+                                                        "WHERE id_film=?;");
+        
+        stm.setInt(1,id_film);
+        Double x=null;
+        try {
+            try (ResultSet rs = stm.executeQuery();){
+                while (rs.next()){
+                x=rs.getDouble("incasso");
+                }
+            
+            }
+        
+        } finally {stm.close();}
+    
+    if (x!=null){
+        return x;
+        } else {
+        return 0;
+        }
+    }
  
     
     public Film getFilm (int n) throws SQLException{
