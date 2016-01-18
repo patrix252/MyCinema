@@ -496,6 +496,8 @@ public class DBManager implements Serializable {
             
      public boolean addPrenotations (List <Posto> posti, String email,Spettacolo s,boolean ridotto ) throws SQLException {
          
+        
+         //prendo i posti occupati per fare il controllo
          List <Posto> postioccupati = this.getPostiOccupati(s);
         
         
@@ -503,9 +505,9 @@ public class DBManager implements Serializable {
          
      
          
-         //trovo i posti perche sono senza id
+         //trovo i posti nel db  perche sono senza id, senza sala 
          for (Posto post:posti){
-             PreparedStatement stm = con.prepareStatement("SELECT id_posto FROM myCinema.Posto WHERE id_sala=? AND riga=? AND colonna=?;");
+             PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Posto WHERE id_sala=? AND riga=? AND colonna=?;");
              stm.setInt(1,s.getId_sala());
              stm.setInt(2,post.getRiga());
              stm.setInt(3,post.getColonna());
@@ -514,7 +516,7 @@ public class DBManager implements Serializable {
                     try (ResultSet rs = stm.executeQuery()){
                     while (rs.next()){
                         post.setId_posto(rs.getInt(Util.Posto.COLUMN_ID_POSTO));
-                        post.setEsiste(1);
+                        post.setEsiste(rs.getInt(Util.Posto.COLUMN_ESISTE));
                         post.setId_sala(s.getId_sala());
                         }
                     
@@ -530,7 +532,7 @@ public class DBManager implements Serializable {
              
          }
          
-         //controllo che non ci siano già posti occupati
+         //controllo che non ci siano già posti occupati confrontando le liste posti (riempita sopra) e postioccupati 
          
          for (Posto p:posti){
              for (Posto q:postioccupati){
@@ -588,23 +590,16 @@ public class DBManager implements Serializable {
         
         List <UtenteSpesa> utentespese = new ArrayList<>();
         
-        try (PreparedStatement stm = con.prepareStatement("SELECT \n"
-                + "    Utente.email,\n"
-                + "    Utente.password,\n"
-                + "    Utente.credito,\n"
-                + "    Utente.id_ruolo,\n"
-                + "    Utente.nome,\n"
-                + "    Utente.cognome,\n"
-                + "    Utente.dataNascita,\n"
-                + "    SUM(prezzo) AS incasso\n"
-                + "FROM\n"
-                + "    myCinema.Prenotazione\n"
-                + "        LEFT JOIN\n"
-                + "    myCinema.TipoBiglietto ON TipoBiglietto.id_prezzo = Prenotazione.id_prezzo\n"
-                + "        INNER JOIN\n"
-                + "    myCinema.Utente ON Prenotazione.email = Utente.email\n"
-                + "GROUP BY email\n"
-                + "ORDER BY prezzo;"); 
+        try (PreparedStatement stm = con.prepareStatement(  "SELECT \n" +
+                                                            "    Utente.email, SUM(prezzo) AS incasso\n" +
+                                                            "FROM\n" +
+                                                            "    myCinema.Prenotazione\n" +
+                                                            "        NATURAL JOIN\n" +
+                                                            "    myCinema.Utente\n" +
+                                                            "        NATURAL JOIN\n" +
+                                                            "    myCinema.TipoBiglietto\n" +
+                                                            "GROUP BY email\n" +
+                                                            "ORDER BY incasso ASC;"); 
             ResultSet rs = stm.executeQuery()) {
             while (rs.next()) {
                 UtenteSpesa utentespesa = new UtenteSpesa();
