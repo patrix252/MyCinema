@@ -66,10 +66,7 @@ public class DBManager implements Serializable {
             Statement stm = con.createStatement();
             
             stm.executeUpdate(test);
-    
-    
-    
-    
+
     }
     
     
@@ -279,27 +276,21 @@ public class DBManager implements Serializable {
     
     
    
-    //solo per vedere come funziona il ? nelle query
-    public List<Film> getFilms(String regista) throws SQLException {
+
+    public List<Film> getFilms() throws SQLException {
         List<Film> films = new ArrayList<>();
-        
-        //RICORDARSI IL ';' ALLA FINE DELLA QUERY
-        PreparedStatement stm = con.prepareStatement("SELECT * FROM Film WHERE regista = ?;");
-        //primo punto di domanda uguale regista
-        stm.setString(1, regista);
-        
-        Logger.getLogger(DBManager.class.getName()).log(Level.INFO, "Query: {0}", stm.toString());
-                
-        
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Film, myCinema.Genere WHERE Film.id_genere = Genere.id_genere;");     
+        Logger.getLogger(DBManager.class.getName()).log(Level.INFO, "Query: {0}", stm.toString());     
         try {
-            try (ResultSet rs = stm.executeQuery()) {
-                
+            try (ResultSet rs = stm.executeQuery()) {          
                 while(rs.next()) {
                     Film f = new Film();
-//                     id_film, titolo, id_genere, url_trailer, durata, trama, uri_locandina, regista
+                    Genere g = new Genere();
+                    g.setId_genere(rs.getInt(Util.Genere.COLUMN_ID_GENERE));
+                    g.setDescrizione(rs.getString(Util.Genere.COLUMN_DESCRIZIONE));
                     f.setId_film(rs.getInt(Util.Film.COLUMN_ID_FILM));
                     f.setTitolo(rs.getString(Util.Film.COLUMN_TITOLO));
-                    //f.setGenere(rs.getInt(Util.Film.COLUMN_ID_FILM));
+                    f.setGenere(g);
                     f.setUrl_trailer(rs.getString(Util.Film.COLUMN_URL_TRAILER));
                     f.setDurata(rs.getInt(Util.Film.COLUMN_DURATA));
                     f.setTrama(rs.getString(Util.Film.COLUMN_TRAMA));
@@ -311,8 +302,7 @@ public class DBManager implements Serializable {
             }
         } finally {
             stm.close();
-        }
-        
+        } 
         return films;
     }
     
@@ -417,9 +407,6 @@ public class DBManager implements Serializable {
     per la data e l'ora al momento della query prendi la data e l'ora attuali
     1.controllo che i posti non siano gia prenotati
     2.inserisco una prenotazione per ogni posto
-    
-    
-    
     */
     /*
     public boolean addPrenotations (List <Posto> posti, String email,Spettacolo s,boolean ridotto ) throws SQLException {
@@ -463,7 +450,7 @@ public class DBManager implements Serializable {
                         } else {
                         insert.setInt(2,0);
                         }
-                        insert.setInt(3,id_posto);
+                        insert.setInt(3,pos.getId_posto());
                         insert.setString(4,email);
                         //data odierna
                         
@@ -591,7 +578,7 @@ public class DBManager implements Serializable {
         List <UtenteSpesa> utentespese = new ArrayList<>();
         
         try (PreparedStatement stm = con.prepareStatement(  "SELECT \n" +
-                                                            "    Utente.email, SUM(prezzo) AS incasso\n" +
+                                                            "    Utente.email, password, credito, id_ruolo, nome, Utente.cognome, dataNascita, SUM(prezzo) AS incasso\n" +
                                                             "FROM\n" +
                                                             "    myCinema.Prenotazione\n" +
                                                             "        NATURAL JOIN\n" +
@@ -599,7 +586,7 @@ public class DBManager implements Serializable {
                                                             "        NATURAL JOIN\n" +
                                                             "    myCinema.TipoBiglietto\n" +
                                                             "GROUP BY email\n" +
-                                                            "ORDER BY incasso ASC;"); 
+                                                            "ORDER BY incasso DESC;"); 
             ResultSet rs = stm.executeQuery()) {
             while (rs.next()) {
                 UtenteSpesa utentespesa = new UtenteSpesa();
@@ -648,10 +635,10 @@ public class DBManager implements Serializable {
         }
 
         return x;
-    
-    
+
     }
     
+ 
     
     public Film getFilm (int n) throws SQLException{
         Film f = new Film();

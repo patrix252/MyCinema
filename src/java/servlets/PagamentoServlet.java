@@ -48,20 +48,6 @@ public class PagamentoServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = ((HttpServletRequest) request).getSession();
         session.setAttribute("controlloreCodice",false);
-        String mail = null;
-        //Provo a prendere la mail di chi sta facendo la prenotazione, se fallisco vuol dire che non è loggato
-        //e lo reindirizzo alla pagina di login
-        try{
-            mail = ((Utente)session.getAttribute("utente")).getEmail();
-        } catch(Exception e){       
-            view = request.getRequestDispatcher("login.jsp");
-            view.forward(request, response);
-        }
-        if(mail==null){
-            view = request.getRequestDispatcher("login.jsp");
-            view.forward(request, response);
-        }
-            session.setAttribute("mail", mail);
             String str = null;
             StringBuffer jb = new StringBuffer();
             BufferedReader reader = ((HttpServletRequest) request).getReader();
@@ -96,8 +82,9 @@ public class PagamentoServlet extends HttpServlet {
                     Posto pt = new Posto();
                     try {
                         temp = pi.getString(z);
-                        pt.setRiga(Character.getNumericValue(temp.charAt(0)));
-                        pt.setColonna(Character.getNumericValue(temp.charAt(2)));
+                        int l = temp.indexOf("_");
+                        pt.setRiga(Integer.parseInt(temp.substring(0, l)));
+                        pt.setColonna(Integer.parseInt(temp.substring(l+1, temp.length())));
                         postiInteri.add(pt);
                     } catch (JSONException ex) {
                         Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
@@ -111,8 +98,9 @@ public class PagamentoServlet extends HttpServlet {
                     Posto pt = new Posto();
                     try {
                         temp = pr.getString(z);
-                        pt.setRiga(Character.getNumericValue(temp.charAt(0)));
-                        pt.setColonna(Character.getNumericValue(temp.charAt(2)));
+                        int l = temp.indexOf("_");
+                        pt.setRiga(Integer.parseInt(temp.substring(0, l)));
+                        pt.setColonna(Integer.parseInt(temp.substring(l+1, temp.length())));
                         postiRidotti.add(pt);
                     } catch (JSONException ex) {
                         Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
@@ -120,13 +108,34 @@ public class PagamentoServlet extends HttpServlet {
                 }
             }
             if(ns!=null){
-                Spettacolo spett = ((List<Spettacolo>)session.getAttribute("spettacoli")).get(Integer.parseInt(ns));
+                List<Spettacolo> temp = (List<Spettacolo>)session.getAttribute("spettacoli");
+                Spettacolo spett = null;
+                for(int i=0; i<temp.size(); i++){
+                    if(temp.get(i).getId_spettacolo() == Integer.parseInt(ns))
+                        spett = temp.get(i);
+                }
+                
                 session.setAttribute("totale", totale);
                 session.setAttribute("spettacoloPrenotazione", spett);
                 session.setAttribute("postiInteri", postiInteri);
                 session.setAttribute("postiRidotti", postiRidotti);
             }
 
+            String mail = null;
+            //Provo a prendere la mail di chi sta facendo la prenotazione, se fallisco vuol dire che non è loggato
+            //e lo reindirizzo alla pagina di login
+            try{
+                mail = ((Utente)session.getAttribute("utente")).getEmail();
+            } catch(Exception e){
+                view = request.getRequestDispatcher("login.jsp");
+                view.forward(request, response);
+            }
+            if(mail==null){
+                view = request.getRequestDispatcher("login.jsp");
+                view.forward(request, response);
+            }
+            session.setAttribute("mail", mail);
+            
             view = request.getRequestDispatcher("pagamento.jsp");
             view.forward(request, response);
     }

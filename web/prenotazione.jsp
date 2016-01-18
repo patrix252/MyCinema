@@ -1,3 +1,4 @@
+<%@page import="java.util.HashMap"%>
 <%@page import="java.lang.String"%>
 <%@page import="beans.Posto"%>
 <%@page import="java.util.LinkedHashSet"%>
@@ -72,7 +73,7 @@
                         <dt><h4>Ora spettacolo:</h4></dt>
                         <dd>
                             <div class="form-group">
-                                <select class="form-control" name="ora" id="ora" onchange="mappa(posti, mappe)" hidden>
+                                <select class="form-control" name="ora" id="ora" onchange="mappa(posti, mappe, ritornaIdSala())" hidden>
                                     
                                 </select>
                             </div>
@@ -110,7 +111,9 @@
                     <p><b>Prezzo totale: </b>€ <span id="total">0</span></p>
                     </div>
                     <div class="row">
-                    <a href="PagamentoServlet" id="link"><button class="btn center-block btn-success">Acquista!</button></a>
+                        <c:if test="${!sessionScope.admin}">
+                            <a href="PagamentoServlet" id="link"><button class="btn center-block btn-success">Acquista!</button></a>
+                        </c:if>
                     </div>
                 </div>
                 <br>
@@ -125,6 +128,8 @@
             var date = [<%= ((StringBuffer)session.getAttribute("dateSpettacoli")).toString() %>];
             var orari = [<%= ((StringBuffer)session.getAttribute("orariSpettacoli")).toString() %>];
             var mappe = [<%= ((StringBuffer)session.getAttribute("mappePosti")).toString() %>];
+            var id_sale = [<%= ((StringBuffer)session.getAttribute("id_sale")).toString() %>];
+            var id_spettacoli = [<%= ((StringBuffer)session.getAttribute("id_spettacoli")).toString() %>];
             var i = 0;
             function cambia(sel) {
                 document.getElementById("ora").removeAttribute("hidden");
@@ -133,10 +138,14 @@
                 $("#ora").append("<option disabled selected> -- Seleziona un'ora -- </option>");
                 for (i = 0; i < date.length; i++) {
                     if (date[i] === value) {
-                        $("#ora").append("<option value=\""+i+"\">" + orari[i] + "</option>");
+                        //il value lo setto come l'id dello spettacolo, mentre l'id lo setto come l'id della sala
+                        $("#ora").append("<option value=\"" + id_spettacoli[i] + "\">" + orari[i] + "</option>");
                     }
                 }
-            }            
+            }
+            function ritornaIdSala(){
+                return id_sale[id_spettacoli.indexOf($("#ora").val())];
+            }
         </script>      
     </body>
 </html>

@@ -13,8 +13,10 @@ import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -86,7 +88,7 @@ public class PrenotationServlet extends HttpServlet {
                 int x = postiOccupati.get(i).get(j).getRiga();
                 int y = postiOccupati.get(i).get(j).getColonna();
                 List<String> t = new ArrayList<>();
-                t.add("\""+Integer.toString(i)+"\"");
+                t.add("\""+spett.get(i).getId_spettacolo()+"\"");
                 t.add("\""+Integer.toString(x)+"_"+Integer.toString(y)+"\"");
                 posti.add(t);
             }
@@ -102,12 +104,22 @@ public class PrenotationServlet extends HttpServlet {
             orariSpettacoli.append('"').append(spett.get(i).getOra()).append('"');
         }
         Set<Date> insieme = new LinkedHashSet<>();
+        StringBuffer id_spettacoli = new StringBuffer(); 
+        StringBuffer id_sale = new StringBuffer();
         for (int i = 0; i < spett.size(); i++) {
             if (i == 0) {
                 session.setAttribute("primaData", spett.get(i).getData());
             }
+            if(i!=0){
+                id_sale.append(",");
+                id_spettacoli.append(",");
+            }
+            id_sale.append("'").append(spett.get(i).getId_sala()).append("'");
+            id_spettacoli.append("'").append(spett.get(i).getId_spettacolo()).append("'");
             insieme.add(spett.get(i).getData());
         }
+        session.setAttribute("id_spettacoli", id_spettacoli);
+        session.setAttribute("id_sale", id_sale);
         session.setAttribute("orari", insieme);
         session.setAttribute("dateSpettacoli", dateSpettacoli);
         session.setAttribute("orariSpettacoli", orariSpettacoli);

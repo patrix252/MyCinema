@@ -15,7 +15,8 @@ var postiTotali = {
                 $("#data option[value='InfoData']").prop('selected', true);
             });
 		
-            function mappa(posti, mappaPosti) {
+            function mappa(posti, mappaPosti, id_sala) {
+                firstSeatLabel = 1;
                 var postiPerSpettacolo = new Array();
                 for(var i=0; i<posti.length; i++){
                     if(posti[i][0]==$("#ora").val()){
@@ -24,15 +25,17 @@ var postiTotali = {
                         }
                     }
                 }
+                    
                     $("#acquista").show();
-                    alert(($("#ora").val()-1));
+                    $("#seat-map").empty();
+                    $("#legend").empty();
                     var $cart = $('#selected-seats'),
                     $counter_intero = $('#counter_intero'),
                     $counter_ridotto = $('#counter_ridotto'),
-                    $total = $('#total'),
+                    $total = $('#total');
                     sc = $('#seat-map').seatCharts({
                         
-                        map: mappaPosti[($("#ora").val()-1)],
+                        map: mappaPosti[id_sala-1],
                 
                         seats: {
                             f: {
@@ -78,16 +81,16 @@ var postiTotali = {
 
      *             */
                                     $counter_intero.text(sc.find('selected').length+1);
-                                    $total.text(recalculateTotal(sc)+this.data().price);
-
+                                    $total.text(recalculateTotal(sc));
+                                    
                                     return 'selected';
                             } else if (this.status() == 'selected') {
                                     //update the counter
                                     $counter_intero.text(sc.find('selected').length-1);
                                     $counter_ridotto.text(sc.find('selected_ridotto').length+1);
                                     //and total
-                                    $total.text(recalculateTotal(sc)-this.data().price);
-                                    $total.text(recalculateTotal(sc)+this.data().price);
+                                    $total.text(recalculateTotal(sc));
+                                    $total.text(recalculateTotal(sc));
                                     
                                     
                                     //seat has been vacated
@@ -96,12 +99,13 @@ var postiTotali = {
                                     //update the counter
                                     $counter_ridotto.text(sc.find('selected_ridotto').length-1);
                                     //and total
-                                    $total.text(recalculateTotal(sc)-this.data().price);
+                                    $total.text(recalculateTotal(sc));
 
                                     //seat has been vacated
                                     return 'available';
                             } else if (this.status() == 'unavailable') {
                                     //seat has been already booked
+                                    
                                     return 'unavailable';
                             } else {
                                     return this.style();
@@ -157,27 +161,16 @@ var postiTotali = {
                     total += this.data().price;
                 });
                 sc.find('selected_ridotto').each(function () {
+           
                     total += this.data().price;
                 });
 
-                return total;
+                var interi = $("#counter_intero").html()*8;
+                var ridotti = $("#counter_ridotto").html()*5;
+
+                return interi+ridotti;
             }
-            
-            function creaMappa(righe, colonne){
-                var map = [];
-                for(var i=0; i<righe; i++){
-                    map[i]="";
-                }
-                for(var i=0; i<righe; i++){
-                    for(var j=0; j<colonne; j++){
-                        if(i!==5)
-                            map[i]=map[i]+'f';
-                        if(i===5)
-                            map[i]=map[i]+'_';
-                    }
-                }
-                return map;
-            }
+
 
             
 
