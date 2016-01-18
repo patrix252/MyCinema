@@ -16,13 +16,14 @@
     </head>
     <body>
         <select id="films" onchange="showSpettacoli(this.value)">
-            <option>-- Seleziona un film --</option>
+            <option id="first_film">-- Seleziona un film --</option>
             <c:forEach items="${sessionScope.filmsAll}" var = "fa">
                 <option value="${fa.id_film}"><c:out value="${fa.titolo}"/></option>
             </c:forEach>
         </select>
-        <select id="spettacoli" hidden onchange="getIncasso(this.value)">
+        <select id="spettacoli" hidden onchange="getIncassoSpettacolo(this.value)">
         </select>
-        <p id="incasso"></p>
+        <p id="incasso_film"></p><br>
+        <p id="incasso_spettacolo"></p>
     </body>
 </html>

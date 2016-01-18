@@ -44,18 +44,22 @@ public class IncassiServlet extends HttpServlet {
         String id_film = request.getParameter("q");
         String id_spettacolo = request.getParameter("s");
         if(id_film!=null){
-            List<Spettacolo> spettacoli = new ArrayList<>();
-            //HttpSession session = ((HttpServletRequest) request).getSession();
+            List<Spettacolo> spettacoli;
             manager = (DBManager)getServletContext().getAttribute("dbmanager");
             spettacoli = manager.getSpettacoli(Integer.parseInt(id_film));
             response.getWriter().write("");
-             response.getWriter().append("<option>-- Scegli uno spettacolo --</option>");
+            response.getWriter().append("<option id=\"first_spettacoli\">-- Scegli uno spettacolo --</option>");
             for(int i=0; i<spettacoli.size(); i++){
                 response.getWriter().append("<option value=\"" + spettacoli.get(i).getId_spettacolo() + "\">" + spettacoli.get(i).getData()+ " " + spettacoli.get(i).getOra() + "</option>");
             }
         } else if(id_spettacolo!=null){
             double incasso = (double)manager.incassospettacolo(Integer.parseInt(id_spettacolo));
-            response.getWriter().write("Incasso: "+String.valueOf(incasso)+"€");
+            response.getWriter().write("Incasso spettacolo: "+String.valueOf(incasso)+"€");
+        } 
+        String t = request.getParameter("t");
+        if(t!=null){
+            double incasso = (double)manager.incassofilm(Integer.parseInt(t));
+            response.getWriter().write("Incasso film: "+String.valueOf(incasso)+"€");
         }
         
         
