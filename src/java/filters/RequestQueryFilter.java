@@ -10,6 +10,7 @@ import beans.Genere;
 import beans.Posto;
 import beans.Spettacolo;
 import beans.Utente;
+import beans.UtenteSpesa;
 import com.itextpdf.text.DocumentException;
 import db.DBManager;
 import java.io.BufferedReader;
@@ -198,6 +199,22 @@ public class RequestQueryFilter implements Filter {
                 Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
             }
             session.setAttribute("film", f);
+        } else if ("/MyCinema/incassiclientitop.jsp".equals(url)){
+            List<UtenteSpesa> utentiTop = new ArrayList<>();
+            try {
+                utentiTop = manager.getTopUser();
+            } catch (SQLException ex) {
+                Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            session.setAttribute("utentiTop", utentiTop);
+        } else if ("/MyCinema/listafilm.jsp".equals(url)){
+            List<Film> filmsAll = new ArrayList<>();
+            try {
+                filmsAll = manager.getFilms();
+            } catch (SQLException ex) {
+                Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            session.setAttribute("filmsAll", filmsAll);
         }
 
         if (debug) {

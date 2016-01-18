@@ -88,7 +88,7 @@
                             <a href="listafilm.jsp">Gestisci film</a>
                         </li>
                         <li>
-                            <a href="incassiclientitop.jsp">Statistiche film & clienti</a>
+                            <a href="incassiclientitop.jsp">Statistiche clienti</a>
                         </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">

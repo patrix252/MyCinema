@@ -65,10 +65,7 @@ public class DBManager implements Serializable {
             Statement stm = con.createStatement();
             
             stm.executeUpdate(test);
-    
-    
-    
-    
+
     }
     
     
@@ -278,27 +275,21 @@ public class DBManager implements Serializable {
     
     
    
-    //solo per vedere come funziona il ? nelle query
-    public List<Film> getFilms(String regista) throws SQLException {
+
+    public List<Film> getFilms() throws SQLException {
         List<Film> films = new ArrayList<>();
-        
-        //RICORDARSI IL ';' ALLA FINE DELLA QUERY
-        PreparedStatement stm = con.prepareStatement("SELECT * FROM Film WHERE regista = ?;");
-        //primo punto di domanda uguale regista
-        stm.setString(1, regista);
-        
-        Logger.getLogger(DBManager.class.getName()).log(Level.INFO, "Query: {0}", stm.toString());
-                
-        
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Film, myCinema.Genere WHERE Film.id_genere = Genere.id_genere;");     
+        Logger.getLogger(DBManager.class.getName()).log(Level.INFO, "Query: {0}", stm.toString());     
         try {
-            try (ResultSet rs = stm.executeQuery()) {
-                
+            try (ResultSet rs = stm.executeQuery()) {          
                 while(rs.next()) {
                     Film f = new Film();
-//                     id_film, titolo, id_genere, url_trailer, durata, trama, uri_locandina, regista
+                    Genere g = new Genere();
+                    g.setId_genere(rs.getInt(Util.Genere.COLUMN_ID_GENERE));
+                    g.setDescrizione(rs.getString(Util.Genere.COLUMN_DESCRIZIONE));
                     f.setId_film(rs.getInt(Util.Film.COLUMN_ID_FILM));
                     f.setTitolo(rs.getString(Util.Film.COLUMN_TITOLO));
-                    //f.setGenere(rs.getInt(Util.Film.COLUMN_ID_FILM));
+                    f.setGenere(g);
                     f.setUrl_trailer(rs.getString(Util.Film.COLUMN_URL_TRAILER));
                     f.setDurata(rs.getInt(Util.Film.COLUMN_DURATA));
                     f.setTrama(rs.getString(Util.Film.COLUMN_TRAMA));
@@ -310,8 +301,7 @@ public class DBManager implements Serializable {
             }
         } finally {
             stm.close();
-        }
-        
+        } 
         return films;
     }
     
@@ -555,10 +545,10 @@ public class DBManager implements Serializable {
         }
 
         return x;
-    
-    
+
     }
     
+ 
     
     public Film getFilm (int n) throws SQLException{
         Film f = new Film();
