@@ -7,6 +7,7 @@ package util;
 
 import beans.Film;
 import beans.Posto;
+import beans.Prenotazione;
 import beans.Spettacolo;
 import beans.Utente;
 import java.io.*;

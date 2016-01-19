@@ -8,6 +8,8 @@ package filters;
 import beans.Film;
 import beans.Genere;
 import beans.Posto;
+import beans.Prenotazione;
+import beans.PrenotazioniUtente;
 import beans.Spettacolo;
 import beans.Utente;
 import beans.UtenteSpesa;
@@ -217,6 +219,10 @@ public class RequestQueryFilter implements Filter {
                 Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
             }
             session.setAttribute("filmsAll", filmsAll);
+        } else if ("/MyCinema/registroPrenotazioni.jsp".equals(url)){
+            List<PrenotazioniUtente> prenotazioniUtente = new ArrayList<>();
+            prenotazioniUtente = manager.getPrenotazioniUtente(((Utente)session.getAttribute("utente")).getEmail());
+            session.setAttribute("prenotazioniUtente", prenotazioniUtente);
         }
 
         if (debug) {

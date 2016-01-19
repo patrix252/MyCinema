@@ -105,7 +105,9 @@ public class LoginServlet extends HttpServlet {
         } else {
             //controllo se le credenziali sono quelle dell'admin
             if(user.getRuolo()==1){
-                session.setAttribute("admin", true);  
+                session.setAttribute("admin", true);
+                String referer = request.getHeader("Referer");
+                response.sendRedirect(referer);
             }
             session.setAttribute("utente", user);
             Cookie biscotto = new Cookie("idUtente", user.getEmail());

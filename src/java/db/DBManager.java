@@ -11,6 +11,8 @@ import beans.Genere;
 import beans.Spettacolo;
 import beans.Utente;
 import beans.Posto;
+import beans.Prenotazione;
+import beans.PrenotazioniUtente;
 import beans.UtenteSpesa;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -20,6 +22,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -701,6 +704,25 @@ public class DBManager implements Serializable {
         }
         
         return f;
+    }
+    
+    //SE NON CI SONO PRENOTAZIONI RITORNARE NULL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    public List<PrenotazioniUtente> getPrenotazioniUtente(String mail){
+        List<PrenotazioniUtente> temp = new ArrayList<>();
+        for(int i=0; i<3; i++){
+            PrenotazioniUtente t = new PrenotazioniUtente();
+            t.setTitoloFilm("Terminator"+(i+1));
+            t.setColonna_posto(i+1);
+            t.setRiga_posto(i+2);
+            t.setId_prenotazione(2345234+i);
+            t.setPrezzo(5);
+            t.setData_prenotazione(new Date(3916, 2+i, 5));
+            t.setData_spettacolo(new Date(3916, 2+i, 16));
+            t.setOra_prenotazione(new Time(21, 32, 34));
+            t.setOra_spettacolo(new Time(20, 00, 00));
+            temp.add(t);
+        }
+        return temp;
     }
     
     public void shutdown() {

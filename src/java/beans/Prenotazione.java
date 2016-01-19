@@ -7,7 +7,6 @@ package beans;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.sql.Timestamp;
 
 /**
  *
@@ -19,6 +18,8 @@ public class Prenotazione {
     private int id_spettacolo;
     private int id_prezzo;
     private int id_posto;
+    private Date data;
+    private Time ora;
 
 
     /**
@@ -89,6 +90,34 @@ public class Prenotazione {
      */
     public void setId_posto(int id_posto) {
         this.id_posto = id_posto;
+    }
+
+    /**
+     * @return the data
+     */
+    public Date getData() {
+        return data;
+    }
+
+    /**
+     * @param data the data to set
+     */
+    public void setData(Date data) {
+        this.data = data;
+    }
+
+    /**
+     * @return the ora
+     */
+    public Time getOra() {
+        return ora;
+    }
+
+    /**
+     * @param ora the ora to set
+     */
+    public void setOra(Time ora) {
+        this.ora = ora;
     }
 
      
