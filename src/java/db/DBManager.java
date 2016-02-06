@@ -775,6 +775,13 @@ public class DBManager implements Serializable {
         
     }
     
+    public boolean deletePrenotation(int id_spettacolo){
+        //SE LA PRENOTAZIONE è GIà COMINCIATA (CONTROLLARE DATA E ORA DELLO SPETTACOLO) ALLORA RITORNARE false
+        //ALTRIMENTI CONTROLLARE OGNI UTENTE CHE HA FATTO UNA PRENOTAZIONE PER QUELLO SPETTACOLO E DARGLI L'80% DEL PREZZO
+        //DEL BIGLIETTO PAGATO SUL SUO CONTO (C'è GIà LA VARIABILE CREDITO IN UTENTE)
+        return false;
+    }
+    
     public void shutdown() {
         try {
             con.close();
