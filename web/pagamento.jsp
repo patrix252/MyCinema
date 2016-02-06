@@ -33,21 +33,11 @@
             
             <jsp:include page="navbar.jsp" />
             
-            <h3>Totale: ${sessionScope.totale}€</h3>
-            <h3>Posti Interi:
-            <c:forEach items="${sessionScope.postiInteri}" var = "pi">
-                <c:out value="${pi.riga}-${pi.colonna} "/>
-            </c:forEach>
-            </h3>
-            <h3>Posti Ridotti: 
-            <c:forEach items="${sessionScope.postiRidotti}" var = "pr">
-                <c:out value="${pr.riga}-${pr.colonna} "/>
-            </c:forEach>
-            </h3>
             <h2 class="text-center"><b>Dati carta:</b></h2>
             
             <form id="modulo" class="form-inline" name="modulo"  onSubmit="return controllo();" action="pagamentoEffettuato.jsp" method="POST">    
                 <div class="row">
+                    <div class="col-md-6">
                     <dl class="dl-horizontal">
                         <dt><h4>Tipo di Carta:</h4></dt>
                         <dd><div class="form-group">
@@ -72,6 +62,31 @@
                         <dt><h4>Codice di controllo:</h4></dt>
                         <dd><input type="password" class="form-control" id="InputName" placeholder="xxxx"></dd>
                     </dl>  
+                    </div>
+                    <div class='col-md-6'>                   
+                        
+                        
+                        <div class='row'>
+                            <div class='col-md-6'>
+                                <h3>Posti Interi:</h3>
+                                <ul>
+                                <c:forEach items="${sessionScope.postiInteri}" var = "pi">
+                                    <li><c:out value="Riga:${pi.riga} Colonna:${pi.colonna} "/></li>
+                                </c:forEach>
+                                </ul>
+                            </div>
+                            <div class='col-md-6'>
+                                <h3>Posti Ridotti: </h3>
+                                <c:forEach items="${sessionScope.postiRidotti}" var = "pr">
+                                    <li><c:out value="Riga:${pr.riga} Colonna:${pr.colonna} "/></li>
+                                </c:forEach>
+                            </div>
+                            
+                        </div>
+                        
+                        
+                        <h2>Totale: ${sessionScope.totale}€</h2>
+                    </div>
                 </div>
                 
                 <div class="row">
