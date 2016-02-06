@@ -32,6 +32,10 @@
         <servlet-name>PagamentoServlet</servlet-name>
         <servlet-class>servlets.PagamentoServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeletePrenotation</servlet-name>
+        <servlet-class>servlets.DeletePrenotation</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>PrenotationServlet</servlet-name>
         <url-pattern>/PrenotationServlet</url-pattern>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>PagamentoServlet</servlet-name>
         <url-pattern>/PagamentoServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeletePrenotation</servlet-name>
+        <url-pattern>/DeletePrenotation</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -221,7 +221,11 @@ public class RequestQueryFilter implements Filter {
             session.setAttribute("filmsAll", filmsAll);
         } else if ("/MyCinema/registroPrenotazioni.jsp".equals(url)){
             List<PrenotazioniUtente> prenotazioniUtente = new ArrayList<>();
-            prenotazioniUtente = manager.getPrenotazioniUtente(((Utente)session.getAttribute("utente")).getEmail());
+            try {
+                prenotazioniUtente = manager.getPrenotazioniUtente(((Utente)session.getAttribute("utente")).getEmail());
+            } catch (SQLException ex) {
+                Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
+            }
             session.setAttribute("prenotazioniUtente", prenotazioniUtente);
         }
 

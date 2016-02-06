@@ -707,22 +707,79 @@ public class DBManager implements Serializable {
     }
     
     //SE NON CI SONO PRENOTAZIONI RITORNARE NULL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    public List<PrenotazioniUtente> getPrenotazioniUtente(String mail){
-        List<PrenotazioniUtente> temp = new ArrayList<>();
-        for(int i=0; i<3; i++){
-            PrenotazioniUtente t = new PrenotazioniUtente();
-            t.setTitoloFilm("Terminator"+(i+1));
-            t.setColonna_posto(i+1);
-            t.setRiga_posto(i+2);
-            t.setId_prenotazione(2345234+i);
-            t.setPrezzo(5);
-            t.setData_prenotazione(new Date(3916, 2+i, 5));
-            t.setData_spettacolo(new Date(3916, 2+i, 16));
-            t.setOra_prenotazione(new Time(21, 32, 34));
-            t.setOra_spettacolo(new Time(20, 00, 00));
-            temp.add(t);
+    public List<PrenotazioniUtente> getPrenotazioniUtente(String mail) throws SQLException{
+        List <PrenotazioniUtente> list = new ArrayList<>();
+        
+        PreparedStatement stm = con.prepareStatement(   "SELECT \n" +
+                                                        "    Film.titolo,\n" +
+                                                        "    Prenotazione.id_prenotazione,\n" +
+                                                        "    Posto.riga,\n" +
+                                                        "    Posto.colonna,\n" +
+                                                        "    Spettacolo.id_sala,\n" +
+                                                        "    TipoBiglietto.prezzo,\n" +
+                                                        "    Spettacolo.data AS data_spettacolo,\n" +
+                                                        "    Spettacolo.ora AS ora_spettacolo,\n" +
+                                                        "    Prenotazione.data AS data_prenotazione,\n" +
+                                                        "    Prenotazione.ora AS ora_prenotazione\n" +
+                                                        "FROM\n" +
+                                                        "    myCinema.Prenotazione\n" +
+                                                        "        INNER JOIN\n" +
+                                                        "    myCinema.Spettacolo ON Prenotazione.id_spettacolo = Spettacolo.id_spettacolo\n" +
+                                                        "        INNER JOIN\n" +
+                                                        "    myCinema.TipoBiglietto ON TipoBiglietto.id_prezzo = Prenotazione.id_prezzo\n" +
+                                                        "        INNER JOIN\n" +
+                                                        "    myCinema.Posto ON Prenotazione.id_posto = Posto.id_posto\n" +
+                                                        "        INNER JOIN\n" +
+                                                        "    myCinema.Film ON Spettacolo.id_film = Film.id_film\n" +
+                                                        "WHERE\n" +
+                                                        "    Prenotazione.email = ? ;");
+        
+        stm.setString(1, mail);
+        
+        try {
+            try (ResultSet rs = stm.executeQuery()){
+                while (rs.next()){
+                    PrenotazioniUtente x = new PrenotazioniUtente();
+                    x.setTitoloFilm(rs.getString(Util.Film.COLUMN_TITOLO));
+                    x.setId_prenotazione(rs.getInt(Util.Prenotazione.COLUMN_ID_PRENOTAZIONE));
+                    x.setRiga_posto(rs.getInt(Util.Posto.COLUMN_RIGA));
+                    x.setColonna_posto(rs.getInt(Util.Posto.COLUMN_COLONNA));
+                    x.setId_sala(rs.getInt(Util.Spettacolo.COLUMN_ID_SALA));
+                    x.setPrezzo((int) rs.getDouble(Util.TipoBiglietto.COLUMN_PREZZO));
+                    
+                    x.setData_spettacolo(rs.getDate("data_spettacolo"));
+                    x.setOra_spettacolo(rs.getTime("ora_spettacolo"));
+                    
+                    x.setData_prenotazione(rs.getDate("data_prenotazione"));
+                    x.setOra_prenotazione(rs.getTime("ora_prenotazione"));
+                    
+                    list.add(x);
+                    
+                    
+                
+                }
+            
+            }
+            
+            
+            
+        } finally {
+            stm.close();
+        } 
+        
+        if (list.isEmpty()){
+            return null;
+        } else {
+            return list;
         }
-        return temp;
+        
+    }
+    
+    public boolean deletePrenotation(int id_spettacolo){
+        //SE LA PRENOTAZIONE è GIà COMINCIATA (CONTROLLARE DATA E ORA DELLO SPETTACOLO) ALLORA RITORNARE false
+        //ALTRIMENTI CONTROLLARE OGNI UTENTE CHE HA FATTO UNA PRENOTAZIONE PER QUELLO SPETTACOLO E DARGLI L'80% DEL PREZZO
+        //DEL BIGLIETTO PAGATO SUL SUO CONTO (C'è GIà LA VARIABILE CREDITO IN UTENTE)
+        return false;
     }
     
     public void shutdown() {
