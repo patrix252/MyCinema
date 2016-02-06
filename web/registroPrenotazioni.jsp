@@ -1,49 +1,69 @@
-<%-- 
-    Document   : registroPrenotazioni
-    Created on : Jan 19, 2016, 11:46:12 AM
-    Author     : Paolo
---%>
+
 <%@taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib prefix="generalcode" tagdir="/WEB-INF/tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+<%@page session="true" %>
+
+
+<head>
+        <title>Registro Prenotazioni</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        
+        <link rel="stylesheet" href="./lib/css/mycss.css">
     </head>
     <body>
-        <c:if test="${sessionScope.prenotazioniUtente==null}">
-            Nessuna Prenotazione!
-        </c:if>
-        <table>
-            <c:if test="${sessionScope.prenotazioniUtente!=null}">
-                <tr>
-                    <td>ID Prenotazione</td>
-                    <td>Titolo Film</td>
-                    <td>Sala</td>
-                    <td>Data Spettacolo</td>
-                    <td>Ora Spettacolo</td>
-                    <td>Riga Posto</td>
-                    <td>Colonna Posto</td>
-                    <td>Prezzo</td>
-                    <td>Data Prenotazione</td>
-                    <td>Ora Prenotazione</td>
-                </tr>
-                <c:forEach items="${sessionScope.prenotazioniUtente}" var = "pu">
-                    <tr>
-                        <td><c:out value="${pu.id_prenotazione}"/></td>
-                        <td><c:out value="${pu.titoloFilm}"/></td>
-                        <td><c:out value="${pu.id_sala}"/></td>
-                        <td><c:out value="${pu.data_spettacolo}"/></td>
-                        <td><c:out value="${pu.ora_spettacolo}"/></td>
-                        <td><c:out value="${pu.riga_posto}"/></td>
-                        <td><c:out value="${pu.colonna_posto}"/></td>
-                        <td><c:out value="${pu.prezzo}"/></td>
-                        <td><c:out value="${pu.data_prenotazione}"/></td>
-                        <td><c:out value="${pu.ora_prenotazione}"/></td>
-                    </tr>
-                </c:forEach>
+         
+        <div class="container">
+            <jsp:include page="navbar.jsp" />
+                <c:if test="${sessionScope.prenotazioniUtente==null}">
+                Nessuna Prenotazione!   
             </c:if>
-        </table>
+            <table class="table">
+                <c:if test="${sessionScope.prenotazioniUtente!=null}">
+                    <thead>
+                        <tr>
+                            <td><b>ID Prenotazione</b></td>
+                            <td><b>Titolo Film</b></td>
+                            <td><b>Sala</b></td>
+                            <td><b>Data Spettacolo</b></td>
+                            <td><b>Ora Spettacolo</b></td>
+                            <td><b>Riga Posto</b></td>
+                            <td><b>Colonna Posto</b></td>
+                            <td><b>Prezzo</b></td>
+                            <td><b>Data Prenotazione</b></td>
+                            <td><b>Ora Prenotazione</b> </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${sessionScope.prenotazioniUtente}" var = "pu">
+                        
+                        <tr>
+                            <td><c:out value="${pu.id_prenotazione}"/></td>
+                            <td><c:out value="${pu.titoloFilm}"/></td>
+                            <td><c:out value="${pu.id_sala}"/></td>
+                            <td><c:out value="${pu.data_spettacolo}"/></td>
+                            <td><c:out value="${pu.ora_spettacolo}"/></td>
+                            <td><c:out value="${pu.riga_posto}"/></td>
+                            <td><c:out value="${pu.colonna_posto}"/></td>
+                            <td><c:out value="${pu.prezzo}"/></td>
+                            <td><c:out value="${pu.data_prenotazione}"/></td>
+                            <td><c:out value="${pu.ora_prenotazione}"/></td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </c:if>
+            </table>
+            
+            <jsp:include page="footer.jsp" />
+        </div>
+
+      
     </body>
 </html>
