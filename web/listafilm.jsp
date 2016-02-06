@@ -23,7 +23,7 @@
         </select>
         <select id="spettacoli" hidden onchange="getIncassoSpettacolo(this.value)">
         </select>
-        <p id="incasso_film"></p><br>
+        <div id="incasso_film"></div><br>
         <p id="incasso_spettacolo"></p>
     </body>
 </html>
