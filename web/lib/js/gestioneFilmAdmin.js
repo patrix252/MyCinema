@@ -1,5 +1,6 @@
 function showSpettacoli(str) {
     $("#first_film").hide();
+    $("#cancella").hide();
     getSpettacoli(str);
     getIncassoFilm(str);
 }
@@ -36,6 +37,7 @@ function getSpettacoli(str){
     xhttp.send();
 }
 function getIncassoSpettacolo(str){
+    $("#cancella").show();
     $("#first_spettacoli").hide();
     $("#incasso_spettacolo").show();
     var xhttp; 
