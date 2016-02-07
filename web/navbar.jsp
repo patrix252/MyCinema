@@ -3,6 +3,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%-- navbar-fixed-top --%>
+
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
@@ -72,7 +73,7 @@
                                                 <c:set var="problemaConnessione" value="false" scope="session"/>
                                             </c:if>
                                             <div>
-                                                <a href="passwordimenticata.html">Password dimenticata?</a>
+                                                <a href="passwordDimenticata.jsp">Password dimenticata?</a>
                                                 <button type="submit"  class="btn btn-success pull-right">Accedi!</button>
                                             </div>
                                         </form>

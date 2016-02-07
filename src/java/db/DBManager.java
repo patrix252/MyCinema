@@ -805,6 +805,23 @@ public class DBManager implements Serializable {
     return prenotazioni;
     }
     
+    public String ritornaPassword(String mail) throws SQLException{
+        String psw = null;
+        PreparedStatement stm = con.prepareStatement("SELECT password FROM myCinema.Utente WHERE Utente.email = ?;");
+        stm.setString(1, mail);        
+        try {
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    psw = (rs.getString(Util.Utente.COLUMN_PASSWORD));
+                }
+                
+            }
+        } finally {
+            stm.close();
+        }
+        return psw;
+    }
+    
     public void shutdown() {
         try {
             con.close();

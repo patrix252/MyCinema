@@ -11,7 +11,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
-
+                
         
         <!-- jQuery library -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -21,7 +21,7 @@
         <link href="./lib/css/carousel.css" rel="stylesheet">
         
         <generalcode:navbar_header/>
-        <link rel="stylesheet" type="css/my.css" href="./lib/mycss.css">
+        <link rel="stylesheet" href="./lib/css/mycss.css">
     </head>
     <body>
         
@@ -39,7 +39,7 @@
                                 <!-- ================================================== 
                                 QUI VANNO LA LOCANDINA, TITOLO, GENERE, DURATA, REGISTA, ATTORI E TRAMA IN BREVE
                                 ================================================== -->
-                                <p><b><a href="descrizionefilm.jsp?id=${film.f.id_film}">Titolo Film</a></b></p>
+                                <p><b><a href="descrizionefilm.jsp?id=${film.f.id_film}">${film.f.titolo}</a></b></p>
                                 <p>${film.f.genere}, <br> ${film.f.durata}, <br> ${film.f.regista}, <br> ${film.f.trama}!</p>
                             </div>
                     </div>

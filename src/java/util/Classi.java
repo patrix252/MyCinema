@@ -219,6 +219,40 @@ public class Classi {
         System.out.println("\n\nYou have successfully created QR Code.");
         return absoluteDiskPath;
     }
+    
+    public static void inviaPassword(String password, String mail){
+        String to=mail;//change accordingly   
+        final String user="mycinemastar@gmail.com";//change accordingly     
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", "465");
+        Authenticator auth = new SMTPAuthenticator();
+        Session session = Session.getInstance(props, auth);  
+      
+        try{   
+            Message message = new MimeMessage(session);
+            // -- Set the FROM and TO fields --
+            message.setFrom(new InternetAddress(user));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false));
+            message.setSubject("Reminder Password");
+            // -- Set some other header information --
+            message.setHeader("MyMail", "Mr. XYZ" );
+            message.setSentDate(new Date());
+            BodyPart messageBodyPart = new MimeBodyPart();
+            messageBodyPart.setText("La sua password è la seguente: "+ password +"!");
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(messageBodyPart);
+            message.setContent(multipart);  
+            Transport.send(message);      
+            System.out.println("message sent....");   
+
+        }catch (MessagingException ex) {
+            ex.printStackTrace();
+        }
+    }
 
 }
 
