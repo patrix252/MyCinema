@@ -169,25 +169,29 @@ public class RequestQueryFilter implements Filter {
             
                 
                 try {
-                if(manager.addPrenotations((List<Posto>)session.getAttribute("postiInteri"),
-                (String)session.getAttribute("mail"),
-                (Spettacolo)session.getAttribute("spettacoloPrenotazione"),
-                false)){
-                //I POSTI ERANO LIBERI E CONTINUA LA TRANSAZIONE
-                    session.setAttribute("errorePagamento", false);
-                } else {
-                //I POSTI ERANO OCCUPATI O C'ERA QUALCHE PROBLEMA NELL'URL, QUINDI REINDIRIZZARE VERSO PAGINA DI ERRORE
-                    session.setAttribute("errorePagamento", true);
+                if(!((List<Posto>)session.getAttribute("postiInteri")).isEmpty()){
+                    if(manager.addPrenotations((List<Posto>)session.getAttribute("postiInteri"),
+                    (String)session.getAttribute("mail"),
+                    (Spettacolo)session.getAttribute("spettacoloPrenotazione"),
+                    false)){
+                    //I POSTI ERANO LIBERI E CONTINUA LA TRANSAZIONE
+                        session.setAttribute("errorePagamento", false);
+                    } else {
+                    //I POSTI ERANO OCCUPATI O C'ERA QUALCHE PROBLEMA NELL'URL, QUINDI REINDIRIZZARE VERSO PAGINA DI ERRORE
+                        session.setAttribute("errorePagamento", true);
+                    }
                 }
-                if(manager.addPrenotations((List<Posto>)session.getAttribute("postiRidotti"),
-                (String)session.getAttribute("mail"),
-                (Spettacolo)session.getAttribute("spettacoloPrenotazione"),
-                true)){
-                //I POSTI ERANO LIBERI E CONTINUA LA TRANSAZIONE
-                    session.setAttribute("errorePagamento", false);
-                } else {
-                //I POSTI ERANO OCCUPATI O C'ERA QUALCHE PROBLEMA NELL'URL, QUINDI REINDIRIZZARE VERSO PAGINA DI ERRORE
-                    session.setAttribute("errorePagamento", true);
+                if(!((List<Posto>)session.getAttribute("postiRidotti")).isEmpty()){
+                    if(manager.addPrenotations((List<Posto>)session.getAttribute("postiRidotti"),
+                    (String)session.getAttribute("mail"),
+                    (Spettacolo)session.getAttribute("spettacoloPrenotazione"),
+                    true)){
+                    //I POSTI ERANO LIBERI E CONTINUA LA TRANSAZIONE
+                        session.setAttribute("errorePagamento", false);
+                    } else {
+                    //I POSTI ERANO OCCUPATI O C'ERA QUALCHE PROBLEMA NELL'URL, QUINDI REINDIRIZZARE VERSO PAGINA DI ERRORE
+                        session.setAttribute("errorePagamento", true);
+                    }
                 }
                 } catch (SQLException ex) {
                     session.setAttribute("errorePagamento", true);
