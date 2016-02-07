@@ -60,7 +60,7 @@
                                 <div class="carousel-caption">
                                     <h1>${film.titolo}</h1>
                                     
-                                    <p><a class="btn btn-lg btn-primary" href="/descrizionefilm.jsp?id=${film.id_film}" role="button">Scheda film</a></p>
+                                    <p><a class="btn btn-lg btn-primary" href="descrizionefilm.jsp?id=${film.id_film}" role="button">Scheda film</a></p>
                                 </div>
                             </div>
                         </div>
@@ -97,24 +97,7 @@
             <!--  ----------------------------------- -->
             </div>
             
-            
-            
-            
-            <div class="row">
-                
-                <c:if test="${sessionScope.utente.getEmail()!=null}">
-                    Benvenuto <c:out value="${sessionScope.utente.getNome()}"/><br>
-                </c:if>
-                <c:if test="${sessionScope.utente.getEmail()!=null}">
-                    <a href="logout.jsp"> - Log Out</a><br>
-                </c:if>
-                <c:if test="${sessionScope.utente.getEmail()==null}">
-                    <a href="registrazione.jsp"> - Registrazione Test</a><br>
-                    <a href="LoginServlet"> - Login Test</a>
-                </c:if>
-            </div>
-            
-            
+
              
             <jsp:include page="footer.jsp" />
             

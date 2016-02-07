@@ -34,7 +34,6 @@
                      <tr>
                         <th class="col-md-3" data-field="giorno"></th>
                         <th class="col-md-1" data-field="2D">2D</th>
-                        <th class="col-md-1" data-field="3D">3D</th>
                     </tr>
                     <tr class="active">
                         <td>INTERO - DOMENICA E FESTIVI</td>
