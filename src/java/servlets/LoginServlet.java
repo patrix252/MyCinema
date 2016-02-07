@@ -88,11 +88,11 @@ public class LoginServlet extends HttpServlet {
         // get request parameters for mail and password
         String mail = request.getParameter("Mail");
         String password = request.getParameter("Password");
-        InputStream is = new ByteArrayInputStream(password.getBytes());
-        String hashPassword = calcolaHash(is);
+        /*InputStream is = new ByteArrayInputStream(password.getBytes());
+        String hashPassword = calcolaHash(is);*/
         Utente user= new Utente();
         try {
-            user=manager.chekpassword(mail,hashPassword);
+            user=manager.chekpassword(mail,password);
         } catch (SQLException ex) {
             session.setAttribute("problemaConnessione", true);
             String referer = request.getHeader("Referer");

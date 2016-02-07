@@ -142,10 +142,10 @@ public class RegisterFilter implements Filter {
             int giorno1 = Integer.parseInt(giorno);
             Date data = new Date(anno1, mese1, giorno1);    
             
-            //CREO L'HASH DELLA PASSWORD E L'HASH PER L'ID UTENTE
+            /*//CREO L'HASH DELLA PASSWORD E L'HASH PER L'ID UTENTE
             String hashPassword;
             InputStream is = new ByteArrayInputStream(password.getBytes());
-            hashPassword = calcolaHash(is);
+            hashPassword = calcolaHash(is);*/
 
             Utente user = new Utente();
             user.setNome(nome);
@@ -153,7 +153,7 @@ public class RegisterFilter implements Filter {
             user.setEmail(mail);
             user.setCredito(0);
             user.setRuolo(0);
-            user.setPassword(hashPassword);
+            user.setPassword(password);
             user.setDataNascita(data);
             
             session.setAttribute("utente", user);
