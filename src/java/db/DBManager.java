@@ -160,7 +160,7 @@ public class DBManager implements Serializable {
     
     //prende tutti i film con info dello spettacolo FINITA
     
-    public List<FilmSpettacolo> getFilmsAll() throws SQLException {
+public List<FilmSpettacolo> getFilmsAll() throws SQLException {
         //query che riporta tutti i dati 
         List<FilmSpettacolo> films = new ArrayList<>();
         try (PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Spettacolo, myCinema.Film, myCinema.Genere WHERE Film.id_film = Spettacolo.id_film AND Film.id_genere = Genere.id_genere;"); ResultSet rs = stm.executeQuery()) {
@@ -208,8 +208,8 @@ public class DBManager implements Serializable {
     public List<FilmSpettacolo> getFilmstoday() throws SQLException {
         //query che riporta tutti i dati 
         List<FilmSpettacolo> films = new ArrayList<>();
-        try (PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Spettacolo, myCinema.Film, myCinema.Genere WHERE data = CURDATE() AND Film.id_film = Spettacolo.id_film AND Film.id_genere = Genere.id_genere;"); ResultSet rs = stm.executeQuery()) {
-            
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Spettacolo, myCinema.Film, myCinema.Genere WHERE data = CURDATE() AND Film.id_film = Spettacolo.id_film AND Film.id_genere = Genere.id_genere;"); 
+            try (ResultSet rs = stm.executeQuery()) {
             while (rs.next()) {
                 FilmSpettacolo h = new FilmSpettacolo();
                 Film f = new Film();
@@ -251,7 +251,14 @@ public class DBManager implements Serializable {
     
     public List<Spettacolo> getSpettacoli (int id_film) throws SQLException{
         List <Spettacolo> list = new ArrayList<>();
-        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Spettacolo WHERE id_film=? ORDER BY data,ora ;");
+        PreparedStatement stm = con.prepareStatement(   "SELECT \n" +
+                                                        "    *\n" +
+                                                        "FROM\n" +
+                                                        "    myCinema.Spettacolo\n" +
+                                                        "WHERE\n" +
+                                                        "    id_film = ?\n" +
+                                                        "        AND CONCAT(Spettacolo.data, ' ', Spettacolo.ora) > NOW()\n" +
+                                                        "ORDER BY data , ora;");
         stm.setInt(1, id_film);
 
         try {
@@ -408,11 +415,29 @@ public class DBManager implements Serializable {
             
                    
      public boolean addPrenotations (List <Posto> posti, String email,Spettacolo s,boolean ridotto ) throws SQLException {
+         
         
          //prendo i posti occupati per fare il controllo
          List <Posto> postioccupati = this.getPostiOccupati(s);
-         
+         //controllo spettacolo non ancora iniziato
+         PreparedStatement controllo = con.prepareStatement(    "SELECT \n" +
+                                                                "    CONCAT(Spettacolo.data, ' ', Spettacolo.ora) < NOW() AS isPassed\n" +
+                                                                "FROM\n" +
+                                                                "    myCinema.Spettacolo\n" +
+                                                                "WHERE id_spettacolo=?;");
+         controllo.setInt(1,s.getId_spettacolo());
+        try {
+            try (ResultSet rs = controllo.executeQuery()){
+                while (rs.next()){
+                    if (rs.getInt("isPassed")==1){
+                        return false;
+                    }
+                }
+            }
         
+        } finally {
+            controllo.close();
+        }
         
          
      
@@ -819,6 +844,22 @@ public class DBManager implements Serializable {
         }
         return psw;
     }
+    
+    public void insertSpettacolo(int id_film, int id_sala, String data , String ora) throws SQLException{
+        PreparedStatement stm = con.prepareStatement(   "INSERT INTO myCinema.Spettacolo (id_film,data,id_sala, ora)\n" +
+                                                        "VALUES (?,?,?,?);");
+        stm.setInt(1, id_film);
+        stm.setString(2, data);
+        stm.setInt(3, id_sala);
+        stm.setString(4, ora);
+        try {
+            stm.executeUpdate();
+        } finally {
+            stm.close();
+        }
+    
+    }
+    
     
     public void shutdown() {
         try {

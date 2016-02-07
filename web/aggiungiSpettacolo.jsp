@@ -1,6 +1,7 @@
 
 <%@taglib uri = "http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib prefix="generalcode" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page session="true" %>
 
@@ -51,10 +52,16 @@
                     
                     
                     <h4>Data:</h4>
-                    <input class="form-control" type="text" name="data" placeholder="2017-08-14">
+                    
+                    <jsp:useBean id="now" class="java.util.Date"/>    
+                    
+                    
+                    
+
+                    <input class="form-control" type="text" name="data" placeholder="2017-08-14" value="<fmt:formatDate value="${now}" pattern="dd-MM-yyyy" />">
                     
                     <h4>Ora:</h4>
-                    <input class="form-control" type="text" name="ora" placeholder="21:00:00">
+                    <input class="form-control" type="text" name="ora" placeholder="21:00:00" value="<fmt:formatDate value="${now}" pattern="HH:mm:ss" />">
                     
                     <input class="btn btn-default" type="submit" value="Submit" style="margin-top: 20px">
 

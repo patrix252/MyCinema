@@ -9,6 +9,9 @@ import db.DBManager;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -39,7 +42,12 @@ public class AddSpettacolo extends HttpServlet {
         String id_sala = request.getParameter("sala");
         String data = request.getParameter("data");
         String ora = request.getParameter("ora");
-        
+        try {
+            manager.insertSpettacolo(Integer.parseInt(id_film), Integer.parseInt(id_sala), data, ora);
+        } catch (SQLException ex) {
+            Logger.getLogger(AddSpettacolo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        response.sendRedirect("aggiungiSpettacolo.jsp?ok=1");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

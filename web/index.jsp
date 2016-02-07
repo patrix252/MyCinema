@@ -80,16 +80,16 @@
             <hr>
             <div class="row">
             <!--  ----------------------------------- -->
-                <c:forEach items="${sessionScope.filmInProgramma}" var="film" varStatus = "status">
+                <c:forEach items="${sessionScope.tutti}" var="film" varStatus = "status">
                 <div class="col-sm-4 col-lg-4 col-md-4">      
                     <div class="thumbnail">
-                        <a href="descrizionefilm.jsp?id=${film.f.id_film}"><img src="${film.f.uri_locandina}"></a>
+                        <a href="descrizionefilm.jsp?id=${film.id_film}"><img src="${film.uri_locandina}"></a>
                             <div class="caption">
                                 <!-- ================================================== 
                                 QUI VANNO LA LOCANDINA, TITOLO, GENERE, DURATA, REGISTA, ATTORI E TRAMA IN BREVE
                                 ================================================== -->
-                                <p><b><a href="descrizionefilm.jsp?id=${film.f.id_film}">${film.f.titolo}</a></b></p>
-                                <p>${film.f.genere.descrizione} <br> ${film.f.durata} minuti <br> ${film.f.regista} <br> ${film.f.trama}!</p>
+                                <p><b><a href="descrizionefilm.jsp?id=${film.id_film}">${film.titolo}</a></b></p>
+                                <p>${film.genere.descrizione} <br> ${film.durata} minuti <br> ${film.regista} <br> </p>
                             </div>
                     </div>
                 </div>
