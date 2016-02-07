@@ -208,8 +208,8 @@ public class DBManager implements Serializable {
     public List<FilmSpettacolo> getFilmstoday() throws SQLException {
         //query che riporta tutti i dati 
         List<FilmSpettacolo> films = new ArrayList<>();
-        try (PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Spettacolo, myCinema.Film, myCinema.Genere WHERE data = CURDATE() AND Film.id_film = Spettacolo.id_film AND Film.id_genere = Genere.id_genere;"); ResultSet rs = stm.executeQuery()) {
-            
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Spettacolo, myCinema.Film, myCinema.Genere WHERE data = CURDATE() AND Film.id_film = Spettacolo.id_film AND Film.id_genere = Genere.id_genere;"); 
+            try (ResultSet rs = stm.executeQuery()) {
             while (rs.next()) {
                 FilmSpettacolo h = new FilmSpettacolo();
                 Film f = new Film();
@@ -412,8 +412,24 @@ public class DBManager implements Serializable {
         
          //prendo i posti occupati per fare il controllo
          List <Posto> postioccupati = this.getPostiOccupati(s);
-         
+         //controllo spettacolo non ancora iniziato
+         PreparedStatement controllo = con.prepareStatement(    "SELECT \n" +
+                                                                "    CONCAT(Spettacolo.data, ' ', Spettacolo.ora) < NOW() AS isPassed\n" +
+                                                                "FROM\n" +
+                                                                "    myCinema.Spettacolo\n" +
+                                                                "WHERE id_spettacolo=?;");
+        try {
+            try (ResultSet rs = controllo.executeQuery()){
+                while (rs.next()){
+                    if (rs.getInt("isPassed")==1){
+                        return false;
+                    }
+                }
+            }
         
+        } finally {
+            controllo.close();
+        }
         
          
      
