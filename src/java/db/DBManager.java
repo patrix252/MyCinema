@@ -408,9 +408,6 @@ public class DBManager implements Serializable {
             
                    
      public boolean addPrenotations (List <Posto> posti, String email,Spettacolo s,boolean ridotto ) throws SQLException {
-         if (posti.size()==0){
-             return false;
-         }
         
          //prendo i posti occupati per fare il controllo
          List <Posto> postioccupati = this.getPostiOccupati(s);
