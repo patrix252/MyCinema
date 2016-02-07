@@ -173,19 +173,21 @@ public class RequestQueryFilter implements Filter {
                 (String)session.getAttribute("mail"),
                 (Spettacolo)session.getAttribute("spettacoloPrenotazione"),
                 false)){
-                    String a= "true";
                 //I POSTI ERANO LIBERI E CONTINUA LA TRANSAZIONE
+                    session.setAttribute("errorePagamento", false);
                 } else {
-                    String a= "false";
                 //I POSTI ERANO OCCUPATI O C'ERA QUALCHE PROBLEMA NELL'URL, QUINDI REINDIRIZZARE VERSO PAGINA DI ERRORE
+                    session.setAttribute("errorePagamento", true);
                 }
                 if(manager.addPrenotations((List<Posto>)session.getAttribute("postiRidotti"),
                 (String)session.getAttribute("mail"),
                 (Spettacolo)session.getAttribute("spettacoloPrenotazione"),
                 true)){
                 //I POSTI ERANO LIBERI E CONTINUA LA TRANSAZIONE
+                    session.setAttribute("errorePagamento", false);
                 } else {
                 //I POSTI ERANO OCCUPATI O C'ERA QUALCHE PROBLEMA NELL'URL, QUINDI REINDIRIZZARE VERSO PAGINA DI ERRORE
+                    session.setAttribute("errorePagamento", true);
                 }
                 } catch (SQLException ex) {
                 Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
