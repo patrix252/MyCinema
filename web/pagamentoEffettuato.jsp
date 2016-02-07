@@ -36,7 +36,7 @@
             </div>
         </c:if>
         <script>
-            setTimeout(function(){ window.location.replace("index.jsp"); }, 10000);
+            setTimeout(function(){ window.location.replace("index.jsp"); }, 3000);
         </script>
         
     </body>

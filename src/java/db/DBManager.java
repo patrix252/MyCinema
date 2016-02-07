@@ -449,7 +449,7 @@ public class DBManager implements Serializable {
          
          for (Posto p:posti){
              for (Posto q:postioccupati){
-                 if (p.getId_posto()==q.getId_posto())
+                 if (p.getId_posto()==q.getId_posto()||((p.getRiga()==q.getRiga())&&(p.getColonna()==q.getColonna())))
                      return false;
              
              }
@@ -699,11 +699,10 @@ public class DBManager implements Serializable {
     }
     
     public boolean deletePrenotation(int id_prenotazione) throws SQLException{
-        //SE LA PRENOTAZIONE è GIà COMINCIATA (CONTROLLARE DATA E ORA DELLO SPETTACOLO) ALLORA RITORNARE false
-        //ALTRIMENTI CONTROLLARE OGNI UTENTE CHE HA FATTO UNA PRENOTAZIONE PER QUELLO SPETTACOLO E DARGLI L'80% DEL PREZZO
-        //DEL BIGLIETTO PAGATO SUL SUO CONTO (C'è GIà LA VARIABILE CREDITO IN UTENTE)
-        
-        //controllo della data 
+        /*
+        controlla che la prenotazione da cancellare sia relativa a uno spettacolo che deve ancora cominciare, riaccredita
+        l'80% del biglietto all'utente che ha prenotato, cancella la prenotazione
+        */
         
         PreparedStatement stm = con.prepareStatement (  "SELECT \n" +
                                                         "    CONCAT(Spettacolo.data, ' ', Spettacolo.ora) < NOW() AS isPassed\n" +
