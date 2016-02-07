@@ -160,7 +160,7 @@ public class DBManager implements Serializable {
     
     //prende tutti i film con info dello spettacolo FINITA
     
-    public List<FilmSpettacolo> getFilmsAll() throws SQLException {
+public List<FilmSpettacolo> getFilmsAll() throws SQLException {
         //query che riporta tutti i dati 
         List<FilmSpettacolo> films = new ArrayList<>();
         try (PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Spettacolo, myCinema.Film, myCinema.Genere WHERE Film.id_film = Spettacolo.id_film AND Film.id_genere = Genere.id_genere;"); ResultSet rs = stm.executeQuery()) {
@@ -251,7 +251,14 @@ public class DBManager implements Serializable {
     
     public List<Spettacolo> getSpettacoli (int id_film) throws SQLException{
         List <Spettacolo> list = new ArrayList<>();
-        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Spettacolo WHERE id_film=? ORDER BY data,ora ;");
+        PreparedStatement stm = con.prepareStatement(   "SELECT \n" +
+                                                        "    *\n" +
+                                                        "FROM\n" +
+                                                        "    myCinema.Spettacolo\n" +
+                                                        "WHERE\n" +
+                                                        "    id_film = ?\n" +
+                                                        "        AND CONCAT(Spettacolo.data, ' ', Spettacolo.ora) > NOW()\n" +
+                                                        "ORDER BY data , ora;");
         stm.setInt(1, id_film);
 
         try {
@@ -418,6 +425,7 @@ public class DBManager implements Serializable {
                                                                 "FROM\n" +
                                                                 "    myCinema.Spettacolo\n" +
                                                                 "WHERE id_spettacolo=?;");
+         controllo.setInt(1,s.getId_spettacolo());
         try {
             try (ResultSet rs = controllo.executeQuery()){
                 while (rs.next()){
@@ -836,6 +844,17 @@ public class DBManager implements Serializable {
         }
         return psw;
     }
+    
+    public boolean insertSpettacolo(int id_flim, int id_sala, Date data , Time ora) throws SQLException{
+        PreparedStatement stm = con.prepareStatement(   "INSERT INTO myCinema.Spettacolo (id_film,data,id_sala, ora)\n" +
+                                                        "VALUES (?,?,?,?);");
+        
+        return false;
+        
+        
+        
+    }
+    
     
     public void shutdown() {
         try {

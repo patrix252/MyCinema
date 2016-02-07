@@ -134,20 +134,12 @@ public class RequestQueryFilter implements Filter {
                 cookie.setMaxAge(0);
                 ((HttpServletResponse) response).addCookie(cookie);
             }
-        } else if("/MyCinema/filminprogramma.jsp".equals(url)) {
-            List<FilmSpettacolo> films = null;
-            try {
-                films = manager.getFilmsAll();
-            } catch (SQLException ex) {
-                Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            session.setAttribute("filmInProgramma", films);
-            
         } else if ("/MyCinema/index.jsp".equals(url)) {
             //getFilmsCarosello
             //getFilm
             List<FilmSpettacolo> films = null;
             List<Film> filmsCarosello = null;
+            List <Film> tutti = null;
             int filmsLength = 0;
             int filmsCaroselloLength = 0;
             try {
@@ -156,9 +148,11 @@ public class RequestQueryFilter implements Filter {
                  Logger.getLogger("filmcarosello length = " + filmsCaroselloLength);
                 films = manager.getFilmsAll();
                 filmsLength = films.size();
+                tutti = manager.getFilms();
             } catch (SQLException ex) {
                 Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
             }
+            session.setAttribute("tutti", tutti);
             session.setAttribute("filmInProgramma", films);
             session.setAttribute("filmCarosello", filmsCarosello);
             session.setAttribute("filmCaroselloLength", filmsCaroselloLength);
