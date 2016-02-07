@@ -25,13 +25,13 @@
         
         <c:if test="${sessionScope.errorePagamento==true}">
             <div class="container">
-            <h1>Errore nel prenotare i posti selezionati, riprovi tra qualche minuto!</h1><br>
+            <h1>Errore nel prenotare i posti selezionati, riprovi tra qualche minuto!</h1>
             </div>
         </c:if>
         <c:if test="${sessionScope.errorePagamento==false}">
             <div class="container">
-            <h1>Transizione avvenuta con successo, controlli la sua email per la ricezione del ticket che potrà</h1><br>
-            <h1>presentare direttamente alle casse del cinema! Grazie per aver scelto myCinema!</h1><br>
+            <h1>Transizione avvenuta con successo, controlli la sua email per la ricezione del ticket che potrà</h1>
+            <h1>presentare direttamente alle casse del cinema! Grazie per aver scelto myCinema!</h1>
             <h1>La preghiamo di attendere, verrà reindirizzato automaticamente alla home del sito!</h1>
             </div>
         </c:if>
