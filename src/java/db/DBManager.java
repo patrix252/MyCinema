@@ -449,7 +449,7 @@ public class DBManager implements Serializable {
          
          for (Posto p:posti){
              for (Posto q:postioccupati){
-                 if (p.getId_posto()==q.getId_posto())
+                 if (p.getId_posto()==q.getId_posto()||((p.getRiga()==q.getRiga())&&(p.getColonna()==q.getColonna())))
                      return false;
              
              }
