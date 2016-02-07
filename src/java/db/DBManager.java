@@ -404,86 +404,9 @@ public class DBManager implements Serializable {
     
     }
     
-    /* 
-    array ["x,y"] dove x e y sono riga e colonna del posto prenotato ,email, spettacolo
-    Ritorno: query che prende i posti avendo l'array di x e y e poi per ogni posto salvi una prenotazione per l'email fornita 
-    per la data e l'ora al momento della query prendi la data e l'ora attuali
-    1.controllo che i posti non siano gia prenotati
-    2.inserisco una prenotazione per ogni posto
-    */
-    /*
-    public boolean addPrenotations (List <Posto> posti, String email,Spettacolo s,boolean ridotto ) throws SQLException {
+        
             
-                
-               
-            //inserisco le prenotazioni
-            
-        while (posti.iterator().hasNext()) {
-            PreparedStatement stm = con.prepareStatement("SELECT id_posto FROM myCinema.Posto WHERE id_sala=? AND riga=? AND colonna=?;");
-            stm.setInt(1, s.getId_sala());
-            stm.setInt(2,posti.iterator().next().getRiga());
-            stm.setInt(3,posti.iterator().next().getColonna());
-        try {
-            try(ResultSet rs = stm.executeQuery()) {
-                while (rs.next()){
-                    int id_posto = rs.getInt(Util.Posto.COLUMN_ID_POSTO);
-                    //controllo che non ci sia gia una prenotazione con questo posto
-                    
-                    PreparedStatement stm2 = con.prepareStatement("SELECT id_posto FROM myCinema.Prenotazione WHERE id_spettacolo=?;");
-                    stm2.setInt(1,s.getId_spettacolo());
-                    try{
-                        try(ResultSet prenotazioni = stm2.executeQuery()) {
-                        while(prenotazioni.next()){
-                            if ((prenotazioni.getInt(Util.Prenotazione.COLUMN_ID_POSTO)) == id_posto){
-                                return false;
-                            }
-                        }
-                        }
-                    } finally {
-                        stm2.close();
-                    }
-                 
-                    
-                    
-                    
-                    PreparedStatement insert = con.prepareStatement("INSERT INTO myCinema.Prenotazione (id_spettacolo, id_prezzo, id_posto, email, data, ora) VALUES (?,?,?,?,?,?);");
-                        insert.setInt(1,s.getId_spettacolo());
-                        if (ridotto){
-                        insert.setInt(2,1);
-                        } else {
-                        insert.setInt(2,0);
-                        }
-                        insert.setInt(3,pos.getId_posto());
-                        insert.setString(4,email);
-                        //data odierna
-                        
-                        //java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-                        DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
-                        java.util.Date data = new java.util.Date();
-                        String datestring = dateformat.format(data);
-                        insert.setString(5,datestring);
-                        //ora odierna
-                        DateFormat dateformatime = new SimpleDateFormat("HH:mm:ss");
-                        String timestring = dateformatime.format(data);
-                        insert.setString(6,timestring);
-                        //la salta
-                        String queryparametrizzata = insert.toString();
-                        insert.executeUpdate();
-                
-                }
-            }
-        } finally{
-            stm.close();
-        }   
-            
-            
-            }
-      return true;     
-    }
-      */      
-            
-            
-            
+                   
      public boolean addPrenotations (List <Posto> posti, String email,Spettacolo s,boolean ridotto ) throws SQLException {
          
         
@@ -775,11 +698,111 @@ public class DBManager implements Serializable {
         
     }
     
-    public boolean deletePrenotation(int id_spettacolo){
+    public boolean deletePrenotation(int id_prenotazione) throws SQLException{
         //SE LA PRENOTAZIONE è GIà COMINCIATA (CONTROLLARE DATA E ORA DELLO SPETTACOLO) ALLORA RITORNARE false
         //ALTRIMENTI CONTROLLARE OGNI UTENTE CHE HA FATTO UNA PRENOTAZIONE PER QUELLO SPETTACOLO E DARGLI L'80% DEL PREZZO
         //DEL BIGLIETTO PAGATO SUL SUO CONTO (C'è GIà LA VARIABILE CREDITO IN UTENTE)
-        return false;
+        
+        //controllo della data 
+        
+        PreparedStatement stm = con.prepareStatement (  "SELECT \n" +
+                                                        "    CONCAT(Spettacolo.data, ' ', Spettacolo.ora) < NOW() AS isPassed\n" +
+                                                        "FROM\n" +
+                                                        "    myCinema.Prenotazione\n" +
+                                                        "        INNER JOIN\n" +
+                                                        "    myCinema.Spettacolo ON Prenotazione.id_spettacolo = Spettacolo.id_spettacolo\n" +
+                                                        "WHERE\n" +
+                                                        "    id_prenotazione = ?;");
+        stm.setInt(1, id_prenotazione);
+        try {
+            try (ResultSet rs = stm.executeQuery()){
+                while (rs.next()){
+                     if (rs.getInt("isPassed")==1){
+                         return false;
+                     }
+                }
+            }
+        } finally {
+            stm.close();
+        
+        }
+        
+        
+        
+        
+        //riaccredito dell 80% 
+        PreparedStatement stm2 = con.prepareStatement(  "UPDATE myCinema.Prenotazione\n" +
+                                                        "        NATURAL JOIN\n" +
+                                                        "    myCinema.Utente\n" +
+                                                        "        NATURAL JOIN\n" +
+                                                        "    myCinema.TipoBiglietto \n" +
+                                                        "SET \n" +
+                                                        "    credito = credito + TipoBiglietto.prezzo*0.8\n" +
+                                                        "WHERE id_prenotazione= ?;");
+        stm2.setInt(1, id_prenotazione);
+        
+        try {
+            stm2.executeUpdate();
+        } finally {
+            stm2.close();
+        }
+        
+        
+        
+        
+        
+        //cancellazione prenotazione
+        PreparedStatement stm3 = con.prepareStatement(  "DELETE FROM myCinema.Prenotazione \n" +
+                                                        "WHERE\n" +
+                                                        "    Prenotazione.id_prenotazione = ?;");
+        
+        stm3.setInt(1, id_prenotazione);
+        try {
+            stm3.executeUpdate();
+        
+        } finally {
+            stm3.close();
+        }
+        return true;
+    }
+    
+    public List <Prenotazione> getPrenotationFuture() throws SQLException{
+        
+        List <Prenotazione> prenotazioni = new ArrayList<>();
+        PreparedStatement stm = con.prepareStatement(   "SELECT \n" +
+                                                        "    Prenotazione.id_prenotazione,\n" +
+                                                        "    Prenotazione.id_spettacolo,\n" +
+                                                        "    Prenotazione.id_prezzo,\n" +
+                                                        "    Prenotazione.id_posto,\n" +
+                                                        "    Prenotazione.email,\n" +
+                                                        "    Prenotazione.data,\n" +
+                                                        "    Prenotazione.ora\n" +
+                                                        "FROM\n" +
+                                                        "    myCinema.Prenotazione\n" +
+                                                        "        INNER JOIN\n" +
+                                                        "    myCinema.Spettacolo ON Spettacolo.id_spettacolo = Prenotazione.id_spettacolo\n" +
+                                                        "WHERE\n" +
+                                                        "    CONCAT(Spettacolo.data, ' ', Spettacolo.ora) > NOW();");
+        
+        try {
+            try (ResultSet rs = stm.executeQuery()){
+                while(rs.next()){
+                    Prenotazione a = new Prenotazione();
+                    a.setId_prenotazione(rs.getInt(Util.Prenotazione.COLUMN_ID_PRENOTAZIONE));
+                    a.setId_spettacolo(rs.getInt(Util.Prenotazione.COLUMN_ID_SPETTACOLO));
+                    a.setId_posto(rs.getInt (Util.Prenotazione.COLUMN_ID_POSTO));
+                    a.setId_prezzo(rs.getInt(Util.Prenotazione.COLUMN_ID_PREZZO));
+                    a.setData(rs.getDate(Util.Prenotazione.COLUMN_DATA));
+                    a.setId_utente(rs.getString(Util.Prenotazione.COLUMN_EMAIL));
+                    a.setOra(rs.getTime(Util.Prenotazione.COLUMN_ORA));
+                    prenotazioni.add(a);
+                }
+            
+            }
+        } finally {
+            stm.close();
+        }
+    return prenotazioni;
     }
     
     public String ritornaPassword(String mail) throws SQLException{

@@ -8,6 +8,9 @@ package servlets;
 import db.DBManager;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,12 +33,12 @@ public class DeletePrenotation extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = ((HttpServletRequest) request).getSession();
         manager = (DBManager)getServletContext().getAttribute("dbmanager");
-        int id_spettacolo = Integer.parseInt(((HttpServletRequest)request).getParameter("s"));
-        if(manager.deletePrenotation(id_spettacolo)){
+        int id_prenotazione = Integer.parseInt(((HttpServletRequest)request).getParameter("id"));
+        if(manager.deletePrenotation(id_prenotazione)){
             //cancellazione avvenuta con successo
             session.setAttribute("problemaCancellazione", false);
             ((HttpServletResponse) response).sendRedirect("cancellazioneSpettacolo.jsp");
@@ -58,7 +61,11 @@ public class DeletePrenotation extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(DeletePrenotation.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -72,7 +79,11 @@ public class DeletePrenotation extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(DeletePrenotation.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
