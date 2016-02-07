@@ -93,6 +93,9 @@
                         <li>
                             <a href="incassiclientitop.jsp">Statistiche clienti</a>
                         </li>
+                        <li>
+                            <a href="cancellaprenotazioni.jsp">Cancella prenotazioni</a>
+                        </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
 

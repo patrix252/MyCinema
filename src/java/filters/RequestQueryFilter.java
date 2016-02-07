@@ -227,6 +227,16 @@ public class RequestQueryFilter implements Filter {
                 Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
             }
             session.setAttribute("prenotazioniUtente", prenotazioniUtente);
+        } else if ("/MyCinema/cancellaprenotazioni.jsp".equals(url)){
+            List <Prenotazione> prenotazioni= new ArrayList<>();
+            try {
+               prenotazioni = manager.getPrenotationFuture();
+            } catch (SQLException ex) {
+                Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            session.setAttribute("prenotazioni",prenotazioni);
+            
+        
         }
 
         if (debug) {
