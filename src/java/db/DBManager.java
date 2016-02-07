@@ -14,6 +14,7 @@ import beans.Posto;
 import beans.Prenotazione;
 import beans.PrenotazioniUtente;
 import beans.UtenteSpesa;
+import beans.FilmSpettacolo;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.Date;
@@ -31,7 +32,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import util.Classi;
-import util.Classi.FilmSpettacolo;
 
 public class DBManager implements Serializable {
     
@@ -166,7 +166,7 @@ public class DBManager implements Serializable {
         try (PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Spettacolo, myCinema.Film, myCinema.Genere WHERE Film.id_film = Spettacolo.id_film AND Film.id_genere = Genere.id_genere;"); ResultSet rs = stm.executeQuery()) {
             
             while (rs.next()) {
-                Classi.FilmSpettacolo h = new Classi.FilmSpettacolo();
+                FilmSpettacolo h = new FilmSpettacolo();
                 Film f = new Film();
                 Spettacolo s = new Spettacolo();
                 Genere g = new Genere();
@@ -211,7 +211,7 @@ public class DBManager implements Serializable {
         try (PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Spettacolo, myCinema.Film, myCinema.Genere WHERE data = CURDATE() AND Film.id_film = Spettacolo.id_film AND Film.id_genere = Genere.id_genere;"); ResultSet rs = stm.executeQuery()) {
             
             while (rs.next()) {
-                Classi.FilmSpettacolo h = new Classi.FilmSpettacolo();
+                FilmSpettacolo h = new FilmSpettacolo();
                 Film f = new Film();
                 Spettacolo s = new Spettacolo();
                 Genere g = new Genere();

@@ -13,6 +13,7 @@ import beans.PrenotazioniUtente;
 import beans.Spettacolo;
 import beans.Utente;
 import beans.UtenteSpesa;
+import beans.FilmSpettacolo;
 import com.itextpdf.text.DocumentException;
 import db.DBManager;
 import java.io.BufferedReader;
@@ -42,7 +43,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import util.Classi;
-import util.Classi.FilmSpettacolo;
 
 /**
  *
@@ -190,7 +190,7 @@ public class RequestQueryFilter implements Filter {
                     session.setAttribute("errorePagamento", true);
                 }
                 } catch (SQLException ex) {
-                Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
+                    session.setAttribute("errorePagamento", true);
                 }
                 
                 Classi.inviaEmail(getFilterConfig().getServletContext(), session);

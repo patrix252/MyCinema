@@ -46,28 +46,6 @@ import java.util.Hashtable;
  */
 public class Classi {
     
-    public static class FilmSpettacolo{
-        private Film f;
-        private Spettacolo s;
-
-        public Film getF() {
-            return f;
-        }
-
-        public void setF(Film f) {
-            this.f = f;
-        }
-
-        public Spettacolo getS() {
-            return s;
-        }
-
-        public void setS(Spettacolo s) {
-            this.s = s;
-        }
-        
-    }
-    
     //il percorso dove creare il biglietto
     public static final String DEST = "/biglietto.pdf";
     
