@@ -845,13 +845,13 @@ public List<FilmSpettacolo> getFilmsAll() throws SQLException {
         return psw;
     }
     
-    public void insertSpettacolo(int id_film, int id_sala, String data , String ora) throws SQLException{
+    public void insertSpettacolo(int id_film, int id_sala, Date data , Time ora) throws SQLException{
         PreparedStatement stm = con.prepareStatement(   "INSERT INTO myCinema.Spettacolo (id_film,data,id_sala, ora)\n" +
                                                         "VALUES (?,?,?,?);");
         stm.setInt(1, id_film);
-        stm.setString(2, data);
+        stm.setDate(2, data);
         stm.setInt(3, id_sala);
-        stm.setString(4, ora);
+        stm.setTime(4, ora);
         try {
             stm.executeUpdate();
         } finally {
