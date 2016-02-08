@@ -1,8 +1,3 @@
-<%-- 
-    Document   : passwordDimenticata
-    Created on : Feb 6, 2016, 7:07:53 PM
-    Author     : Paolo
---%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -10,7 +5,7 @@
     <head>
         
         <title>Password dimenticata</title>
-        <head>
+       
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         
         <meta charset="UTF-8">
@@ -29,15 +24,26 @@
     
     
     <body>
-        <div class="container">
-            <jsp:include page="navbar.jsp" />
-        <h1>Inserisca la sua mail qua sotto, le sarà rimandata la password all'indirizzo indicato!</h1>
         
-        <form class="form-inline" action="PasswordReminder">
-            <input id="Mail" name="Mail" type="text"> <br>
-            <input type="submit">
-        </form>
-        <jsp:include page="footer.jsp" />
+        <jsp:include page="navbar.jsp" />
+        
+        <div class="container" style="margin-bottom: 100px">
+                
+            
+            <h3> Inserisci la tua mail qua sotto, ti sarà rimandata la password all'indirizzo indicato! </h3>
+            
+             
+            <div class="row">
+                <div class="col-md-6 col-offset-3">
+                    <form class="form-inline" action="PasswordReminder">
+                        <input id="Mail" class="form-control" name="Mail" type="text" placeholder="email@google.com" style="width:100%;margin-top: 20px"> <br>
+                        <input class="btn btn-default" type="submit" style="margin-top: 20px">
+                    </form>
+                </div>
+            </div>
+        
         </div>
+        
+        <jsp:include page="footer.jsp" />
     </body>
 </html>
