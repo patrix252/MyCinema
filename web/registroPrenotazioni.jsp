@@ -6,7 +6,7 @@
 
 
 <head>
-        <title>Registro Prenotazioni</title>
+    <title>Account di ${sessionScope.utente.getNome()}</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
@@ -22,6 +22,8 @@
          
         <div class="container">
             <jsp:include page="navbar.jsp" />
+            <jsp:include page="account.jsp"/>
+            <h1>Le tue prenotazioni</h1>
                 <c:if test="${sessionScope.prenotazioniUtente==null}">
                 Nessuna Prenotazione!   
             </c:if>
