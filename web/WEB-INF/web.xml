@@ -63,11 +63,11 @@
     </session-config>
     <context-param>
         <param-name>dburl</param-name>
-        <param-value>jdbc:mysql://127.0.0.1/myCinema</param-value>
+        <param-value>jdbc:mysql://46.101.19.71/myCinema</param-value>
     </context-param>
     <context-param>
         <param-name>user</param-name>
-        <param-value>root</param-value>
+        <param-value>user</param-value>
     </context-param>
     <context-param>
         <param-name>password</param-name>

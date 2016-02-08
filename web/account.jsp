@@ -41,7 +41,7 @@
                         <td>${sessionScope.utente.getNome()}</td>
                         <td>${sessionScope.utente.getCognome()}</td>
                         <td>${sessionScope.utente.getEmail()}</td>
-                        <td>${sessionScope.utente.getCredito()}</td>
+                        <td>${sessionScope.utente.getCredito()}€</td>
 
                     </tr>
                 </tbody>

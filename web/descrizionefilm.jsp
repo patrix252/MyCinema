@@ -39,7 +39,6 @@
                     <p class="text-left"><b>Genere: </b>${film.genere.descrizione}</p>
                     <p class="text-left"><b>Durata: </b>${film.durata}</p>
                     <p class="text-left"><b>Regista: </b>${film.regista}</p>
-                    <p class="text-left"><b>3D: </b><c:choose><c:when test="${film.is3D==0}">No</c:when><c:otherwise>Sì</c:otherwise></c:choose></p>
 
                     <p class="text-left"><b>Trama: </b>${film.trama}</p>
                     <p><a class="btn btn-success" role="button" href="PrenotationServlet?id=${param.id}&titolo=${film.titolo}" style="margin-top: 20px">Prenota subito!</a></p>

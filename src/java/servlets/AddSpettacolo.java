@@ -74,8 +74,9 @@ public class AddSpettacolo extends HttpServlet {
         Time t = new Time(ms);
         
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(t.getTime());
-        
+        calendar.setTime(dataFinale);
+        calendar.add(Calendar.MILLISECOND, (int)t.getTime());
+        calendar.add(Calendar.HOUR, 1);
         if (request.getParameter("one") != null) {
             for(int i=0; i<length; i++){
                 if(i==0){
@@ -84,7 +85,7 @@ public class AddSpettacolo extends HttpServlet {
                     calendar.add(Calendar.MINUTE, r);
                 }
                 try {
-                    manager.insertSpettacolo(Integer.parseInt(id_film), Integer.parseInt(id_sala), dataFinale, new Time(calendar.getTime().getTime()));
+                    manager.insertSpettacolo(Integer.parseInt(id_film), Integer.parseInt(id_sala), new Date(calendar.getTime().getTime()), new Time(calendar.getTime().getTime()));
                 } catch (SQLException ex) {
                     Logger.getLogger(AddSpettacolo.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -93,6 +94,9 @@ public class AddSpettacolo extends HttpServlet {
         } else if (request.getParameter("all") != null) {
             List<Film> films = (List<Film>)session.getAttribute("films");
             for(int j=0; j<films.size(); j++){
+                calendar.setTime(dataFinale);
+                calendar.add(Calendar.MILLISECOND, (int)t.getTime());
+                calendar.add(Calendar.HOUR, 1);
                 for(int i=0; i<length; i++){
                     if(i==0){
                         Random rand = new Random();
@@ -102,7 +106,7 @@ public class AddSpettacolo extends HttpServlet {
                     Random rand = new Random();
                     int r = rand.nextInt((4 - 1) + 1) + 1;
                     try {
-                        manager.insertSpettacolo(films.get(j).getId_film(), r, dataFinale, new Time(calendar.getTime().getTime()));
+                        manager.insertSpettacolo(films.get(j).getId_film(), r, new Date(calendar.getTime().getTime()), new Time(calendar.getTime().getTime()));
                     } catch (SQLException ex) {
                         Logger.getLogger(AddSpettacolo.class.getName()).log(Level.SEVERE, null, ex);
                     }

@@ -28,6 +28,7 @@
             <table class="table">
                 <thead>
                     <tr>
+                       <th>ID Prenotazione</th>
                        <th>Email</th>
                        <th>Data prenotazione</th>
                        <th>Ora prenotazione</th>
@@ -37,6 +38,7 @@
                <tbody>
                 <c:forEach items="${sessionScope.prenotazioni}" var = "pr">
                     <tr>
+                       <td> ${pr.id_prenotazione}</td>
                        <td> ${pr.id_utente}</td>
                        <td> ${pr.data} </td>
                        <td> ${pr.ora}</td>

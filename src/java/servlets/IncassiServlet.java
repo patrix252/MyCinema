@@ -50,9 +50,6 @@ public class IncassiServlet extends HttpServlet {
         } else if(id_spettacolo!=null){
             double incasso = (double)manager.incassospettacolo(Integer.parseInt(id_spettacolo));
             response.getWriter().write("<h2>Incasso spettacolo: "+String.valueOf(incasso)+"€</h2>");
-            //aggiunger if(spettacolo.orario è già iniziato) allora non aggiungere il bottone, altrimenti lascia il bottone
-            //(CAMBIARE INDEX.JSP NELLA SERVLET CORRETTA, QUELLA DESTINATA A CANCELLARE LA PRENOTAZIONE
-            response.getWriter().append("<a href=\"index.jsp\"><button class=\"btn btn-default\" id=\"cancella\">Cancella Prenotazione</button></a>");
             
         } 
         String t = request.getParameter("t");
