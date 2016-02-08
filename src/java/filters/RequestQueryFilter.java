@@ -237,6 +237,15 @@ public class RequestQueryFilter implements Filter {
             session.setAttribute("prenotazioni",prenotazioni);
             
         
+        } else if ("/MyCinema/aggiungiSpettacolo.jsp".equals(url)){
+            List <Film> films = new ArrayList<>();
+            try {
+               films = manager.getFilms();
+            } catch (SQLException ex) {
+                Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            session.setAttribute("films", films);
+            
         }
 
         if (debug) {
