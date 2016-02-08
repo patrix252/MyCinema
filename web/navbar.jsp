@@ -98,6 +98,9 @@
                         <li>
                             <a href="cancellaprenotazioni.jsp">Cancella prenotazioni</a>
                         </li>
+                        <li>
+                            <a href="aggiungiSpettacolo.jsp">Aggiungi spettacolo</a>
+                        </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
 
