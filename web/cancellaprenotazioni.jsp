@@ -33,8 +33,8 @@
                        <th>Film</th>
                        <th>Posto</th>
                        <th>Sala</th>
-                       <th>Data prenotazione</th>
-                       <th>Ora prenotazione</th>
+                       <th>Data spettacolo</th>
+                       <th>Ora spettacolo</th>
                        <th>Cancella</th>
                    </tr>
                </thead>
@@ -46,8 +46,8 @@
                        <td> ${sessionScope.filmPrenotazioni[myIndex.index].titolo}</td>
                        <td> ${sessionScope.postiPrenotazioni[myIndex.index].riga}-${sessionScope.postiPrenotazioni[myIndex.index].colonna}</td>
                        <td> ${sessionScope.spettacoliPrenotazioni[myIndex.index].id_sala}</td>
-                       <td> ${pr.data} </td>
-                       <td> ${pr.ora}</td>
+                       <td> ${sessionScope.spettacoliPrenotazioni[myIndex.index].data} </td>
+                       <td> ${sessionScope.spettacoliPrenotazioni[myIndex.index].ora}</td>
                        <td><a class="btn btn-default" href="DeletePrenotation?id=${pr.id_prenotazione}">Cancella</a> </td>
                     </tr>
                 </c:forEach>
