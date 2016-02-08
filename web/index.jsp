@@ -89,7 +89,7 @@
                                 QUI VANNO LA LOCANDINA, TITOLO, GENERE, DURATA, REGISTA, ATTORI E TRAMA IN BREVE
                                 ================================================== -->
                                 <p><b><a href="descrizionefilm.jsp?id=${film.id_film}">${film.titolo}</a></b></p>
-                                <p>${film.genere.descrizione} <br> ${film.durata} minuti <br> ${film.regista} <br> </p>
+                                <p>${film.genere.descrizione} <br>Durata: ${film.durata} minuti <br> ${film.regista} <br> </p>
                             </div>
                     </div>
                 </div>

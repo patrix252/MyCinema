@@ -220,7 +220,7 @@ public class Classi {
             message.setHeader("MyMail", "Mr. XYZ" );
             message.setSentDate(new Date());
             BodyPart messageBodyPart = new MimeBodyPart();
-            messageBodyPart.setText("La sua password è la seguente: "+ password +"!");
+            messageBodyPart.setText("La sua password è la seguente: "+ password);
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(messageBodyPart);
             message.setContent(multipart);  
