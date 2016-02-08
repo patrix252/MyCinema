@@ -208,7 +208,7 @@ public List<FilmSpettacolo> getFilmsAll() throws SQLException {
     public List<FilmSpettacolo> getFilmstoday() throws SQLException {
         //query che riporta tutti i dati 
         List<FilmSpettacolo> films = new ArrayList<>();
-        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Spettacolo, myCinema.Film, myCinema.Genere WHERE data = CURDATE() AND Film.id_film = Spettacolo.id_film AND Film.id_genere = Genere.id_genere;"); 
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Spettacolo, myCinema.Film, myCinema.Genere WHERE data = CURDATE() AND ora > CURTIME() AND Film.id_film = Spettacolo.id_film AND Film.id_genere = Genere.id_genere;"); 
             try (ResultSet rs = stm.executeQuery()) {
             while (rs.next()) {
                 FilmSpettacolo h = new FilmSpettacolo();
@@ -845,13 +845,13 @@ public List<FilmSpettacolo> getFilmsAll() throws SQLException {
         return psw;
     }
     
-    public void insertSpettacolo(int id_film, int id_sala, String data , String ora) throws SQLException{
+    public void insertSpettacolo(int id_film, int id_sala, Date data , Time ora) throws SQLException{
         PreparedStatement stm = con.prepareStatement(   "INSERT INTO myCinema.Spettacolo (id_film,data,id_sala, ora)\n" +
                                                         "VALUES (?,?,?,?);");
         stm.setInt(1, id_film);
-        stm.setString(2, data);
+        stm.setDate(2, data);
         stm.setInt(3, id_sala);
-        stm.setString(4, ora);
+        stm.setTime(4, ora);
         try {
             stm.executeUpdate();
         } finally {

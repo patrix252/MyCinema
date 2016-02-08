@@ -54,16 +54,20 @@
                     <h4>Data:</h4>
                     
                     <jsp:useBean id="now" class="java.util.Date"/>    
-                    
-                    
-                    
 
                     <input class="form-control" type="text" name="data" placeholder="2017-08-14" value="<fmt:formatDate value="${now}" pattern="dd-MM-yyyy" />">
                     
                     <h4>Ora:</h4>
                     <input class="form-control" type="text" name="ora" placeholder="21:00:00" value="<fmt:formatDate value="${now}" pattern="HH:mm:ss" />">
                     
-                    <input class="btn btn-default" type="submit" value="Submit" style="margin-top: 20px">
+                    <h4>Distanza in minuti di una proiezione da un'altra:</h4>
+                    <input class="form-control" type="text" name="x" placeholder="x" style="margin-top: 15px">
+                    
+                    <h4>Quanti spettacoli inserire per film:</h4>
+                    <input class="form-control" type="text" name="length" placeholder="#spettacoli" style="margin-top: 15px">
+                    
+                    <input class="btn btn-default" type="submit" name="one" value="Inserisci spettacoli per il film selezionato" style="margin-top: 20px">
+                    <input class="btn btn-default" type="submit" name="all" value="Inserisci tutti gli spettacoli" style="margin-top: 20px">
 
                 </form>
             </div>
