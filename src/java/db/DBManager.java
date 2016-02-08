@@ -813,7 +813,7 @@ public List<FilmSpettacolo> getFilmsAll() throws SQLException {
                     Prenotazione a = new Prenotazione();
                     a.setId_prenotazione(rs.getInt(Util.Prenotazione.COLUMN_ID_PRENOTAZIONE));
                     a.setId_spettacolo(rs.getInt(Util.Prenotazione.COLUMN_ID_SPETTACOLO));
-                    a.setId_posto(rs.getInt (Util.Prenotazione.COLUMN_ID_POSTO));
+                    a.setId_posto(rs.getInt(Util.Prenotazione.COLUMN_ID_POSTO));
                     a.setId_prezzo(rs.getInt(Util.Prenotazione.COLUMN_ID_PREZZO));
                     a.setData(rs.getDate(Util.Prenotazione.COLUMN_DATA));
                     a.setId_utente(rs.getString(Util.Prenotazione.COLUMN_EMAIL));
@@ -843,6 +843,48 @@ public List<FilmSpettacolo> getFilmsAll() throws SQLException {
             stm.close();
         }
         return psw;
+    }
+    
+    public Spettacolo getSpettacolo(int id_spettacolo) throws SQLException{
+        Spettacolo s = new Spettacolo();
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Spettacolo WHERE Spettacolo.id_spettacolo = ?;");
+        stm.setInt(1, id_spettacolo);        
+        try {
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    s.setId_film(rs.getInt(Util.Spettacolo.COLUMN_ID_FILM));
+                    s.setId_spettacolo(rs.getInt(Util.Spettacolo.COLUMN_ID_SPETTACOLO));
+                    s.setId_sala(rs.getInt(Util.Spettacolo.COLUMN_ID_SALA));
+                    s.setData(rs.getDate(Util.Spettacolo.COLUMN_DATA));
+                    s.setOra(rs.getTime(Util.Spettacolo.COLUMN_ORA));
+                }
+                
+            }
+        } finally {
+            stm.close();
+        }
+        return s;
+    }
+    
+    public Posto getPosto(int id_posto) throws SQLException{
+        Posto p = new Posto();
+        PreparedStatement stm = con.prepareStatement("SELECT * FROM myCinema.Posto WHERE Posto.id_posto = ?;");
+        stm.setInt(1, id_posto);        
+        try {
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    p.setColonna(rs.getInt(Util.Posto.COLUMN_COLONNA));
+                    p.setRiga(rs.getInt(Util.Posto.COLUMN_RIGA));
+                    p.setEsiste(rs.getInt(Util.Posto.COLUMN_ESISTE));
+                    p.setId_posto(id_posto);
+                    p.setId_sala(rs.getInt(Util.Posto.COLUMN_ID_SALA));
+                }
+                
+            }
+        } finally {
+            stm.close();
+        }
+        return p;
     }
     
     public void insertSpettacolo(int id_film, int id_sala, Date data , Time ora) throws SQLException{

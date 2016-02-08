@@ -30,16 +30,22 @@
                     <tr>
                        <th>ID Prenotazione</th>
                        <th>Email</th>
+                       <th>Film</th>
+                       <th>Posto</th>
+                       <th>Sala</th>
                        <th>Data prenotazione</th>
                        <th>Ora prenotazione</th>
                        <th>Cancella</th>
                    </tr>
                </thead>
                <tbody>
-                <c:forEach items="${sessionScope.prenotazioni}" var = "pr">
+                <c:forEach items="${sessionScope.prenotazioni}" var = "pr" varStatus="myIndex">
                     <tr>
                        <td> ${pr.id_prenotazione}</td>
                        <td> ${pr.id_utente}</td>
+                       <td> ${sessionScope.filmPrenotazioni[myIndex.index].titolo}</td>
+                       <td> ${sessionScope.postiPrenotazioni[myIndex.index].riga}-${sessionScope.postiPrenotazioni[myIndex.index].colonna}</td>
+                       <td> ${sessionScope.spettacoliPrenotazioni[myIndex.index].id_sala}</td>
                        <td> ${pr.data} </td>
                        <td> ${pr.ora}</td>
                        <td><a class="btn btn-default" href="DeletePrenotation?id=${pr.id_prenotazione}">Cancella</a> </td>

@@ -234,6 +234,27 @@ public class RequestQueryFilter implements Filter {
             } catch (SQLException ex) {
                 Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
             }
+            List <Posto> postiPrenotazioni = new ArrayList<>();
+            List <Spettacolo> spettacoliPrenotazioni = new ArrayList<>();
+            List <Film> filmPrenotazioni = new ArrayList<>();
+            Posto p;
+            Spettacolo s;
+            Film f;
+            for(int i=0; i<prenotazioni.size(); i++){
+                try {
+                    p = manager.getPosto(prenotazioni.get(i).getId_posto());
+                    s = manager.getSpettacolo(prenotazioni.get(i).getId_spettacolo());
+                    f = manager.getFilm(s.getId_film());
+                    postiPrenotazioni.add(p);
+                    spettacoliPrenotazioni.add(s);
+                    filmPrenotazioni.add(f);
+                } catch (SQLException ex) {
+                    Logger.getLogger(RequestQueryFilter.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            session.setAttribute("filmPrenotazioni", filmPrenotazioni);
+            session.setAttribute("postiPrenotazioni", postiPrenotazioni);
+            session.setAttribute("spettacoliPrenotazioni", spettacoliPrenotazioni);
             session.setAttribute("prenotazioni",prenotazioni);
             
         
