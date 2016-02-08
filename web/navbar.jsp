@@ -35,8 +35,9 @@
 
                         <c:if test="${sessionScope.utente.getEmail()!=null}">
                             <!-- Loggato -->
+                            
                             <li>
-                                <a href="registroPrenotazioni.jsp">Prenotazioni</a>
+                                <a href="registroPrenotazioni.jsp">Account di ${sessionScope.utente.getNome()}</a>
                             </li>
                             <li>
                                 <a href="logout.jsp">Log Out</a>

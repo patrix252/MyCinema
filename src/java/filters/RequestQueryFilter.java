@@ -237,7 +237,7 @@ public class RequestQueryFilter implements Filter {
             session.setAttribute("prenotazioni",prenotazioni);
             
         
-        }
+        } 
 
         if (debug) {
             log("RequestQueryFilter:doFilter()");
